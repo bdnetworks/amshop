@@ -29,6 +29,7 @@ export async function appendOrderToSheet(data: OrderData) {
   const sheetId = process.env.GOOGLE_SHEET_ID;
 
   if (!sheetId) {
+    console.error('GOOGLE_SHEET_ID is not set. Order cannot be saved.');
     throw new Error(
       'GOOGLE_SHEET_ID is not set in the .env file. Please add it to save orders.'
     );
@@ -62,14 +63,14 @@ export async function appendOrderToSheet(data: OrderData) {
       },
       body: JSON.stringify({
         sheetId: sheetId,
-        data: newRow,
+        ...newRow
       }),
     });
-
+    
     if (!response.ok) {
-      const errorBody = await response.json();
-      console.error('Error from proxy:', errorBody);
-      throw new Error(errorBody.error || 'Failed to send data to Google Sheet proxy.');
+      const errorBody = await response.text();
+      console.error('Error from proxy:', response.status, errorBody);
+      throw new Error(`Failed to send data to Google Sheet proxy. Status: ${response.status}`);
     }
     
     const result = await response.json();
