@@ -15,17 +15,28 @@ import { Wishlist } from './wishlist';
 export function Header() {
   const { cartCount, cartTotal, wishlistCount } = useAppContext();
   const pathname = usePathname();
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
+  const [isMenuBarVisible, setIsMenuBarVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY && currentScrollY > 150) {
-        setIsScrolled(true);
+      
+      if (currentScrollY > lastScrollY && currentScrollY > 200) {
+        // Scrolling down
+        setIsHidden(true);
       } else {
-        setIsScrolled(false);
+        // Scrolling up
+        setIsHidden(false);
       }
+      
+      if (currentScrollY > 150) {
+        setIsMenuBarVisible(false);
+      } else {
+        setIsMenuBarVisible(true);
+      }
+
       setLastScrollY(currentScrollY);
     };
 
@@ -33,16 +44,10 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  const navLinks = [
-    { href: '/', label: 'Popular'},
-    { href: '/shop', label: 'Shop' },
-    { href: '/contact', label: 'Contact' },
-  ];
-
   return (
-    <header className={cn("sticky top-0 z-50 transition-transform duration-300", isScrolled && '-translate-y-full')}>
+    <header className={cn("sticky top-0 z-50 transition-transform duration-300", isHidden && '-translate-y-full')}>
       {/* Main Header */}
-      <div className="border-b py-4">
+      <div className="border-b py-4 bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-12 items-center gap-4">
                 <div className="col-span-3">
@@ -111,19 +116,19 @@ export function Header() {
       </div>
       
       {/* Bottom Navigation */}
-       <div className="w-full border-t border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+       <div className={cn("w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300", !isMenuBarVisible && "hidden")}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <nav className="flex items-center gap-6">
-              {navLinks.map((link) => (
+              {['Popular', 'Shop', 'Contact'].map((item) => (
                   <Link
-                  key={link.href}
-                  href={link.href}
+                  key={item}
+                  href={item === 'Popular' ? '/' : `/${item.toLowerCase()}`}
                   className={cn(
                       "text-sm font-semibold transition-colors hover:text-primary py-4",
-                      pathname === link.href ? "text-primary" : "text-foreground"
+                      pathname === (item === 'Popular' ? '/' : `/${item.toLowerCase()}`) ? "text-primary" : "text-foreground"
                   )}
                   >
-                  {link.label}
+                  {item}
                   </Link>
               ))}
               <Link
