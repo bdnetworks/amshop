@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { Product } from '@/lib/types';
@@ -57,15 +58,15 @@ export default function ProductCard({ product }: ProductCardProps) {
              </Button>
            </div>
         </div>
-      <CardContent className="p-4 text-center">
-        <div className="flex justify-center items-center mb-2">
+      <CardContent className="p-2 text-center">
+        <div className="flex justify-center items-center mb-1">
             {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className={cn("h-4 w-4", i < rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300')} />
             ))}
         </div>
-        <h3 className="text-sm font-semibold text-foreground truncate">{product.name}</h3>
-        <p className="mt-2 text-lg font-bold text-primary">${product.price.toFixed(2)}</p>
-         <Button onClick={handleAddToCart} className="mt-4 w-full opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <h3 className="text-sm font-semibold text-foreground truncate h-5">{product.name}</h3>
+        <p className="mt-1 text-lg font-bold text-primary">${product.price.toFixed(2)}</p>
+         <Button onClick={handleAddToCart} className="mt-2 w-full opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <ShoppingCart className="mr-2 h-4 w-4" />
           Add to Cart
         </Button>
