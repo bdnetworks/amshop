@@ -24,6 +24,11 @@ export default function Home() {
         <h1 className="section-title">Featured Products</h1>
         <ProductList />
       </div>
+      <Separator className="my-16" />
+      <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        <h1 className="section-title">Organic Products</h1>
+        <ProductList />
+      </div>
     </>
   );
 }

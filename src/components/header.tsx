@@ -140,13 +140,6 @@ export function Header() {
                             <p className="text-sm font-semibold">(+965) 7492-3477</p>
                         </div>
                      </div>
-                     <div className="hidden lg:flex items-center gap-2">
-                        <User className="h-7 w-7 text-muted-foreground"/>
-                        <div>
-                            <span className="text-xs text-muted-foreground">ACCOUNT</span>
-                            <p className="text-sm font-semibold">Sign In</p>
-                        </div>
-                    </div>
                      <Cart>
                         <div className="flex items-center gap-2 cursor-pointer">
                             <div className="relative">
