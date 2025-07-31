@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Package, ShoppingCart, User, Search, Heart, Phone, ChevronDown, LogIn, LogOut } from 'lucide-react';
+import { Package, ShoppingCart, User, Search, Heart, Phone, ChevronDown, LogIn, LogOut, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Cart } from '@/components/cart';
 import { useAppContext } from '@/providers/app-provider';
@@ -12,6 +12,8 @@ import { cn } from '@/lib/utils';
 import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Wishlist } from './wishlist';
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
+import { Separator } from './ui/separator';
 
 export function Header() {
   const { cartCount, cartTotal, wishlistCount, isAuthenticated, logout } = useAppContext();
@@ -19,16 +21,15 @@ export function Header() {
   const [isHidden, setIsHidden] = useState(false);
   const [isMenuBarVisible, setIsMenuBarVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       
       if (currentScrollY > lastScrollY && currentScrollY > 200) {
-        // Scrolling down
         setIsHidden(true);
       } else {
-        // Scrolling up
         setIsHidden(false);
       }
       
@@ -46,18 +47,68 @@ export function Header() {
   }, [lastScrollY]);
 
   return (
-    <header className={cn("sticky top-0 z-50 transition-transform duration-300", isHidden && '-translate-y-full')}>
+    <header className={cn("sticky top-0 z-50 transition-transform duration-300 bg-background", isHidden && '-translate-y-full')}>
+      {/* Top Bar - Hidden on mobile */}
+      <div className="hidden lg:block border-b bg-secondary/50 text-xs text-muted-foreground">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-1">
+           <div>
+             <p>Welcome to our ShopSwift online store!</p>
+           </div>
+           <div className="flex items-center gap-4">
+              <Link href="#" className="hover:text-primary">Store Location</Link>
+              <Link href="#" className="hover:text-primary">Track Your Order</Link>
+           </div>
+        </div>
+      </div>
+      
       {/* Main Header */}
-      <div className="border-b py-4 bg-background">
+      <div className="border-b py-4">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-12 items-center gap-4">
-                <div className="col-span-3">
-                    <Link href="/" className="flex items-center space-x-2">
+                {/* Mobile Menu Trigger */}
+                <div className="lg:hidden col-span-2">
+                  <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+                    <SheetTrigger asChild>
+                       <Button variant="ghost" size="icon">
+                          <Menu className="h-6 w-6" />
+                       </Button>
+                    </SheetTrigger>
+                    <SheetContent side="left" className="w-64">
+                       <nav className="flex flex-col gap-4 p-4">
+                          {['Popular', 'Shop', 'Contact'].map((item) => (
+                              <Link
+                              key={item}
+                              href={item === 'Popular' ? '/' : `/${item.toLowerCase()}`}
+                              className={cn(
+                                  "font-semibold transition-colors hover:text-primary",
+                                  pathname === (item === 'Popular' ? '/' : `/${item.toLowerCase()}`) ? "text-primary" : "text-foreground"
+                              )}
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              >
+                              {item}
+                              </Link>
+                          ))}
+                           <Link href="/admin" className={cn("font-semibold transition-colors hover:text-primary", pathname === "/admin" && "text-primary")} onClick={() => setIsMobileMenuOpen(false)}>Admin</Link>
+                           <Separator />
+                           {isAuthenticated ? (
+                             <Button variant="ghost" onClick={() => {logout(); setIsMobileMenuOpen(false);}} className="justify-start"><LogOut size={16} /> Logout</Button>
+                           ) : (
+                             <Link href="/login" className="flex items-center gap-2 font-semibold hover:text-primary" onClick={() => setIsMobileMenuOpen(false)}><LogIn size={16} /> Login</Link>
+                           )}
+                       </nav>
+                    </SheetContent>
+                  </Sheet>
+                </div>
+                
+                <div className="col-span-8 lg:col-span-3 text-center lg:text-left">
+                    <Link href="/" className="flex items-center justify-center lg:justify-start space-x-2">
                         <Package className="h-8 w-8 text-primary" />
                         <span className="font-bold text-2xl">ShopSwift</span>
                     </Link>
                 </div>
-                <div className="col-span-5">
+                
+                {/* Search Bar - Hidden on mobile */}
+                <div className="hidden lg:block col-span-5">
                     <div className="flex w-full items-center rounded-md border border-input">
                         <Select defaultValue='all'>
                             <SelectTrigger className="w-[150px] border-0 rounded-r-none focus:ring-0">
@@ -80,15 +131,16 @@ export function Header() {
                         </Button>
                     </div>
                 </div>
-                <div className="col-span-4 flex items-center justify-end gap-4">
-                     <div className="flex items-center gap-2">
+
+                <div className="col-span-2 lg:col-span-4 flex items-center justify-end gap-4">
+                     <div className="hidden lg:flex items-center gap-2">
                         <Phone size={24} className="text-primary" />
                         <div>
                             <p className="text-xs text-muted-foreground">24/7 SUPPORT</p>
                             <p className="text-sm font-semibold">(+965) 7492-3477</p>
                         </div>
                      </div>
-                     <div className="flex items-center gap-2">
+                     <div className="hidden lg:flex items-center gap-2">
                         <User className="h-7 w-7 text-muted-foreground"/>
                         <div>
                             <span className="text-xs text-muted-foreground">ACCOUNT</span>
@@ -105,7 +157,7 @@ export function Header() {
                                     </span>
                                 )}
                             </div>
-                            <div>
+                            <div className="hidden lg:block">
                                 <span className="text-xs text-muted-foreground">CART</span>
                                 <p className="text-sm font-semibold">${cartTotal.toFixed(2)}</p>
                             </div>
@@ -116,8 +168,8 @@ export function Header() {
         </div>
       </div>
       
-      {/* Bottom Navigation */}
-       <div className={cn("w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300", !isMenuBarVisible && "hidden")}>
+      {/* Bottom Navigation - Hidden on mobile */}
+       <div className={cn("w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300 hidden lg:block", !isMenuBarVisible && "lg:hidden")}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <nav className="flex items-center gap-6">
               {['Popular', 'Shop', 'Contact'].map((item) => (
