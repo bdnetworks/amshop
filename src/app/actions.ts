@@ -1,9 +1,7 @@
-
 'use server';
 
 import { generateProductDescription } from '@/ai/flows/generate-product-description';
 import type { CartItem } from '@/lib/types';
-import { appendOrderToSheet } from '@/lib/google-sheets';
 
 export async function enhanceDescriptionAction(basicDescription: string) {
   try {
@@ -27,7 +25,8 @@ export async function submitOrderAction(data: {
   };
 }) {
   try {
-    await appendOrderToSheet(data);
+    // For now, we just simulate a successful order submission.
+    console.log('Simulating order submission:', data);
     return { success: true, message: 'Order placed successfully!' };
   } catch (error) {
     console.error('Error submitting order:', error);
