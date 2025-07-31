@@ -15,24 +15,13 @@ export function Header() {
   const pathname = usePathname();
 
   const navLinks = [
-    { href: '/', label: 'Home'},
-    { href: '/about', label: 'About' },
+    { href: '/', label: 'Popular'},
     { href: '/shop', label: 'Shop' },
     { href: '/contact', label: 'Contact' },
-    { href: '/admin', label: 'Admin' },
   ];
 
   return (
     <header className="border-b">
-      {/* Top Bar */}
-      <div className="bg-secondary text-secondary-foreground">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-10 text-xs">
-           <div /> 
-           <div className="flex items-center gap-6">
-           </div>
-        </div>
-      </div>
-
       {/* Main Header */}
       <div className="py-4">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -68,7 +57,7 @@ export function Header() {
                 </div>
                 <div className="col-span-4 flex items-center justify-end gap-4">
                      <div className="flex items-center gap-2">
-                        <Phone size={16} />
+                        <Phone size={24} className="text-primary" />
                         <div>
                             <p className="text-xs text-muted-foreground">24/7 SUPPORT</p>
                             <p className="text-sm font-semibold">(+965) 7492-3477</p>
@@ -77,7 +66,7 @@ export function Header() {
                      <div className="flex items-center gap-2">
                         <User className="h-7 w-7 text-muted-foreground"/>
                         <div>
-                            <span className="text-xs text-muted-foreground">Account</span>
+                            <span className="text-xs text-muted-foreground">ACCOUNT</span>
                             <p className="text-sm font-semibold">Sign In</p>
                         </div>
                     </div>
@@ -92,7 +81,7 @@ export function Header() {
                                 )}
                             </div>
                             <div>
-                                <span className="text-xs text-muted-foreground">Cart</span>
+                                <span className="text-xs text-muted-foreground">CART</span>
                                 <p className="text-sm font-semibold">${cartTotal.toFixed(2)}</p>
                             </div>
                         </div>
@@ -130,6 +119,15 @@ export function Header() {
                   >
                   Blogs <ChevronDown size={16} />
               </Link>
+              <Link
+                  href="/admin"
+                  className={cn(
+                      "text-sm font-semibold transition-colors hover:text-primary py-4",
+                      pathname === "/admin" ? "text-primary" : "text-foreground"
+                  )}
+                  >
+                  Admin
+                  </Link>
             </nav>
             <div className="flex items-center gap-6">
               <Link href="#" className="flex items-center gap-2 text-sm font-semibold hover:text-primary">
