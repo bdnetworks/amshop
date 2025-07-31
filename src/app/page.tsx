@@ -12,10 +12,7 @@ export default function Home() {
       <HeroSection />
       <FeaturesSection />
       <BrowseByCategory />
-      <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <h1 className="section-title">New Arrivals</h1>
-        <NewProducts />
-      </div>
+      <NewProducts />
       <AdBanner />
       <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <h1 className="section-title">Best Sellers</h1>

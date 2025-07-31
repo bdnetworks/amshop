@@ -32,7 +32,7 @@ export default function NewProducts() {
   }
 
   return (
-    <div className="bg-muted py-12 md:py-16">
+    <div className="bg-muted py-8">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="section-title">New Products</h1>
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-8">
