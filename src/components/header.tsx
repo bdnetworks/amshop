@@ -48,19 +48,6 @@ export function Header() {
 
   return (
     <header className={cn("sticky top-0 z-50 transition-transform duration-300 bg-background", isHidden && '-translate-y-full')}>
-      {/* Top Bar - Hidden on mobile */}
-      <div className="hidden lg:block border-b bg-secondary/50 text-xs text-muted-foreground">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-1">
-           <div>
-             <p>Welcome to our ShopSwift online store!</p>
-           </div>
-           <div className="flex items-center gap-4">
-              <Link href="#" className="hover:text-primary">Store Location</Link>
-              <Link href="#" className="hover:text-primary">Track Your Order</Link>
-           </div>
-        </div>
-      </div>
-      
       {/* Main Header */}
       <div className="border-b py-4">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
