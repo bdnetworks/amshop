@@ -1,16 +1,11 @@
 
-import nodemailer from 'nodemailer';
+import sgMail from '@sendgrid/mail';
 import type { CartItem } from './types';
 
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_SERVER_HOST,
-  port: Number(process.env.EMAIL_SERVER_PORT),
-  secure: Number(process.env.EMAIL_SERVER_PORT) === 465, // true for 465, false for other ports
-  auth: {
-    user: process.env.EMAIL_SERVER_USER,
-    pass: process.env.EMAIL_SERVER_PASSWORD,
-  },
-});
+// Set SendGrid API Key
+if (process.env.SENDGRID_API_KEY) {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+}
 
 interface OrderData {
   cart: CartItem[];
@@ -27,10 +22,23 @@ interface OrderData {
 export async function sendOrderConfirmationEmail(orderData: OrderData) {
   const { cart, total, customer } = orderData;
   const adminEmail = process.env.ADMIN_EMAIL;
+  const fromEmail = process.env.SENDGRID_FROM_EMAIL;
 
+  if (!process.env.SENDGRID_API_KEY) {
+    console.error('SENDGRID_API_KEY is not set. Email not sent.');
+    // Silently fail in production if API key is not configured
+    return;
+  }
+  
   if (!adminEmail) {
-    console.error('ADMIN_EMAIL environment variable is not set.');
+    console.error('ADMIN_EMAIL environment variable is not set. Email not sent.');
     // Silently fail in production if admin email is not configured
+    return;
+  }
+  
+  if (!fromEmail) {
+    console.error('SENDGRID_FROM_EMAIL environment variable is not set. Email not sent.');
+    // Silently fail in production if from email is not configured
     return;
   }
 
@@ -94,19 +102,18 @@ export async function sendOrderConfirmationEmail(orderData: OrderData) {
     </div>
   `;
 
-  const mailOptions = {
-    from: `"ShopSwift" <${process.env.EMAIL_SERVER_USER}>`,
+  const msg = {
     to: adminEmail,
+    from: fromEmail,
     subject: `New Order Notification - ${new Date().toLocaleDateString()}`,
     html: emailHtml,
   };
 
   try {
-    await transporter.sendMail(mailOptions);
-    console.log('Order confirmation email sent successfully.');
+    await sgMail.send(msg);
+    console.log('Order confirmation email sent successfully via SendGrid.');
   } catch (error) {
-    console.error('Error sending order confirmation email:', error);
-    // In a real app, you might want to throw an error or handle it differently
-    // For this prototype, we'll log it and let the process continue.
-  }
-}
+    console.error('Error sending order confirmation email via SendGrid:', error);
+    if (error.response) {
+      console.error(error.response.body)
+    }
