@@ -1,4 +1,14 @@
-import { Shirt, Watch, ToyBrick, Utensils, Headset, Smartphone } from 'lucide-react';
+
+'use client';
+
+import { Shirt, Watch, ToyBrick, Utensils, Headset, Smartphone, Dices, Computer, Armchair, Baby } from 'lucide-react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
 
 const categories = [
     { name: 'Clothes', icon: <Shirt className="h-10 w-10 text-primary" /> },
@@ -7,20 +17,36 @@ const categories = [
     { name: 'Kitchen', icon: <Utensils className="h-10 w-10 text-primary" /> },
     { name: 'Headsets', icon: <Headset className="h-10 w-10 text-primary" /> },
     { name: 'Gadgets', icon: <Smartphone className="h-10 w-10 text-primary" /> },
+    { name: 'Gaming', icon: <Dices className="h-10 w-10 text-primary" /> },
+    { name: 'Computer', icon: <Computer className="h-10 w-10 text-primary" /> },
+    { name: 'Furniture', icon: <Armchair className="h-10 w-10 text-primary" /> },
+    { name: 'Baby', icon: <Baby className="h-10 w-10 text-primary" /> },
 ];
 
 export default function BrowseByCategory() {
   return (
     <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
         <h2 className="section-title">Browse by Category</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {categories.map((category) => (
-                <div key={category.name} className="category-card cursor-pointer">
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent>
+            {categories.map((category, index) => (
+              <CarouselItem key={index} className="md:basis-1/4 lg:basis-1/6">
+                 <div className="category-card cursor-pointer h-full">
                     {category.icon}
                     <h3 className="font-semibold text-lg">{category.name}</h3>
                 </div>
+              </CarouselItem>
             ))}
-        </div>
+          </CarouselContent>
+          <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 transform bg-white/80 hover:bg-white shadow-md" />
+          <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 transform bg-white/80 hover:bg-white shadow-md" />
+        </Carousel>
     </div>
   )
 }
