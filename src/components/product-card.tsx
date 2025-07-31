@@ -1,12 +1,13 @@
 'use client';
 
 import type { Product } from '@/lib/types';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { useAppContext } from '@/providers/app-provider';
 import { useToast } from '@/hooks/use-toast';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Heart, Eye, Star } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface ProductCardProps {
   product: Product;
@@ -33,32 +34,42 @@ export default function ProductCard({ product }: ProductCardProps) {
       description: `${product.name} has been added to your shopping cart.`,
     });
   };
+  
+  const rating = 5;
 
   return (
-    <Card className="flex flex-col h-full overflow-hidden transition-shadow duration-300 hover:shadow-lg">
-      <CardHeader className="p-0">
-        <div className="relative aspect-video">
+    <Card className="group relative overflow-hidden rounded-lg border shadow-sm transition-all duration-300 hover:shadow-lg">
+        <div className="relative aspect-square bg-muted/30">
           <Image
             src={product.image}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover"
+            className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
             data-ai-hint={productHints[product.id] || 'product image'}
           />
+           <div className="absolute top-3 right-3 flex flex-col space-y-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+             <Button variant="outline" size="icon" className="bg-white hover:bg-primary hover:text-white rounded-full">
+                <Heart className="h-5 w-5" />
+             </Button>
+             <Button variant="outline" size="icon" className="bg-white hover:bg-primary hover:text-white rounded-full">
+                <Eye className="h-5 w-5" />
+             </Button>
+           </div>
         </div>
-      </CardHeader>
-      <CardContent className="p-4 flex-grow">
-        <CardTitle className="text-lg font-semibold mb-2">{product.name}</CardTitle>
-        <p className="text-sm text-muted-foreground line-clamp-3">{product.description}</p>
-      </CardContent>
-      <CardFooter className="p-4 pt-0 flex justify-between items-center">
-        <p className="text-lg font-bold text-primary">${product.price.toFixed(2)}</p>
-        <Button onClick={handleAddToCart}>
+      <CardContent className="p-4 text-center">
+        <div className="flex justify-center items-center mb-2">
+            {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className={cn("h-4 w-4", i < rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300')} />
+            ))}
+        </div>
+        <h3 className="text-sm font-semibold text-foreground truncate">{product.name}</h3>
+        <p className="mt-2 text-lg font-bold text-primary">${product.price.toFixed(2)}</p>
+         <Button onClick={handleAddToCart} className="mt-4 w-full opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <ShoppingCart className="mr-2 h-4 w-4" />
           Add to Cart
         </Button>
-      </CardFooter>
+      </CardContent>
     </Card>
   );
 }

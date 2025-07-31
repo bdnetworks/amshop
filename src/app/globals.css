@@ -8,15 +8,15 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 240 5% 96%;
+    --foreground: 240 6% 10%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
     --primary: 262.1 83.3% 57.8%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
+    --secondary: 0 0% 100%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
@@ -68,17 +68,38 @@ body {
 
 .category-card {
   @apply flex flex-col items-center justify-center p-6 bg-secondary rounded-lg transition-all duration-300 ease-in-out;
-  @apply hover:bg-primary hover:text-primary-foreground transform hover:-translate-y-2;
+  @apply hover:bg-primary/5 transform hover:-translate-y-1 hover:shadow-lg border;
 }
 
 .category-card svg {
-  @apply mb-4;
+  @apply mb-4 h-12 w-12 text-primary;
 }
 
 .category-card:hover svg {
-  @apply text-primary-foreground;
+  @apply text-primary;
 }
 
 .section-title {
-  @apply text-3xl font-bold text-center mb-10;
+  @apply text-2xl font-bold mb-6;
+}
+
+/* Product Card Hover */
+.product-card .add-to-cart-btn {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.product-card:hover .add-to-cart-btn {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.product-card .product-actions {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.product-card:hover .product-actions {
+  opacity: 1;
 }
