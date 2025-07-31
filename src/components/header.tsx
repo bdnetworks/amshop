@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Package, ShoppingCart, User, Search, Heart, Phone, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -14,6 +15,23 @@ import { Wishlist } from './wishlist';
 export function Header() {
   const { cartCount, cartTotal, wishlistCount } = useAppContext();
   const pathname = usePathname();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 150) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   const navLinks = [
     { href: '/', label: 'Popular'},
@@ -22,9 +40,9 @@ export function Header() {
   ];
 
   return (
-    <header className="border-b">
+    <header className={cn("sticky top-0 z-50 transition-transform duration-300", isScrolled && '-translate-y-full')}>
       {/* Main Header */}
-      <div className="py-4">
+      <div className="border-b py-4">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-12 items-center gap-4">
                 <div className="col-span-3">
@@ -93,7 +111,7 @@ export function Header() {
       </div>
       
       {/* Bottom Navigation */}
-       <div className="sticky top-0 z-50 w-full border-t border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+       <div className="w-full border-t border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <nav className="flex items-center gap-6">
               {navLinks.map((link) => (
