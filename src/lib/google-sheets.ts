@@ -68,6 +68,7 @@ export async function appendOrderToSheet(data: OrderData) {
 
     if (!response.ok) {
       const errorBody = await response.json();
+      console.error('Error from proxy:', errorBody);
       throw new Error(errorBody.error || 'Failed to send data to Google Sheet proxy.');
     }
     
@@ -79,3 +80,4 @@ export async function appendOrderToSheet(data: OrderData) {
     throw new Error('Failed to save order to Google Sheet.');
   }
 }
+
