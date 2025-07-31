@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Package, Home, ShoppingCart, UserCog } from 'lucide-react';
+import { Package, Home, ShoppingCart, UserCog, Info, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Cart } from '@/components/cart';
 import { useAppContext } from '@/providers/app-provider';
@@ -13,7 +13,10 @@ export function Header() {
   const pathname = usePathname();
 
   const navLinks = [
-    { href: '/', label: 'Shop', icon: Home },
+    { href: '/', label: 'Home', icon: Home },
+    { href: '/about', label: 'About', icon: Info },
+    { href: '/shop', label: 'Shop', icon: Package },
+    { href: '/contact', label: 'Contact', icon: Phone },
     { href: '/admin', label: 'Admin', icon: UserCog },
   ];
 
@@ -24,7 +27,7 @@ export function Header() {
           <Package className="h-6 w-6 text-primary" />
           <span className="font-bold sm:inline-block">ShopSwift</span>
         </Link>
-        <nav className="flex items-center space-x-4 lg:space-x-6">
+        <nav className="hidden md:flex items-center space-x-4 lg:space-x-6">
           {navLinks.map((link) => (
             <Link
               key={link.href}
