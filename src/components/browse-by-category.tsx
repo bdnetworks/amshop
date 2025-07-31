@@ -1,6 +1,7 @@
 
 'use client';
 
+import * as React from 'react';
 import { Shirt, Watch, ToyBrick, Utensils, Headset, Smartphone, Dices, Computer, Armchair, Baby } from 'lucide-react';
 import {
   Carousel,
@@ -9,6 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+import Autoplay from "embla-carousel-autoplay"
 
 const categories = [
     { name: 'Clothes', icon: <Shirt className="h-10 w-10 text-primary" /> },
@@ -24,15 +26,22 @@ const categories = [
 ];
 
 export default function BrowseByCategory() {
+  const plugin = React.useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true })
+  )
+
   return (
     <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
         <h2 className="section-title">Browse by Category</h2>
         <Carousel
+          plugins={[plugin.current]}
           opts={{
             align: "start",
             loop: true,
           }}
           className="w-full"
+          onMouseEnter={plugin.current.stop}
+          onMouseLeave={plugin.current.reset}
         >
           <CarouselContent>
             {categories.map((category, index) => (
