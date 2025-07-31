@@ -1,8 +1,9 @@
+
 'use client';
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Package, ShoppingCart, User, Search, Heart, Phone, ChevronDown } from 'lucide-react';
+import { Package, ShoppingCart, User, Search, Heart, Phone, ChevronDown, LogIn, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Cart } from '@/components/cart';
 import { useAppContext } from '@/providers/app-provider';
@@ -13,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Wishlist } from './wishlist';
 
 export function Header() {
-  const { cartCount, cartTotal, wishlistCount } = useAppContext();
+  const { cartCount, cartTotal, wishlistCount, isAuthenticated, logout } = useAppContext();
   const pathname = usePathname();
   const [isHidden, setIsHidden] = useState(false);
   const [isMenuBarVisible, setIsMenuBarVisible] = useState(true);
@@ -167,6 +168,15 @@ export function Header() {
                   )}
                 </div>
               </Wishlist>
+              {isAuthenticated ? (
+                <Button variant="ghost" size="sm" onClick={logout} className="flex items-center gap-2 text-sm font-semibold hover:text-primary">
+                  <LogOut size={16} /> Logout
+                </Button>
+              ) : (
+                <Link href="/login" className="flex items-center gap-2 text-sm font-semibold hover:text-primary">
+                  <LogIn size={16} /> Login
+                </Link>
+              )}
             </div>
         </div>
        </div>

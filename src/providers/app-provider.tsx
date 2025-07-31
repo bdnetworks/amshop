@@ -1,6 +1,7 @@
+
 'use client';
 
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
 import type { Product, CartItem } from '@/lib/types';
 import { initialProducts } from '@/lib/data';
 
@@ -19,6 +20,9 @@ interface AppContextType {
   cartTotal: number;
   cartCount: number;
   wishlistCount: number;
+  isAuthenticated: boolean;
+  login: (password: string) => Promise<boolean>;
+  logout: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -27,6 +31,30 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<Product[]>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const authStatus = sessionStorage.getItem('isAuthenticated');
+    if (authStatus === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const login = async (password: string): Promise<boolean> => {
+    // In a real application, this would be a secure API call.
+    // For this prototype, we use a hardcoded password.
+    if (password === 'password123') {
+      setIsAuthenticated(true);
+      sessionStorage.setItem('isAuthenticated', 'true');
+      return true;
+    }
+    return false;
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    sessionStorage.removeItem('isAuthenticated');
+  };
 
   const addProduct = (productData: Omit<Product, 'id'>) => {
     const newProduct: Product = {
@@ -109,6 +137,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         cartTotal,
         cartCount,
         wishlistCount,
+        isAuthenticated,
+        login,
+        logout,
       }}
     >
       {children}
