@@ -23,6 +23,9 @@ import { Loader2 } from 'lucide-react';
 const checkoutSchema = z.object({
   name: z.string().min(2, 'Name is required'),
   email: z.string().email('Invalid email address'),
+  mobile: z.string().min(10, 'A valid mobile number is required'),
+  address: z.string().min(5, 'Address is required'),
+  district: z.string().min(3, 'District is required'),
 });
 
 type CheckoutFormValues = z.infer<typeof checkoutSchema>;
@@ -38,6 +41,9 @@ export default function CheckoutForm() {
     defaultValues: {
       name: '',
       email: '',
+      mobile: '',
+      address: '',
+      district: '',
     },
   });
 
@@ -57,7 +63,7 @@ export default function CheckoutForm() {
         description: 'Thank you for your purchase. A confirmation has been logged.',
       });
       clearCart();
-      router.push('/');
+      router.push('/thank-you');
     } else {
       toast({
         variant: 'destructive',
@@ -72,31 +78,72 @@ export default function CheckoutForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Full Name</FormLabel>
+                <FormControl>
+                    <Input placeholder="John Doe" {...field} />
+                </FormControl>
+                <FormMessage />
+                </FormItem>
+            )}
+            />
+            <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Email Address</FormLabel>
+                <FormControl>
+                    <Input type="email" placeholder="you@example.com" {...field} />
+                </FormControl>
+                <FormMessage />
+                </FormItem>
+            )}
+            />
+        </div>
         <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
+            control={form.control}
+            name="mobile"
+            render={({ field }) => (
             <FormItem>
-              <FormLabel>Full Name</FormLabel>
-              <FormControl>
-                <Input placeholder="John Doe" {...field} />
-              </FormControl>
-              <FormMessage />
+                <FormLabel>Mobile Number</FormLabel>
+                <FormControl>
+                <Input placeholder="e.g., 01234567890" {...field} />
+                </FormControl>
+                <FormMessage />
             </FormItem>
-          )}
+            )}
         />
         <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
+            control={form.control}
+            name="address"
+            render={({ field }) => (
             <FormItem>
-              <FormLabel>Email Address</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder="you@example.com" {...field} />
-              </FormControl>
-              <FormMessage />
+                <FormLabel>Address</FormLabel>
+                <FormControl>
+                <Input placeholder="123 Main Street" {...field} />
+                </FormControl>
+                <FormMessage />
             </FormItem>
-          )}
+            )}
+        />
+        <FormField
+            control={form.control}
+            name="district"
+            render={({ field }) => (
+            <FormItem>
+                <FormLabel>District</FormLabel>
+                <FormControl>
+                <Input placeholder="e.g., Dhaka" {...field} />
+                </FormControl>
+                <FormMessage />
+            </FormItem>
+            )}
         />
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

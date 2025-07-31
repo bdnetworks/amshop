@@ -17,7 +17,13 @@ export async function enhanceDescriptionAction(basicDescription: string) {
 export async function submitOrderAction(data: {
   cart: CartItem[];
   total: number;
-  customer: { name: string; email: string };
+  customer: { 
+    name: string; 
+    email: string;
+    mobile: string;
+    address: string;
+    district: string;
+  };
 }) {
   try {
     // Log the order to the console

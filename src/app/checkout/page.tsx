@@ -42,7 +42,7 @@ export default function CheckoutPage() {
             <CardHeader>
               <CardTitle>Shipping Information</CardTitle>
               <CardDescription>
-                Please provide your name and email to receive order updates.
+                Please provide your details to receive order updates.
               </CardDescription>
             </CardHeader>
             <CardContent>

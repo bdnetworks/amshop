@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator';
 
 export default function OrderSummary() {
   const { cart, cartTotal } = useAppContext();
-  const shippingCost = 5.00; // Example fixed shipping cost
+  const shippingCost = 150.00; // Updated fixed shipping cost
   const total = cartTotal + shippingCost;
 
   return (
