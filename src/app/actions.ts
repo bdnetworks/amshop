@@ -3,7 +3,7 @@
 
 import { generateProductDescription } from '@/ai/flows/generate-product-description';
 import type { CartItem } from '@/lib/types';
-import { sendOrderConfirmationEmail } from '@/lib/resend';
+import { appendOrderToSheet } from '@/lib/google-sheets';
 
 export async function enhanceDescriptionAction(basicDescription: string) {
   try {
@@ -27,10 +27,11 @@ export async function submitOrderAction(data: {
   };
 }) {
   try {
-    await sendOrderConfirmationEmail(data);
-    return { success: true, message: 'Order placed successfully! Check your email for confirmation.' };
+    await appendOrderToSheet(data);
+    return { success: true, message: 'Order placed successfully!' };
   } catch (error) {
     console.error('Error submitting order:', error);
-    return { success: false, error: 'Failed to save order.' };
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    return { success: false, error: `Failed to save order. ${errorMessage}` };
   }
 }
