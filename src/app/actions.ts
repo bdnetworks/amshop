@@ -3,7 +3,7 @@
 
 import { generateProductDescription } from '@/ai/flows/generate-product-description';
 import type { CartItem } from '@/lib/types';
-import { appendOrderToSheet } from '@/lib/google-sheets';
+import { sendOrderConfirmationEmail } from '@/lib/nodemailer';
 
 export async function enhanceDescriptionAction(basicDescription: string) {
   try {
@@ -27,10 +27,10 @@ export async function submitOrderAction(data: {
   };
 }) {
   try {
-    await appendOrderToSheet(data);
-    return { success: true, message: 'Order placed successfully and saved to Google Sheet!' };
+    await sendOrderConfirmationEmail(data);
+    return { success: true, message: 'Order placed successfully! Check your email for confirmation.' };
   } catch (error) {
-    console.error('Error submitting order to Google Sheet:', error);
+    console.error('Error submitting order:', error);
     return { success: false, error: 'Failed to save order.' };
   }
 }
