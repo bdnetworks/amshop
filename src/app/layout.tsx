@@ -3,6 +3,7 @@ import './globals.css';
 import { AppProvider } from '@/providers/app-provider';
 import { Header } from '@/components/header';
 import { Toaster } from "@/components/ui/toaster"
+import { Footer } from '@/components/footer';
 
 export const metadata: Metadata = {
   title: 'ShopSwift',
@@ -26,6 +27,7 @@ export default function RootLayout({
           <div className="flex flex-col min-h-screen">
             <Header />
             <main className="flex-1">{children}</main>
+            <Footer />
           </div>
           <Toaster />
         </AppProvider>
