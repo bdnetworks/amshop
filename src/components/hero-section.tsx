@@ -1,81 +1,146 @@
+'use client';
+
+import React from 'react';
 import Image from 'next/image';
 import { Button } from './ui/button';
 import Link from 'next/link';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
+
+const carouselSlides = [
+  {
+    supertitle: '30% SALE OFF',
+    title: 'True Wireless Noise Cancelling Headphone',
+    image: 'https://placehold.co/400x400.png',
+    imageHint: 'blue headphones',
+    href: '/shop',
+  },
+  {
+    supertitle: 'NEW ARRIVAL',
+    title: 'Next-Gen VR Gaming Headset',
+    image: 'https://placehold.co/400x400.png',
+    imageHint: 'vr headset',
+    href: '/shop',
+  },
+  {
+    supertitle: 'LIMITED TIME OFFER',
+    title: '4K Ultra HD Smart Television',
+    image: 'https://placehold.co/400x400.png',
+    imageHint: 'smart tv',
+    href: '/shop',
+  },
+];
 
 const HeroSection = () => {
+    const plugin = React.useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true })
+  );
+
   return (
     <div className="bg-secondary">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-12 gap-6 items-center py-8">
           {/* Main Banner */}
           <div className="col-span-12 lg:col-span-8">
-            <div className="relative rounded-lg overflow-hidden h-[400px] bg-primary/10 flex items-center">
-              <div className="p-8 md:p-12 z-10">
-                <h3 className="text-primary font-bold">30% <span className="font-light">SALE OFF</span></h3>
-                <h2 className="text-3xl md:text-5xl font-bold text-foreground my-4 max-w-sm leading-tight">
-                  True Wireless Noise Cancelling Headphone
-                </h2>
-                <Button asChild size="lg">
-                  <Link href="/shop">Shop Now</Link>
-                </Button>
-              </div>
-              <div className="absolute right-0 bottom-0 w-3/5 h-full">
-                 <Image
-                    src="https://placehold.co/400x400.png"
-                    alt="Headphones"
-                    fill
-                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 40vw, 33vw"
-                    className="object-contain"
-                    data-ai-hint="blue headphones"
-                  />
-              </div>
-            </div>
+            <Carousel 
+                plugins={[plugin.current]}
+                className="w-full"
+                onMouseEnter={plugin.current.stop}
+                onMouseLeave={plugin.current.reset}
+                opts={{ loop: true }}
+            >
+              <CarouselContent>
+                {carouselSlides.map((slide, index) => (
+                  <CarouselItem key={index}>
+                    <div className="relative rounded-lg overflow-hidden h-[400px] bg-primary/10 flex items-center">
+                      <div className="p-8 md:p-12 z-10">
+                        <h3 className="text-primary font-bold">
+                          {slide.supertitle}
+                        </h3>
+                        <h2 className="text-3xl md:text-5xl font-bold text-foreground my-4 max-w-sm leading-tight">
+                          {slide.title}
+                        </h2>
+                        <Button asChild size="lg">
+                          <Link href={slide.href}>Shop Now</Link>
+                        </Button>
+                      </div>
+                      <div className="absolute right-0 bottom-0 w-3/5 h-full">
+                        <Image
+                          src={slide.image}
+                          alt={slide.title}
+                          fill
+                          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 40vw, 33vw"
+                          className="object-contain"
+                          data-ai-hint={slide.imageHint}
+                        />
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 transform bg-white/80 hover:bg-white shadow-md" />
+              <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 transform bg-white/80 hover:bg-white shadow-md" />
+            </Carousel>
           </div>
           {/* Side Banners */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
             <div className="relative rounded-lg overflow-hidden h-[188px] bg-white flex items-center justify-between p-6">
-                <div>
-                    <h3 className="font-bold text-lg text-foreground">iPhone 14 Pro Max</h3>
-                    <div className="my-2">
-                        <span className="font-bold text-primary text-xl">$999</span>
-                        <span className="text-muted-foreground line-through ml-2">$1200</span>
-                    </div>
-                    <Button asChild variant="link" className="p-0">
-                        <Link href="/shop">Shop Now</Link>
-                    </Button>
+              <div>
+                <h3 className="font-bold text-lg text-foreground">
+                  iPhone 14 Pro Max
+                </h3>
+                <div className="my-2">
+                  <span className="font-bold text-primary text-xl">$999</span>
+                  <span className="text-muted-foreground line-through ml-2">
+                    $1200
+                  </span>
                 </div>
-                <div className="relative w-24 h-full">
-                    <Image
-                        src="https://placehold.co/150x150.png"
-                        alt="iPhone 14 Pro Max"
-                        fill
-                        sizes="150px"
-                        className="object-contain"
-                        data-ai-hint="purple iphone"
-                    />
-                </div>
+                <Button asChild variant="link" className="p-0">
+                  <Link href="/shop">Shop Now</Link>
+                </Button>
+              </div>
+              <div className="relative w-24 h-full">
+                <Image
+                  src="https://placehold.co/150x150.png"
+                  alt="iPhone 14 Pro Max"
+                  fill
+                  sizes="150px"
+                  className="object-contain"
+                  data-ai-hint="purple iphone"
+                />
+              </div>
             </div>
-             <div className="relative rounded-lg overflow-hidden h-[188px] bg-white flex items-center justify-between p-6">
-                <div>
-                    <h3 className="font-bold text-lg text-foreground">Wireless Headphone</h3>
-                     <div className="my-2">
-                        <span className="font-bold text-primary text-xl">$599</span>
-                        <span className="text-muted-foreground line-through ml-2">$799</span>
-                    </div>
-                    <Button asChild variant="link" className="p-0">
-                        <Link href="/shop">Shop Now</Link>
-                    </Button>
+            <div className="relative rounded-lg overflow-hidden h-[188px] bg-white flex items-center justify-between p-6">
+              <div>
+                <h3 className="font-bold text-lg text-foreground">
+                  Wireless Headphone
+                </h3>
+                <div className="my-2">
+                  <span className="font-bold text-primary text-xl">$599</span>
+                  <span className="text-muted-foreground line-through ml-2">
+                    $799
+                  </span>
                 </div>
-                 <div className="relative w-24 h-full">
-                    <Image
-                        src="https://placehold.co/150x150.png"
-                        alt="Wireless Headphone"
-                        fill
-                        sizes="150px"
-                        className="object-contain"
-                        data-ai-hint="blue headphones"
-                    />
-                </div>
+                <Button asChild variant="link" className="p-0">
+                  <Link href="/shop">Shop Now</Link>
+                </Button>
+              </div>
+              <div className="relative w-24 h-full">
+                <Image
+                  src="https://placehold.co/150x150.png"
+                  alt="Wireless Headphone"
+                  fill
+                  sizes="150px"
+                  className="object-contain"
+                  data-ai-hint="blue headphones"
+                />
+              </div>
             </div>
           </div>
         </div>
