@@ -87,7 +87,7 @@ export default function ProductForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="name"
@@ -138,6 +138,7 @@ export default function ProductForm() {
                   <Textarea
                     placeholder="Describe the product..."
                     className="pr-10"
+                    rows={4}
                     {...field}
                   />
                 </FormControl>
