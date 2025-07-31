@@ -7,13 +7,16 @@ import { initialProducts } from '@/lib/data';
 interface AppContextType {
   products: Product[];
   cart: CartItem[];
+  wishlist: Product[];
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
   addProduct: (product: Omit<Product, 'id'>) => void;
+  addToWishlist: (product: Product) => void;
   cartTotal: number;
   cartCount: number;
+  wishlistCount: number;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -21,6 +24,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [wishlist, setWishlist] = useState<Product[]>([]);
 
   const addProduct = (productData: Omit<Product, 'id'>) => {
     const newProduct: Product = {
@@ -64,21 +68,35 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setCart([]);
   };
 
+  const addToWishlist = (product: Product) => {
+    setWishlist(prevWishlist => {
+      const existingItem = prevWishlist.find(item => item.id === product.id);
+      if (existingItem) {
+        return prevWishlist;
+      }
+      return [...prevWishlist, product];
+    });
+  };
+
   const cartTotal = cart.reduce((total, item) => total + item.product.price * item.quantity, 0);
   const cartCount = cart.reduce((count, item) => count + item.quantity, 0);
+  const wishlistCount = wishlist.length;
 
   return (
     <AppContext.Provider
       value={{
         products,
         cart,
+        wishlist,
         addToCart,
         removeFromCart,
         updateQuantity,
         clearCart,
         addProduct,
+        addToWishlist,
         cartTotal,
         cartCount,
+        wishlistCount,
       }}
     >
       {children}

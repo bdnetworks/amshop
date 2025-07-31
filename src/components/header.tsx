@@ -11,7 +11,7 @@ import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 export function Header() {
-  const { cartCount, cartTotal } = useAppContext();
+  const { cartCount, cartTotal, wishlistCount } = useAppContext();
   const pathname = usePathname();
 
   const navLinks = [
@@ -133,8 +133,13 @@ export function Header() {
               <Link href="#" className="flex items-center gap-2 text-sm font-semibold hover:text-primary">
                 <Search size={16} /> Recently Viewed
               </Link>
-              <Link href="#" className="flex items-center gap-2 text-sm font-semibold hover:text-primary">
+              <Link href="#" className="flex items-center gap-2 text-sm font-semibold hover:text-primary relative">
                 <Heart size={16} /> Wishlist
+                {wishlistCount > 0 && (
+                    <span className="absolute -top-2 -right-3 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+                    {wishlistCount}
+                    </span>
+                )}
               </Link>
             </div>
         </div>
