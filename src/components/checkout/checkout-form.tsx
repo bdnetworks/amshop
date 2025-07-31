@@ -1,0 +1,108 @@
+'use client';
+
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useAppContext } from '@/providers/app-provider';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
+import { submitOrderAction } from '@/app/actions';
+import { Loader2 } from 'lucide-react';
+
+const checkoutSchema = z.object({
+  name: z.string().min(2, 'Name is required'),
+  email: z.string().email('Invalid email address'),
+});
+
+type CheckoutFormValues = z.infer<typeof checkoutSchema>;
+
+export default function CheckoutForm() {
+  const { cart, cartTotal, clearCart } = useAppContext();
+  const { toast } = useToast();
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const form = useForm<CheckoutFormValues>({
+    resolver: zodResolver(checkoutSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+    },
+  });
+
+  const onSubmit = async (data: CheckoutFormValues) => {
+    setIsSubmitting(true);
+    const orderData = {
+      cart,
+      total: cartTotal,
+      customer: data,
+    };
+    
+    const result = await submitOrderAction(orderData);
+    
+    if (result.success) {
+      toast({
+        title: 'Order Placed!',
+        description: 'Thank you for your purchase. A confirmation has been logged.',
+      });
+      clearCart();
+      router.push('/');
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Order Failed',
+        description: result.error || 'There was a problem placing your order.',
+      });
+    }
+    
+    setIsSubmitting(false);
+  };
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Full Name</FormLabel>
+              <FormControl>
+                <Input placeholder="John Doe" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email Address</FormLabel>
+              <FormControl>
+                <Input type="email" placeholder="you@example.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isSubmitting ? 'Placing Order...' : 'Place Order'}
+        </Button>
+      </form>
+    </Form>
+  );
+}
