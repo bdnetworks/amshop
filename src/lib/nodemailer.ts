@@ -26,7 +26,7 @@ interface OrderData {
 
 export async function sendOrderConfirmationEmail(orderData: OrderData) {
   const { cart, total, customer } = orderData;
-  const adminEmail = "saakib.com@gmail.com";
+  const adminEmail = process.env.ADMIN_EMAIL;
 
   if (!adminEmail) {
     console.error('ADMIN_EMAIL environment variable is not set.');
