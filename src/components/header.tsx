@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Package, Home, ShoppingCart, UserCog, Info, Phone, Search, Heart, User, ChevronDown } from 'lucide-react';
+import { Package, ShoppingCart, User, Search, Heart, Phone, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Cart } from '@/components/cart';
 import { useAppContext } from '@/providers/app-provider';
@@ -27,13 +27,17 @@ export function Header() {
       {/* Top Bar */}
       <div className="bg-secondary text-secondary-foreground">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-10 text-xs">
-          <div className="flex items-center gap-4">
-            <p>24/7 SUPPORT: (+965) 7492-3477</p>
-          </div>
-          <div className="flex items-center gap-6">
-            <Link href="#" className="hover:text-primary">Recently Viewed</Link>
-            <Link href="#" className="hover:text-primary">Wishlist</Link>
-          </div>
+           <div /> 
+           <div className="flex items-center gap-6">
+              <p className="flex items-center gap-2"><Phone size={14} /> 24/7 SUPPORT: (+965) 7492-3477</p>
+              <div className="flex items-center gap-2">
+                  <User className="h-5 w-5 text-muted-foreground"/>
+                  <div>
+                      <span className="text-xs text-muted-foreground">Sign In</span>
+                      <p className="text-sm font-semibold">Account</p>
+                  </div>
+              </div>
+           </div>
         </div>
       </div>
 
@@ -70,14 +74,7 @@ export function Header() {
                         </Button>
                     </div>
                 </div>
-                <div className="col-span-3 flex items-center justify-end gap-4">
-                    <div className="flex items-center gap-2">
-                        <User className="h-7 w-7 text-muted-foreground"/>
-                        <div>
-                            <span className="text-xs text-muted-foreground">Sign In</span>
-                            <p className="text-sm font-semibold">Account</p>
-                        </div>
-                    </div>
+                <div className="col-span-3 flex items-center justify-end">
                      <Cart>
                         <div className="flex items-center gap-2 cursor-pointer">
                             <div className="relative">
@@ -101,33 +98,41 @@ export function Header() {
       
       {/* Bottom Navigation */}
        <div className="sticky top-0 z-50 w-full border-t border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <nav className="flex items-center gap-6">
-            {navLinks.map((link) => (
-                <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                    "text-sm font-semibold transition-colors hover:text-primary py-4",
-                    pathname === link.href ? "text-primary" : "text-foreground"
-                )}
-                >
-                {link.label}
-                </Link>
-            ))}
-             <Link
-                href="#"
-                className="flex items-center gap-1 text-sm font-semibold transition-colors hover:text-primary py-4"
-                >
-                Pages <ChevronDown size={16} />
-            </Link>
-             <Link
-                href="#"
-                className="flex items-center gap-1 text-sm font-semibold transition-colors hover:text-primary py-4"
-                >
-                Blogs <ChevronDown size={16} />
-            </Link>
+              {navLinks.map((link) => (
+                  <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                      "text-sm font-semibold transition-colors hover:text-primary py-4",
+                      pathname === link.href ? "text-primary" : "text-foreground"
+                  )}
+                  >
+                  {link.label}
+                  </Link>
+              ))}
+              <Link
+                  href="#"
+                  className="flex items-center gap-1 text-sm font-semibold transition-colors hover:text-primary py-4"
+                  >
+                  Pages <ChevronDown size={16} />
+              </Link>
+              <Link
+                  href="#"
+                  className="flex items-center gap-1 text-sm font-semibold transition-colors hover:text-primary py-4"
+                  >
+                  Blogs <ChevronDown size={16} />
+              </Link>
             </nav>
+            <div className="flex items-center gap-6">
+              <Link href="#" className="flex items-center gap-2 text-sm font-semibold hover:text-primary">
+                <Search size={16} /> Recently Viewed
+              </Link>
+              <Link href="#" className="flex items-center gap-2 text-sm font-semibold hover:text-primary">
+                <Heart size={16} /> Wishlist
+              </Link>
+            </div>
         </div>
        </div>
     </header>
