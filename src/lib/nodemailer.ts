@@ -1,3 +1,4 @@
+
 import nodemailer from 'nodemailer';
 import type { CartItem } from './types';
 
@@ -25,7 +26,7 @@ interface OrderData {
 
 export async function sendOrderConfirmationEmail(orderData: OrderData) {
   const { cart, total, customer } = orderData;
-  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminEmail = "saakib.com@gmail.com";
 
   if (!adminEmail) {
     console.error('ADMIN_EMAIL environment variable is not set.');
