@@ -43,7 +43,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             alt={product.name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+            className="object-contain transition-transform duration-300 group-hover:scale-105"
             data-ai-hint={productHints[product.id] || 'product image'}
           />
            <div className="absolute top-3 right-3 flex flex-col space-y-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
