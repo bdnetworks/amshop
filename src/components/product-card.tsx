@@ -7,8 +7,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { useAppContext } from '@/providers/app-provider';
 import { useToast } from '@/hooks/use-toast';
-import { ShoppingCart, Heart, Eye, Star } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ShoppingCart, Heart, Eye } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -36,8 +35,6 @@ export default function ProductCard({ product }: ProductCardProps) {
     });
   };
   
-  const rating = 5;
-
   return (
     <Card className="group relative overflow-hidden rounded-lg border shadow-sm transition-all duration-300 hover:shadow-lg">
         <div className="relative aspect-square bg-muted/30">
@@ -57,14 +54,17 @@ export default function ProductCard({ product }: ProductCardProps) {
                 <Eye className="h-5 w-5" />
              </Button>
            </div>
+           <Button 
+            onClick={handleAddToCart} 
+            className="absolute bottom-0 w-full rounded-t-none opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            >
+            <ShoppingCart className="mr-2 h-4 w-4" />
+            Add to Cart
+          </Button>
         </div>
       <CardContent className="p-4 text-left">
         <h3 className="text-sm font-semibold text-foreground truncate h-5">{product.name}</h3>
         <p className="mt-1 text-lg font-bold text-primary">${product.price.toFixed(2)}</p>
-         <Button onClick={handleAddToCart} className="mt-2 w-full opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          <ShoppingCart className="mr-2 h-4 w-4" />
-          Add to Cart
-        </Button>
       </CardContent>
     </Card>
   );
