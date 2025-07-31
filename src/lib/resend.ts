@@ -2,15 +2,15 @@
 'use server';
 
 import type { CartItem } from './types';
-import sgMail from '@sendgrid/mail';
+import { Resend } from 'resend';
 
-const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
-if (SENDGRID_API_KEY) {
-  sgMail.setApiKey(SENDGRID_API_KEY);
-} else {
-  console.warn('SENDGRID_API_KEY is not set. Emails will not be sent.');
+const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
+
+if (!resend) {
+  console.warn('RESEND_API_KEY is not set. Emails will not be sent.');
 }
 
 interface OrderData {
@@ -85,30 +85,22 @@ function generateOrderEmailHtml(data: OrderData): string {
 }
 
 export async function sendOrderConfirmationEmail(data: OrderData) {
-  if (!SENDGRID_API_KEY || !ADMIN_EMAIL) {
-    const errorMessage = 'SendGrid API Key or Admin Email is not configured in .env file.';
+  if (!resend || !ADMIN_EMAIL) {
+    const errorMessage = 'Resend API Key or Admin Email is not configured in .env file.';
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
 
-  const msg = {
-    to: ADMIN_EMAIL, // The email address that receives the order notification
-    from: ADMIN_EMAIL, // This MUST be a verified sender in your SendGrid account
-    subject: `New Order from ${data.customer.name} - ShopSwift`,
-    html: generateOrderEmailHtml(data),
-  };
-
   try {
-    await sgMail.send(msg);
+    await resend.emails.send({
+      from: `ShopSwift <no-reply@yourverifieddomain.com>`, // This needs to be a verified domain in Resend
+      to: ADMIN_EMAIL,
+      subject: `New Order from ${data.customer.name} - ShopSwift`,
+      html: generateOrderEmailHtml(data),
+    });
     console.log('Order confirmation email sent successfully to:', ADMIN_EMAIL);
   } catch (error) {
-    console.error('Error sending email with SendGrid:', error);
-
-    // More detailed error logging for SendGrid
-    if ((error as any).response) {
-      console.error((error as any).response.body)
-    }
-    
+    console.error('Error sending email with Resend:', error);
     throw new Error('Failed to send order confirmation email.');
   }
 }

@@ -3,7 +3,7 @@
 
 import { generateProductDescription } from '@/ai/flows/generate-product-description';
 import type { CartItem } from '@/lib/types';
-import { sendOrderConfirmationEmail } from '@/lib/nodemailer';
+import { sendOrderConfirmationEmail } from '@/lib/resend';
 
 export async function enhanceDescriptionAction(basicDescription: string) {
   try {
