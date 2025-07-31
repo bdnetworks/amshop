@@ -16,6 +16,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'nextjs-two-navy-66.vercel.app',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };
