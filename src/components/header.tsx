@@ -29,14 +29,6 @@ export function Header() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-10 text-xs">
            <div /> 
            <div className="flex items-center gap-6">
-              <p className="flex items-center gap-2"><Phone size={14} /> 24/7 SUPPORT: (+965) 7492-3477</p>
-              <div className="flex items-center gap-2">
-                  <User className="h-5 w-5 text-muted-foreground"/>
-                  <div>
-                      <span className="text-xs text-muted-foreground">Sign In</span>
-                      <p className="text-sm font-semibold">Account</p>
-                  </div>
-              </div>
            </div>
         </div>
       </div>
@@ -51,7 +43,7 @@ export function Header() {
                         <span className="font-bold text-2xl">ShopSwift</span>
                     </Link>
                 </div>
-                <div className="col-span-6">
+                <div className="col-span-5">
                     <div className="flex w-full items-center rounded-md border border-input">
                         <Select defaultValue='all'>
                             <SelectTrigger className="w-[150px] border-0 rounded-r-none focus:ring-0">
@@ -74,7 +66,21 @@ export function Header() {
                         </Button>
                     </div>
                 </div>
-                <div className="col-span-3 flex items-center justify-end">
+                <div className="col-span-4 flex items-center justify-end gap-4">
+                     <div className="flex items-center gap-2">
+                        <Phone size={16} />
+                        <div>
+                            <p className="text-xs text-muted-foreground">24/7 SUPPORT</p>
+                            <p className="text-sm font-semibold">(+965) 7492-3477</p>
+                        </div>
+                     </div>
+                     <div className="flex items-center gap-2">
+                        <User className="h-7 w-7 text-muted-foreground"/>
+                        <div>
+                            <span className="text-xs text-muted-foreground">Account</span>
+                            <p className="text-sm font-semibold">Sign In</p>
+                        </div>
+                    </div>
                      <Cart>
                         <div className="flex items-center gap-2 cursor-pointer">
                             <div className="relative">

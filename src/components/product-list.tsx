@@ -9,8 +9,8 @@ export default function ProductList() {
 
   if (!products) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {Array.from({ length: 6 }).map((_, i) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+        {Array.from({ length: 10 }).map((_, i) => (
           <div key={i} className="flex flex-col space-y-3">
             <Skeleton className="h-[250px] w-full rounded-xl" />
             <div className="space-y-2">
@@ -24,7 +24,7 @@ export default function ProductList() {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
