@@ -1,3 +1,4 @@
+
 'use server';
 
 import { generateProductDescription } from '@/ai/flows/generate-product-description';
@@ -24,13 +25,49 @@ export async function submitOrderAction(data: {
     district: string;
   };
 }) {
+  const formUrl = process.env.GOOGLE_FORM_ACTION_URL;
+  if (!formUrl) {
+    console.error('Google Form URL is not configured.');
+    return { success: false, error: 'Order submission is not configured.' };
+  }
+
+  const shippingCost = 150.00;
+  const grandTotal = data.total + shippingCost;
+  const cartItemsString = data.cart
+    .map(item => `${item.product.name} (x${item.quantity})`)
+    .join(', ');
+
+  const formData = new URLSearchParams();
+  formData.append(process.env.GOOGLE_FORM_ENTRY_NAME!, data.customer.name);
+  formData.append(process.env.GOOGLE_FORM_ENTRY_EMAIL!, data.customer.email);
+  formData.append(process.env.GOOGLE_FORM_ENTRY_MOBILE!, data.customer.mobile);
+  formData.append(process.env.GOOGLE_FORM_ENTRY_ADDRESS!, data.customer.address);
+  formData.append(process.env.GOOGLE_FORM_ENTRY_DISTRICT!, data.customer.district);
+  formData.append(process.env.GOOGLE_FORM_ENTRY_TOTAL!, grandTotal.toFixed(2));
+  formData.append(process.env.GOOGLE_FORM_ENTRY_CART!, cartItemsString);
+
   try {
-    // For now, we just simulate a successful order submission.
-    console.log('Simulating order submission:', data);
-    return { success: true, message: 'Order placed successfully!' };
+    const response = await fetch(formUrl, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+    
+    // Google Forms doesn't return a useful JSON response, 
+    // it usually redirects. A successful submission status is often 200 OK.
+    if (response.ok) {
+      return { success: true, message: 'Order placed successfully!' };
+    } else {
+      // Log the response status and text for debugging
+      const responseText = await response.text();
+      console.error('Google Form submission failed:', response.status, responseText);
+      return { success: false, error: `Failed to save order. Status: ${response.status}` };
+    }
   } catch (error) {
-    console.error('Error submitting order:', error);
-    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-    return { success: false, error: `Failed to save order. ${errorMessage}` };
+    console.error('Error submitting order to Google Form:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
+    return { success: false, error: errorMessage };
   }
 }
