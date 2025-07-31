@@ -2,6 +2,7 @@
 
 import { generateProductDescription } from '@/ai/flows/generate-product-description';
 import type { CartItem } from '@/lib/types';
+import { sendOrderConfirmationEmail } from '@/lib/nodemailer';
 
 export async function enhanceDescriptionAction(basicDescription: string) {
   try {
@@ -19,8 +20,7 @@ export async function submitOrderAction(data: {
   customer: { name: string; email: string };
 }) {
   try {
-    // In a real application, you would process the payment and send an email notification here.
-    // For this demo, we'll log the order to the console.
+    // Log the order to the console
     console.log('--- NEW ORDER SUBMITTED ---');
     console.log('Timestamp:', new Date().toISOString());
     console.log('Customer:', data.customer);
@@ -33,11 +33,8 @@ export async function submitOrderAction(data: {
     });
     console.log('--- END OF ORDER ---');
 
-    // Simulate network delay for a more realistic feel
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // The order notification to the admin would be sent from here.
-    // e.g., await sendOrderNotificationToAdmin(data);
+    // Send email notification
+    await sendOrderConfirmationEmail(data);
 
     return { success: true, message: 'Order placed successfully!' };
   } catch (error) {

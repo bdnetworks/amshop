@@ -32,13 +32,41 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<Product[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
+    try {
+      const storedCart = localStorage.getItem('shopswift-cart');
+      const storedWishlist = localStorage.getItem('shopswift-wishlist');
+      if (storedCart) {
+        setCart(JSON.parse(storedCart));
+      }
+      if (storedWishlist) {
+        setWishlist(JSON.parse(storedWishlist));
+      }
+    } catch (error) {
+      console.error("Failed to parse from localStorage", error);
+    }
+    
     const authStatus = sessionStorage.getItem('isAuthenticated');
     if (authStatus === 'true') {
       setIsAuthenticated(true);
     }
+    setIsHydrated(true);
   }, []);
+
+  useEffect(() => {
+    if (isHydrated) {
+      localStorage.setItem('shopswift-cart', JSON.stringify(cart));
+    }
+  }, [cart, isHydrated]);
+
+  useEffect(() => {
+    if (isHydrated) {
+      localStorage.setItem('shopswift-wishlist', JSON.stringify(wishlist));
+    }
+  }, [wishlist, isHydrated]);
+
 
   const login = async (password: string): Promise<boolean> => {
     // In a real application, this would be a secure API call.
@@ -119,6 +147,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const cartTotal = cart.reduce((total, item) => total + item.product.price * item.quantity, 0);
   const cartCount = cart.reduce((count, item) => count + item.quantity, 0);
   const wishlistCount = wishlist.length;
+
+  if (!isHydrated) {
+    return null; // or a loading spinner
+  }
 
   return (
     <AppContext.Provider
