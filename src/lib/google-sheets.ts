@@ -80,4 +80,3 @@ export async function appendOrderToSheet(data: OrderData) {
     throw new Error('Failed to save order to Google Sheet.');
   }
 }
-
