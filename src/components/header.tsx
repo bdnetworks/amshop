@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Wishlist } from './wishlist';
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
 import { Separator } from './ui/separator';
 
 export function Header() {
@@ -61,6 +61,9 @@ export function Header() {
                        </Button>
                     </SheetTrigger>
                     <SheetContent side="left" className="w-64">
+                      <SheetHeader>
+                        <SheetTitle>Menu</SheetTitle>
+                      </SheetHeader>
                        <nav className="flex flex-col gap-4 p-4">
                           {['Popular', 'Shop', 'Contact'].map((item) => (
                               <Link
