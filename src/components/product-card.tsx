@@ -8,6 +8,7 @@ import { useAppContext } from '@/providers/app-provider';
 import { useToast } from '@/hooks/use-toast';
 import { ShoppingCart, Heart, Eye } from 'lucide-react';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 interface ProductCardProps {
   product: Product;
@@ -23,8 +24,9 @@ const productHints: { [key: string]: string } = {
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const { addToCart, addToWishlist } = useAppContext();
+  const { addToCart, toggleWishlist, isInWishlist } = useAppContext();
   const { toast } = useToast();
+  const isWishlisted = isInWishlist(product.id);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -36,13 +38,13 @@ export default function ProductCard({ product }: ProductCardProps) {
     });
   };
   
-  const handleAddToWishlist = (e: React.MouseEvent) => {
+  const handleToggleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    addToWishlist(product);
+    toggleWishlist(product);
     toast({
-      title: 'Added to wishlist!',
-      description: `${product.name} has been added to your wishlist.`,
+      title: isWishlisted ? 'Removed from wishlist' : 'Added to wishlist!',
+      description: `${product.name} has been ${isWishlisted ? 'removed from' : 'added to'} your wishlist.`,
     });
   };
 
@@ -59,8 +61,12 @@ export default function ProductCard({ product }: ProductCardProps) {
               data-ai-hint={productHints[product.id] || 'product image'}
             />
             <div className="absolute top-3 right-3 flex flex-col space-y-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              <Button variant="outline" size="icon" className="bg-white hover:bg-primary hover:text-white rounded-full" onClick={handleAddToWishlist}>
-                  <Heart className="h-5 w-5" />
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className={cn("bg-white hover:bg-primary hover:text-white rounded-full", isWishlisted && "bg-primary text-white")}
+                onClick={handleToggleWishlist}>
+                  <Heart className={cn("h-5 w-5", isWishlisted && "fill-current")} />
               </Button>
               <Button variant="outline" size="icon" className="bg-white hover:bg-primary hover:text-white rounded-full">
                   <Eye className="h-5 w-5" />

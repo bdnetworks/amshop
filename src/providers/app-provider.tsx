@@ -13,7 +13,9 @@ interface AppContextType {
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
   addProduct: (product: Omit<Product, 'id'>) => void;
-  addToWishlist: (product: Product) => void;
+  toggleWishlist: (product: Product) => void;
+  removeFromWishlist: (productId: string) => void;
+  isInWishlist: (productId: string) => boolean;
   cartTotal: number;
   cartCount: number;
   wishlistCount: number;
@@ -68,14 +70,22 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setCart([]);
   };
 
-  const addToWishlist = (product: Product) => {
+  const toggleWishlist = (product: Product) => {
     setWishlist(prevWishlist => {
       const existingItem = prevWishlist.find(item => item.id === product.id);
       if (existingItem) {
-        return prevWishlist;
+        return prevWishlist.filter(item => item.id !== product.id);
       }
       return [...prevWishlist, product];
     });
+  };
+
+  const removeFromWishlist = (productId: string) => {
+    setWishlist(prevWishlist => prevWishlist.filter(item => item.id !== productId));
+  };
+
+  const isInWishlist = (productId: string) => {
+    return wishlist.some(item => item.id === productId);
   };
 
   const cartTotal = cart.reduce((total, item) => total + item.product.price * item.quantity, 0);
@@ -93,7 +103,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         updateQuantity,
         clearCart,
         addProduct,
-        addToWishlist,
+        toggleWishlist,
+        removeFromWishlist,
+        isInWishlist,
         cartTotal,
         cartCount,
         wishlistCount,

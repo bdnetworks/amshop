@@ -9,6 +9,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Wishlist } from './wishlist';
 
 export function Header() {
   const { cartCount, cartTotal, wishlistCount } = useAppContext();
@@ -133,14 +134,16 @@ export function Header() {
               <Link href="#" className="flex items-center gap-2 text-sm font-semibold hover:text-primary">
                 <Search size={16} /> Recently Viewed
               </Link>
-              <Link href="#" className="flex items-center gap-2 text-sm font-semibold hover:text-primary relative">
-                <Heart size={16} /> Wishlist
-                {wishlistCount > 0 && (
-                    <span className="absolute -top-2 -right-3 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-                    {wishlistCount}
-                    </span>
-                )}
-              </Link>
+              <Wishlist>
+                <div className="flex items-center gap-2 text-sm font-semibold hover:text-primary relative cursor-pointer">
+                  <Heart size={16} /> Wishlist
+                  {wishlistCount > 0 && (
+                      <span className="absolute -top-2 -right-3 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+                      {wishlistCount}
+                      </span>
+                  )}
+                </div>
+              </Wishlist>
             </div>
         </div>
        </div>
