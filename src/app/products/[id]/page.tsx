@@ -90,7 +90,7 @@ export default function ProductDetailPage() {
                      <Star key={`empty-${i}`} className="w-5 h-5 text-gray-300 fill-current" />
                   ))}
                 </div>
-                <span className="text-sm text-muted-foreground">({product.rating.toFixed(1)})</span>
+                <span className="text-sm text-muted-foreground">({ratingValue.toFixed(1)})</span>
               </div>
               <p className="text-3xl font-bold text-primary my-4">${product.price.toFixed(2)}</p>
               <p className="text-muted-foreground leading-relaxed">{product.description}</p>
