@@ -11,7 +11,7 @@ import HeroSlideList from '@/components/admin/hero-slide-list';
 import SideBannerForm from '@/components/admin/side-banner-form';
 import GoogleFormSettingsForm from '@/components/admin/google-form-settings-form';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { type Product, type HeroSlide } from '@/lib/types';
+import type { Product, type HeroSlide } from '@/lib/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import GoogleFormInstructions from '@/components/admin/google-form-instructions';
 import HomepageSectionsForm from '@/components/admin/homepage-sections-form';
@@ -33,7 +33,7 @@ export default function AdminPage() {
         <div className="container mx-auto max-w-5xl px-4 py-8 text-center">
             <p>Redirecting to login...</p>
         </div>
-    )
+    );
   }
 
   const handleEditProduct = (product: Product) => {
@@ -88,7 +88,7 @@ export default function AdminPage() {
                         <CardTitle>Product List</CardTitle>
                         <CardDescription>
                             Edit or delete existing products from your store.
-                        </Description>
+                        </CardDescription>
                     </CardHeader>
                     <CardContent>
                         <ProductListAdmin onEditProduct={handleEditProduct} />
@@ -121,7 +121,7 @@ export default function AdminPage() {
                         <CardTitle>Hero Slide List</CardTitle>
                         <CardDescription>
                             Edit or delete existing hero slides from your homepage.
-                        </Description>
+                        </CardDescription>
                     </CardHeader>
                     <CardContent>
                         <HeroSlideList onEditSlide={handleEditSlide} />
