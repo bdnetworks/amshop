@@ -19,6 +19,7 @@ import AdBannerForm from '@/components/admin/ad-banner-form';
 import AboutPageForm from '@/components/admin/about-page-form';
 import BlogPostsForm from '@/components/admin/blog-posts-form';
 import { Button } from '@/components/ui/button';
+import BlogPostList from '@/components/admin/blog-post-list';
 
 const adminViews = [
   { id: 'products', label: 'Manage Products' },
@@ -281,7 +282,7 @@ export default function AdminPage() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                       {/* Blog Post List Component will go here */}
+                       <BlogPostList onEditPost={handleEditPost} />
                     </CardContent>
                 </Card>
                 </div>
