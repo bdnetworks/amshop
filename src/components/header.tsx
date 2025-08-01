@@ -29,10 +29,6 @@ export function Header() {
               <p>The most powerful and creative eCommerce HTML template.</p>
             </div>
             <div className="flex items-center gap-6">
-               <div className="flex items-center gap-2">
-                  <Mail size={14} />
-                  <span>support@shopswift.com</span>
-               </div>
                <div className="hidden md:flex items-center gap-2">
                   <Phone size={14} />
                   <span>(+965) 7492-3477</span>
