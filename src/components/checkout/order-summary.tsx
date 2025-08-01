@@ -13,26 +13,32 @@ export default function OrderSummary() {
   return (
     <div className="space-y-4">
       <div className="space-y-2 max-h-64 overflow-y-auto pr-2">
-        {cart.map(item => (
-          <div key={item.product.id} className="flex items-center gap-4">
-            <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border">
-              <Image
-                src={item.product.images[0]}
-                alt={item.product.name}
-                fill
-                sizes="64px"
-                className="object-cover"
-              />
-              <span className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-                {item.quantity}
-              </span>
+        {cart.map(item => {
+          const imageUrl = item.product.images && item.product.images.length > 0
+            ? item.product.images[0]
+            : 'https://placehold.co/600x400.png';
+
+          return (
+            <div key={item.product.id} className="flex items-center gap-4">
+              <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border">
+                <Image
+                  src={imageUrl}
+                  alt={item.product.name}
+                  fill
+                  sizes="64px"
+                  className="object-cover"
+                />
+                <span className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+                  {item.quantity}
+                </span>
+              </div>
+              <div className="flex-1">
+                <p className="font-medium text-sm">{item.product.name}</p>
+              </div>
+              <p className="font-medium text-sm">${(item.product.price * item.quantity).toFixed(2)}</p>
             </div>
-            <div className="flex-1">
-              <p className="font-medium text-sm">{item.product.name}</p>
-            </div>
-            <p className="font-medium text-sm">${(item.product.price * item.quantity).toFixed(2)}</p>
-          </div>
-        ))}
+          )
+        })}
       </div>
       <Separator />
       <div className="space-y-2 text-sm">
