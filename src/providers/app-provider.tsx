@@ -149,7 +149,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const wishlistCount = wishlist.length;
 
   if (!isHydrated) {
-    return null; // or a loading spinner
+    // Render a skeleton or loading state on the server
+    return null;
   }
 
   return (
