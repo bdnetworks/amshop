@@ -11,7 +11,7 @@ import HeroSlideList from '@/components/admin/hero-slide-list';
 import SideBannerForm from '@/components/admin/side-banner-form';
 import GoogleFormSettingsForm from '@/components/admin/google-form-settings-form';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import type { Product, type HeroSlide, BlogPost } from '@/lib/types';
+import type { Product, HeroSlide, BlogPost } from '@/lib/types';
 import GoogleFormInstructions from '@/components/admin/google-form-instructions';
 import HomepageSectionsForm from '@/components/admin/homepage-sections-form';
 import CategoryForm from '@/components/admin/category-form';
