@@ -44,6 +44,8 @@ export default function ProductDetailPage() {
     });
   };
 
+  const images = product.images && product.images.length > 0 ? product.images : ['https://placehold.co/600x400.png'];
+
   return (
     <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
       <Card>
@@ -52,7 +54,7 @@ export default function ProductDetailPage() {
             <div>
               <Carousel className="w-full">
                 <CarouselContent>
-                  {product.images.map((image, index) => (
+                  {images.map((image, index) => (
                     <CarouselItem key={index}>
                       <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
                         <Image
