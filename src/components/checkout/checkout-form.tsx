@@ -163,4 +163,6 @@ export default function CheckoutForm() {
           {isSubmitting ? 'Placing Order...' : 'Place Order'}
         </Button>
       </form>
-    
+    </Form>
+  );
+}
