@@ -3,17 +3,24 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Package, ShoppingCart, Search, Heart, Phone, ChevronDown, LogIn, LogOut, Menu, User } from 'lucide-react';
+import { Package, ShoppingCart, Search, Heart, Phone, LogIn, LogOut, Menu, User, LayoutGrid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Cart } from '@/components/cart';
 import { useAppContext } from '@/providers/app-provider';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Input } from './ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Wishlist } from './wishlist';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTrigger } from './ui/sheet';
 import { Separator } from './ui/separator';
+
+const categories = ['Clothes', 'Watches', 'Toys', 'Kitchen', 'Headsets', 'Gadgets', 'Gaming', 'Computer', 'Furniture', 'Baby'];
 
 export function Header() {
   const { cartCount, cartTotal, wishlistCount, isAuthenticated, logout } = useAppContext();
@@ -133,6 +140,22 @@ export function Header() {
          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-14">
                 <nav className="flex items-center gap-6 text-sm font-medium">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost">
+                           <LayoutGrid className="mr-2 h-5 w-5" />
+                           All Categories
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        {categories.map(category => (
+                             <DropdownMenuItem key={category} asChild>
+                                <Link href="/shop">{category}</Link>
+                             </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+
                     <Link href="/" className={cn("hover:text-primary", pathname === '/' && 'text-primary')}>Home</Link>
                     <Link href="/shop" className={cn("hover:text-primary", pathname === '/shop' && 'text-primary')}>Shop</Link>
                     <Link href="/contact" className={cn("hover:text-primary", pathname === '/contact' && 'text-primary')}>Contact</Link>
