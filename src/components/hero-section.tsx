@@ -81,8 +81,8 @@ const HeroSection = () => {
           {/* Side Banners */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
             {sideBanners.map((banner) => (
-              <div key={banner.id} className="relative rounded-lg overflow-hidden h-[188px] bg-primary/5 border flex items-center justify-between p-6">
-                <div>
+              <div key={banner.id} className="relative rounded-lg overflow-hidden h-[188px] bg-white border flex items-center justify-between p-6">
+                <div className="z-10">
                   <h3 className="font-bold text-lg text-foreground">
                     {banner.title}
                   </h3>
@@ -96,7 +96,7 @@ const HeroSection = () => {
                     <Link href={banner.href}>Shop Now</Link>
                   </Button>
                 </div>
-                <div className="relative w-24 h-full">
+                <div className="relative w-28 h-28">
                   <Image
                     src={banner.image}
                     alt={banner.title}
