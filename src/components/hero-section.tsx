@@ -92,7 +92,7 @@ const HeroSection = () => {
                       ${banner.originalPrice}
                     </span>
                   </div>
-                  <Button asChild variant="link" className="p-0">
+                  <Button asChild size="sm">
                     <Link href={banner.href}>Shop Now</Link>
                   </Button>
                 </div>
@@ -116,3 +116,4 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
