@@ -29,19 +29,20 @@ export function Header() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  useEffect(() => {
+   useEffect(() => {
     const controlNavbar = () => {
       if (typeof window !== 'undefined') {
         const currentScrollY = window.scrollY;
-        const atBottom = window.innerHeight + currentScrollY >= document.body.offsetHeight - 10; // Check if near bottom
+        const atBottom = window.innerHeight + currentScrollY >= document.body.offsetHeight - 5; // 5px buffer
 
         if (atBottom) {
           setIsVisible(true);
-        } else if (currentScrollY > lastScrollY && currentScrollY > 200) { // Scrolling down
+        } else if (currentScrollY > lastScrollY && currentScrollY > 150) { // Scrolling down past 150px
           setIsVisible(false);
-        } else { // Scrolling up
+        } else if (currentScrollY < lastScrollY) { // Scrolling up
           setIsVisible(true);
         }
+        
         setLastScrollY(currentScrollY);
       }
     };
@@ -56,13 +57,13 @@ export function Header() {
 
 
   return (
-    <header>
+    <>
       {/* Top Bar - This will be sticky */}
       <div className={cn(
-        "sticky top-0 z-50 transition-transform duration-300 bg-background shadow-sm",
+        "sticky top-0 z-50 transition-transform duration-300 bg-background",
         !isVisible && "-translate-y-full"
       )}>
-        <div className="border-b">
+        <div className="border-b shadow-sm">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="relative flex items-center justify-between h-24">
                     {/* Mobile Menu Trigger */}
@@ -219,6 +220,6 @@ export function Header() {
             </div>
          </div>
       </div>
-    </header>
+    </>
   );
 }
