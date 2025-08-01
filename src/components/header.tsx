@@ -29,26 +29,31 @@ export function Header() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY && currentScrollY > 200) {
-        setIsVisible(false); // Scrolling down
-      } else {
-        setIsVisible(true); // Scrolling up
+  const controlNavbar = () => {
+    if (typeof window !== 'undefined') {
+      if (window.scrollY > lastScrollY && window.scrollY > 200) { // if scroll down hide the navbar
+        setIsVisible(false);
+      } else { // if scroll up show the navbar
+        setIsVisible(true);
       }
-      setLastScrollY(currentScrollY);
-    };
+      // remember current page location to use in the next move
+      setLastScrollY(window.scrollY);
+    }
+  };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', controlNavbar);
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+      // cleanup function
+      return () => {
+        window.removeEventListener('scroll', controlNavbar);
+      };
+    }
   }, [lastScrollY]);
 
   return (
-    <header className="bg-background">
+    <header>
       {/* Top Bar - This will be sticky */}
       <div className={cn(
         "sticky top-0 z-50 transition-transform duration-300 bg-background shadow-sm",
