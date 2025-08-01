@@ -1,6 +1,6 @@
-# ShopSwift
+# Auto Management Shop
 
-This is a Next.js e-commerce application called ShopSwift, built with Firebase Studio.
+This is a Next.js e-commerce application called Auto Management Shop, built with Firebase Studio.
 
 ## Core Features
 
@@ -98,7 +98,7 @@ You can set up an Apps Script to automatically send an email to you whenever a n
         <html>
           <body style="font-family: Arial, sans-serif; line-height: 1.6;">
             <h2 style="color: #4A90E2;">New Order Details</h2>
-            <p>You have received a new order from your ShopSwift store.</p>
+            <p>You have received a new order from your Auto Management Shop store.</p>
             <hr>
             <h3>Customer Information:</h3>
             <ul>
@@ -122,7 +122,7 @@ You can set up an Apps Script to automatically send an email to you whenever a n
         to: adminEmail,
         subject: subject,
         htmlBody: body,
-        name: 'ShopSwift Store' // This will be the sender's name
+        name: 'Auto Management Shop Store' // This will be the sender's name
       });
     }
     ```

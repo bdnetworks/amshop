@@ -7,7 +7,7 @@ import { Footer } from '@/components/footer';
 import Script from 'next/script';
 
 export const metadata: Metadata = {
-  title: 'ShopSwift',
+  title: 'Auto Management Shop',
   description: 'An elegant e-commerce experience.',
 };
 

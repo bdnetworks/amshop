@@ -79,7 +79,7 @@ export function Header() {
                         <SheetHeader>
                             <Link href="/" className="flex items-center space-x-2" onClick={() => setIsMobileMenuOpen(false)}>
                                 <Package className="h-8 w-8 text-primary" />
-                                <span className="font-bold text-2xl">ShopSwift</span>
+                                <span className="font-bold text-xl">Auto Management Shop</span>
                             </Link>
                         </SheetHeader>
                         <nav className="flex flex-col gap-4 p-4">
@@ -123,7 +123,7 @@ export function Header() {
                     <div className="absolute left-1/2 -translate-x-1/2 lg:static lg:left-0 lg:translate-x-0">
                         <Link href="/" className="flex items-center space-x-2">
                             <Package className="h-8 w-8 text-primary" />
-                            <span className="font-bold text-2xl">ShopSwift</span>
+                            <span className="font-bold text-xl">Auto Management Shop</span>
                         </Link>
                     </div>
                     

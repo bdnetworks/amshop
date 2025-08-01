@@ -66,7 +66,7 @@ export function Footer() {
           <div className="space-y-4">
             <Link href="/" className="flex items-center space-x-2">
                 <Package className="h-8 w-8 text-primary" />
-                <span className="font-bold text-2xl">ShopSwift</span>
+                <span className="font-bold text-xl">Auto Management Shop</span>
             </Link>
             <p className="text-sm">
                 {about.description}
@@ -120,7 +120,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center text-sm">
-            <p>{copyright}</p>
+            <p>{copyright.replace('ShopSwift', 'Auto Management Shop')}</p>
             <div className="mt-4 md:mt-0">
                 <Image 
                     src={paymentImageUrl}
