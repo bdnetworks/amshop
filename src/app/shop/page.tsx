@@ -21,7 +21,7 @@ const categories = ['Clothes', 'Watches', 'Toys', 'Kitchen', 'Headsets', 'Gadget
 export default function ShopPage() {
   const { products } = useAppContext();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 200]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
   const [selectedRating, setSelectedRating] = useState<number>(0);
 
   const handleCategoryChange = (category: string) => {
@@ -34,7 +34,7 @@ export default function ShopPage() {
 
   const filteredProducts = useMemo(() => {
     return products.filter(product => {
-      const categoryMatch = selectedCategories.length === 0 || selectedCategories.some(cat => product.name.toLowerCase().includes(cat.toLowerCase().slice(0, -1)));
+      const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
       const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
       // Note: Rating is hardcoded on product card, so this filter is for demonstration.
       // A real implementation would have rating data on the product object.
@@ -93,8 +93,8 @@ export default function ShopPage() {
                   <AccordionContent>
                       <div className="p-2">
                           <Slider
-                              defaultValue={[0, 200]}
-                              max={500}
+                              defaultValue={[0, 500]}
+                              max={1000}
                               step={10}
                               onValueChange={(value) => setPriceRange(value as [number, number])}
                           />

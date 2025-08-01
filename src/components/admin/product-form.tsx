@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -15,22 +15,38 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useAppContext } from '@/providers/app-provider';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Sparkles } from 'lucide-react';
 import { enhanceDescriptionAction } from '@/app/actions';
+import type { Product } from '@/lib/types';
+
+const categories = ['Clothes', 'Watches', 'Toys', 'Kitchen', 'Headsets', 'Gadgets', 'Gaming', 'Computer', 'Furniture', 'Baby'];
 
 const productSchema = z.object({
   name: z.string().min(3, 'Product name must be at least 3 characters'),
   price: z.coerce.number().positive('Price must be a positive number'),
   image: z.string().url('Must be a valid URL'),
   description: z.string().min(10, 'Description must be at least 10 characters'),
+  category: z.string().min(1, 'Category is required'),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
 
-export default function ProductForm() {
-  const { addProduct } = useAppContext();
+interface ProductFormProps {
+    editingProduct: Product | null;
+    onFinishEditing: () => void;
+}
+
+export default function ProductForm({ editingProduct, onFinishEditing }: ProductFormProps) {
+  const { addProduct, updateProduct } = useAppContext();
   const { toast } = useToast();
   const [isEnhancing, setIsEnhancing] = useState(false);
 
@@ -41,16 +57,40 @@ export default function ProductForm() {
       price: 0,
       image: 'https://placehold.co/600x400.png',
       description: '',
+      category: '',
     },
   });
 
+  useEffect(() => {
+    if (editingProduct) {
+      form.reset(editingProduct);
+    } else {
+      form.reset({
+        name: '',
+        price: 0,
+        image: 'https://placehold.co/600x400.png',
+        description: '',
+        category: '',
+      });
+    }
+  }, [editingProduct, form]);
+
   const onSubmit = (data: ProductFormValues) => {
-    addProduct(data);
-    toast({
-      title: 'Product Added!',
-      description: `${data.name} has been successfully added to the store.`,
-    });
+    if (editingProduct) {
+      updateProduct({ ...editingProduct, ...data });
+       toast({
+        title: 'Product Updated!',
+        description: `${data.name} has been successfully updated.`,
+      });
+    } else {
+        addProduct(data);
+        toast({
+        title: 'Product Added!',
+        description: `${data.name} has been successfully added to the store.`,
+        });
+    }
     form.reset();
+    onFinishEditing();
   };
 
   const handleEnhanceDescription = async () => {
@@ -84,6 +124,11 @@ export default function ProductForm() {
     
     setIsEnhancing(false);
   };
+  
+  const handleCancelEdit = () => {
+      form.reset();
+      onFinishEditing();
+  }
 
   return (
     <Form {...form}>
@@ -100,6 +145,30 @@ export default function ProductForm() {
               <FormMessage />
             </FormItem>
           )}
+        />
+        <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+            <FormItem>
+                <FormLabel>Category</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
+                <FormControl>
+                    <SelectTrigger>
+                    <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                    {categories.map(category => (
+                    <SelectItem key={category} value={category}>
+                        {category}
+                    </SelectItem>
+                    ))}
+                </SelectContent>
+                </Select>
+                <FormMessage />
+            </FormItem>
+            )}
         />
         <FormField
           control={form.control}
@@ -162,9 +231,16 @@ export default function ProductForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? 'Adding...' : 'Add Product'}
-        </Button>
+        <div className="flex gap-2">
+            {editingProduct && (
+                <Button type="button" variant="outline" className="w-full" onClick={handleCancelEdit}>
+                    Cancel
+                </Button>
+            )}
+            <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting ? (editingProduct ? 'Saving...' : 'Adding...') : (editingProduct ? 'Save Changes' : 'Add Product')}
+            </Button>
+        </div>
       </form>
     </Form>
   );

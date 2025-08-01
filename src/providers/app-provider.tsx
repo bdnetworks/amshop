@@ -1,7 +1,7 @@
 
 'use client';
 
-import { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
+import { createContext, useContext, useState, type ReactNode, useEffect, useCallback } from 'react';
 import type { Product, CartItem } from '@/lib/types';
 import { initialProducts } from '@/lib/data';
 
@@ -13,7 +13,9 @@ interface AppContextType {
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
-  addProduct: (product: Omit<Product, 'id'>) => void;
+  addProduct: (productData: Omit<Product, 'id'>) => void;
+  updateProduct: (product: Product) => void;
+  deleteProduct: (productId: string) => void;
   toggleWishlist: (product: Product) => void;
   removeFromWishlist: (productId: string) => void;
   isInWishlist: (productId: string) => boolean;
@@ -28,7 +30,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [products, setProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<Product[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -38,6 +40,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     try {
       const storedCart = localStorage.getItem('shopswift-cart');
       const storedWishlist = localStorage.getItem('shopswift-wishlist');
+      const storedProducts = localStorage.getItem('shopswift-products');
+      
+      setProducts(storedProducts ? JSON.parse(storedProducts) : initialProducts);
       if (storedCart) {
         setCart(JSON.parse(storedCart));
       }
@@ -46,6 +51,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error) {
       console.error("Failed to parse from localStorage", error);
+      setProducts(initialProducts);
     }
     
     const authStatus = sessionStorage.getItem('isAuthenticated');
@@ -54,6 +60,16 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
     setIsHydrated(true);
   }, []);
+
+  useEffect(() => {
+    if (isHydrated) {
+        try {
+            localStorage.setItem('shopswift-products', JSON.stringify(products));
+        } catch (error) {
+            console.error("Failed to save products to localStorage", error);
+        }
+    }
+  }, [products, isHydrated]);
 
   useEffect(() => {
     if (isHydrated) {
@@ -91,6 +107,16 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     };
     setProducts(prevProducts => [newProduct, ...prevProducts]);
   };
+
+  const updateProduct = (updatedProduct: Product) => {
+    setProducts(prev => 
+      prev.map(p => p.id === updatedProduct.id ? updatedProduct : p)
+    );
+  };
+
+  const deleteProduct = (productId: string) => {
+    setProducts(prev => prev.filter(p => p.id !== productId));
+  }
 
   const addToCart = (product: Product, quantity = 1) => {
     setCart(prevCart => {
@@ -164,6 +190,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         updateQuantity,
         clearCart,
         addProduct,
+        updateProduct,
+        deleteProduct,
         toggleWishlist,
         removeFromWishlist,
         isInWishlist,
