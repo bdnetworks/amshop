@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Package, ShoppingCart, Search, Heart, Phone, LogIn, LogOut, Menu, User, LayoutGrid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -26,9 +26,35 @@ export function Header() {
   const { cartCount, cartTotal, wishlistCount, isAuthenticated, logout } = useAppContext();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 200) {
+        // Scrolling down
+        setIsVisible(false);
+      } else {
+        // Scrolling up
+        setIsVisible(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lastScrollY]);
+
 
   return (
-    <header className="bg-background shadow-sm">
+    <header className={cn(
+        "bg-background shadow-sm sticky top-0 z-50 transition-transform duration-300",
+        !isVisible && "-translate-y-full"
+    )}>
       {/* Top Bar */}
       <div className="border-b">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
