@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import { Package, ShoppingCart, User, Search, Heart, Phone, ChevronDown, LogIn, LogOut, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -20,14 +20,14 @@ export function Header() {
   const pathname = usePathname();
   const [isHidden, setIsHidden] = useState(false);
   const [isMenuBarVisible, setIsMenuBarVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollY = useRef(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       
-      if (currentScrollY > lastScrollY && currentScrollY > 200) {
+      if (currentScrollY > lastScrollY.current && currentScrollY > 200) {
         setIsHidden(true);
       } else {
         setIsHidden(false);
@@ -39,12 +39,12 @@ export function Header() {
         setIsMenuBarVisible(true);
       }
 
-      setLastScrollY(currentScrollY);
+      lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   return (
     <header className={cn("sticky top-0 z-50 transition-transform duration-300 bg-background", isHidden && '-translate-y-full')}>
