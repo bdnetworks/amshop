@@ -1,5 +1,7 @@
+
 'use client';
 
+import { useState } from 'react';
 import {
   Sheet,
   SheetContent,
@@ -17,9 +19,10 @@ import Link from 'next/link';
 
 export function Cart({ children }: { children: React.ReactNode }) {
   const { cart, removeFromCart, updateQuantity, cartTotal, cartCount } = useAppContext();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>{children}</SheetTrigger>
       <SheetContent className="flex flex-col">
         <SheetHeader>
@@ -86,7 +89,7 @@ export function Cart({ children }: { children: React.ReactNode }) {
                   <span>Subtotal</span>
                   <span>${cartTotal.toFixed(2)}</span>
                 </div>
-                <Button asChild className="w-full mt-4">
+                <Button asChild className="w-full mt-4" onClick={() => setIsOpen(false)}>
                   <Link href="/checkout">Proceed to Checkout</Link>
                 </Button>
               </div>
