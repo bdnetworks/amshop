@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState, useMemo } from 'react';
@@ -34,18 +35,17 @@ export default function ShopPage() {
   };
 
   const filteredProducts = useMemo(() => {
+    if (!products) return [];
     return products.filter(product => {
       const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
       const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
-      // Note: Rating is hardcoded on product card, so this filter is for demonstration.
-      // A real implementation would have rating data on the product object.
-      const ratingMatch = selectedRating === 0 || 4 >= selectedRating;
+      const ratingMatch = selectedRating === 0 || product.rating >= selectedRating;
 
       return categoryMatch && priceMatch && ratingMatch;
     });
   }, [products, selectedCategories, priceRange, selectedRating]);
   
-  if (!pageBannerSettings) {
+  if (!pageBannerSettings || !products) {
     return (
         <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
             <Skeleton className="h-48 w-full mb-12" />

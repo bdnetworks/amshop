@@ -46,6 +46,12 @@ export default function ProductDetailPage() {
 
   const images = product.images && product.images.length > 0 ? product.images : ['https://placehold.co/600x400.png'];
 
+  const ratingValue = product.rating || 0;
+  const fullStars = Math.floor(ratingValue);
+  const halfStar = ratingValue % 1 !== 0;
+  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+
   return (
     <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
       <Card>
@@ -76,13 +82,15 @@ export default function ProductDetailPage() {
               <h1 className="text-3xl md:text-4xl font-bold">{product.name}</h1>
               <div className="flex items-center gap-2 mt-4">
                 <div className="flex text-yellow-400">
-                  <Star className="w-5 h-5 fill-current" />
-                  <Star className="w-5 h-5 fill-current" />
-                  <Star className="w-5 h-5 fill-current" />
-                  <Star className="w-5 h-5 fill-current" />
-                  <Star className="w-5 h-5 text-gray-300" />
+                  {[...Array(fullStars)].map((_, i) => (
+                    <Star key={`full-${i}`} className="w-5 h-5 fill-current" />
+                  ))}
+                  {halfStar && <Star key="half" className="w-5 h-5" />}
+                  {[...Array(emptyStars)].map((_, i) => (
+                     <Star key={`empty-${i}`} className="w-5 h-5 text-gray-300 fill-current" />
+                  ))}
                 </div>
-                <span className="text-sm text-muted-foreground">(4.0)</span>
+                <span className="text-sm text-muted-foreground">({product.rating.toFixed(1)})</span>
               </div>
               <p className="text-3xl font-bold text-primary my-4">${product.price.toFixed(2)}</p>
               <p className="text-muted-foreground leading-relaxed">{product.description}</p>

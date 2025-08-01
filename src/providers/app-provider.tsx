@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
@@ -25,7 +26,7 @@ interface AppContextType {
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
-  addProduct: (productData: Omit<Product, 'id'>) => void;
+  addProduct: (productData: Omit<Product, 'id' | 'rating' | 'timesAddedToCart'>) => void;
   updateProduct: (product: Product) => void;
   deleteProduct: (productId: string) => void;
   toggleWishlist: (product: Product) => void;
@@ -174,10 +175,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     sessionStorage.removeItem('isAuthenticated');
   };
 
-  const addProduct = (productData: Omit<Product, 'id'>) => {
+  const addProduct = (productData: Omit<Product, 'id' | 'rating' | 'timesAddedToCart'>) => {
     const newProduct: Product = {
       ...productData,
       id: new Date().getTime().toString(),
+      rating: 2,
+      timesAddedToCart: 0,
     };
     setProducts(prevProducts => [newProduct, ...prevProducts]);
   };
@@ -276,6 +279,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const addToCart = (product: Product, quantity = 1) => {
+    // Update cart
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.product.id === product.id);
       if (existingItem) {
@@ -286,6 +290,24 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         );
       }
       return [...prevCart, { product, quantity }];
+    });
+  
+    // Update product rating
+    setProducts(prevProducts => {
+      return prevProducts.map(p => {
+        if (p.id === product.id) {
+          const newTimesAddedToCart = p.timesAddedToCart + 1;
+          
+          // Rating logic: Start at 2, max out at 5.
+          // Increase by 0.5 for every 10 adds.
+          const ratingIncrease = Math.floor(newTimesAddedToCart / 10) * 0.5;
+          let newRating = 2 + ratingIncrease;
+          newRating = Math.min(newRating, 5); // Cap rating at 5
+          
+          return { ...p, timesAddedToCart: newTimesAddedToCart, rating: newRating };
+        }
+        return p;
+      });
     });
   };
 

@@ -1,4 +1,5 @@
 
+
 import type { Product, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost, ContactPageContent, HeaderMenu, FooterData, MenuItem, LinkSection, SocialLink, PageBannerSettings } from './types';
 
 export const initialProducts: Product[] = [
@@ -9,6 +10,8 @@ export const initialProducts: Product[] = [
     price: 75.00,
     images: ['https://placehold.co/600x400.png', 'https://placehold.co/600x400.png', 'https://placehold.co/600x400.png'],
     category: 'Gadgets',
+    rating: 2,
+    timesAddedToCart: 0,
   },
   {
     id: '2',
@@ -17,6 +20,8 @@ export const initialProducts: Product[] = [
     price: 120.00,
     images: ['https://placehold.co/600x400.png', 'https://placehold.co/600x400.png'],
     category: 'Watches',
+    rating: 2,
+    timesAddedToCart: 0,
   },
   {
     id: '3',
@@ -25,6 +30,8 @@ export const initialProducts: Product[] = [
     price: 95.00,
     images: ['https://placehold.co/600x400.png', 'https://placehold.co/600x400.png', 'https://placehold.co/600x400.png'],
     category: 'Clothes',
+    rating: 2,
+    timesAddedToCart: 0,
   },
   {
     id: '4',
@@ -33,6 +40,8 @@ export const initialProducts: Product[] = [
     price: 22.50,
     images: ['https://placehold.co/600x400.png'],
     category: 'Kitchen',
+    rating: 2,
+    timesAddedToCart: 0,
   },
   {
     id: '5',
@@ -41,6 +50,8 @@ export const initialProducts: Product[] = [
     price: 89.99,
     images: ['https://placehold.co/600x400.png', 'https://placehold.co/600x400.png'],
     category: 'Headsets',
+    rating: 2,
+    timesAddedToCart: 0,
   },
   {
     id: '6',
@@ -49,6 +60,8 @@ export const initialProducts: Product[] = [
     price: 25.00,
     images: ['https://placehold.co/600x400.png'],
     category: 'Furniture',
+    rating: 2,
+    timesAddedToCart: 0,
   },
 ];
 

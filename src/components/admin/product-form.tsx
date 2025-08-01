@@ -66,7 +66,7 @@ export default function ProductForm({ editingProduct, onFinishEditing }: Product
     if (editingProduct) {
       form.reset({
         ...editingProduct,
-        images: editingProduct.images.join('\n'),
+        images: editingProduct.images ? editingProduct.images.join('\\n') : '',
       });
     } else {
       form.reset({
@@ -80,25 +80,29 @@ export default function ProductForm({ editingProduct, onFinishEditing }: Product
   }, [editingProduct, form]);
 
   const onSubmit = (data: ProductFormValues) => {
-    const imagesArray = data.images.split('\n').map(url => url.trim()).filter(url => url.length > 0);
+    const imagesArray = data.images.split('\\n').map(url => url.trim()).filter(url => url.length > 0);
     
     if (imagesArray.length === 0) {
         form.setError('images', { type: 'manual', message: 'Please provide at least one image URL.' });
         return;
     }
 
-    const productData = {
-        ...data,
-        images: imagesArray,
-    };
-
     if (editingProduct) {
-      updateProduct({ ...editingProduct, ...productData });
+      const productData = {
+          ...editingProduct,
+          ...data,
+          images: imagesArray,
+      };
+      updateProduct(productData);
        toast({
         title: 'Product Updated!',
         description: `${data.name} has been successfully updated.`,
       });
     } else {
+      const productData = {
+          ...data,
+          images: imagesArray,
+      };
         addProduct(productData);
         toast({
         title: 'Product Added!',

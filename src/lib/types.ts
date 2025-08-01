@@ -7,6 +7,8 @@ export type Product = {
   price: number;
   images: string[];
   category: string;
+  rating: number;
+  timesAddedToCart: number;
 };
 
 export type CartItem = {
