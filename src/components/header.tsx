@@ -31,26 +31,29 @@ export function Header() {
 
   useEffect(() => {
     const controlNavbar = () => {
-        if (typeof window !== 'undefined') { 
-          if (window.scrollY > lastScrollY && window.scrollY > 200) { // if scroll down hide the navbar
-            setIsVisible(false);
-          } else { // if scroll up show the navbar
-            setIsVisible(true);
-          }
-          // remember current page location to use in the next move
-          setLastScrollY(window.scrollY);
+      if (typeof window !== 'undefined') {
+        const currentScrollY = window.scrollY;
+        const atBottom = window.innerHeight + currentScrollY >= document.body.offsetHeight - 10; // Check if near bottom
+
+        if (atBottom) {
+          setIsVisible(true);
+        } else if (currentScrollY > lastScrollY && currentScrollY > 200) { // Scrolling down
+          setIsVisible(false);
+        } else { // Scrolling up
+          setIsVisible(true);
         }
-      };
+        setLastScrollY(currentScrollY);
+      }
+    };
 
     if (typeof window !== 'undefined') {
       window.addEventListener('scroll', controlNavbar);
-
-      // cleanup function
       return () => {
         window.removeEventListener('scroll', controlNavbar);
       };
     }
   }, [lastScrollY]);
+
 
   return (
     <header>
