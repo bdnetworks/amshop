@@ -11,3 +11,12 @@ export type CartItem = {
   product: Product;
   quantity: number;
 };
+
+export type HeroSlide = {
+  id: string;
+  supertitle: string;
+  title: string;
+  image: string;
+  imageHint: string;
+  href: string;
+};

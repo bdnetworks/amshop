@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -12,35 +13,24 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
-
-const carouselSlides = [
-  {
-    supertitle: '30% SALE OFF',
-    title: 'True Wireless Noise Cancelling Headphone',
-    image: 'https://placehold.co/400x400.png',
-    imageHint: 'blue headphones',
-    href: '/shop',
-  },
-  {
-    supertitle: 'NEW ARRIVAL',
-    title: 'Next-Gen VR Gaming Headset',
-    image: 'https://placehold.co/400x400.png',
-    imageHint: 'vr headset',
-    href: '/shop',
-  },
-  {
-    supertitle: 'LIMITED TIME OFFER',
-    title: '4K Ultra HD Smart Television',
-    image: 'https://placehold.co/400x400.png',
-    imageHint: 'smart tv',
-    href: '/shop',
-  },
-];
+import { useAppContext } from '@/providers/app-provider';
+import { Skeleton } from './ui/skeleton';
 
 const HeroSection = () => {
+    const { heroSlides } = useAppContext();
     const plugin = React.useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true })
-  );
+        Autoplay({ delay: 3000, stopOnInteraction: true })
+    );
+
+    if (!heroSlides || heroSlides.length === 0) {
+        return (
+            <div className="bg-secondary">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                     <Skeleton className="h-[400px] w-full rounded-lg" />
+                </div>
+            </div>
+        )
+    }
 
   return (
     <div className="bg-secondary">
@@ -56,8 +46,8 @@ const HeroSection = () => {
                 opts={{ loop: true }}
             >
               <CarouselContent>
-                {carouselSlides.map((slide, index) => (
-                  <CarouselItem key={index}>
+                {heroSlides.map((slide) => (
+                  <CarouselItem key={slide.id}>
                     <div className="relative rounded-lg overflow-hidden h-[400px] bg-primary/10 flex items-center">
                       <div className="p-8 md:p-12 z-10">
                         <h3 className="text-primary font-bold">

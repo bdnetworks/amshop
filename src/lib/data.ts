@@ -1,4 +1,4 @@
-import type { Product } from './types';
+import type { Product, HeroSlide } from './types';
 
 export const initialProducts: Product[] = [
   {
@@ -48,5 +48,32 @@ export const initialProducts: Product[] = [
     price: 25.00,
     image: 'https://placehold.co/600x400.png',
     category: 'Furniture',
+  },
+];
+
+export const initialHeroSlides: HeroSlide[] = [
+  {
+    id: '1',
+    supertitle: '30% SALE OFF',
+    title: 'True Wireless Noise Cancelling Headphone',
+    image: 'https://placehold.co/400x400.png',
+    imageHint: 'blue headphones',
+    href: '/shop',
+  },
+  {
+    id: '2',
+    supertitle: 'NEW ARRIVAL',
+    title: 'Next-Gen VR Gaming Headset',
+    image: 'https://placehold.co/400x400.png',
+    imageHint: 'vr headset',
+    href: '/shop',
+  },
+  {
+    id: '3',
+    supertitle: 'LIMITED TIME OFFER',
+    title: '4K Ultra HD Smart Television',
+    image: 'https://placehold.co/400x400.png',
+    imageHint: 'smart tv',
+    href: '/shop',
   },
 ];

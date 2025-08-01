@@ -1,14 +1,15 @@
 
 'use client';
 
-import { createContext, useContext, useState, type ReactNode, useEffect, useCallback } from 'react';
-import type { Product, CartItem } from '@/lib/types';
-import { initialProducts } from '@/lib/data';
+import { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
+import type { Product, CartItem, HeroSlide } from '@/lib/types';
+import { initialProducts, initialHeroSlides } from '@/lib/data';
 
 interface AppContextType {
   products: Product[];
   cart: CartItem[];
   wishlist: Product[];
+  heroSlides: HeroSlide[];
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -19,6 +20,9 @@ interface AppContextType {
   toggleWishlist: (product: Product) => void;
   removeFromWishlist: (productId: string) => void;
   isInWishlist: (productId: string) => boolean;
+  addHeroSlide: (slideData: Omit<HeroSlide, 'id'>) => void;
+  updateHeroSlide: (slide: HeroSlide) => void;
+  deleteHeroSlide: (slideId: string) => void;
   cartTotal: number;
   cartCount: number;
   wishlistCount: number;
@@ -33,6 +37,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<Product[]>([]);
+  const [heroSlides, setHeroSlides] = useState<HeroSlide[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -41,17 +46,18 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const storedCart = localStorage.getItem('shopswift-cart');
       const storedWishlist = localStorage.getItem('shopswift-wishlist');
       const storedProducts = localStorage.getItem('shopswift-products');
+      const storedHeroSlides = localStorage.getItem('shopswift-hero-slides');
       
       setProducts(storedProducts ? JSON.parse(storedProducts) : initialProducts);
-      if (storedCart) {
-        setCart(JSON.parse(storedCart));
-      }
-      if (storedWishlist) {
-        setWishlist(JSON.parse(storedWishlist));
-      }
+      setHeroSlides(storedHeroSlides ? JSON.parse(storedHeroSlides) : initialHeroSlides);
+
+      if (storedCart) setCart(JSON.parse(storedCart));
+      if (storedWishlist) setWishlist(JSON.parse(storedWishlist));
+      
     } catch (error) {
       console.error("Failed to parse from localStorage", error);
       setProducts(initialProducts);
+      setHeroSlides(initialHeroSlides);
     }
     
     const authStatus = sessionStorage.getItem('isAuthenticated');
@@ -65,28 +71,17 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     if (isHydrated) {
         try {
             localStorage.setItem('shopswift-products', JSON.stringify(products));
+            localStorage.setItem('shopswift-cart', JSON.stringify(cart));
+            localStorage.setItem('shopswift-wishlist', JSON.stringify(wishlist));
+            localStorage.setItem('shopswift-hero-slides', JSON.stringify(heroSlides));
         } catch (error) {
-            console.error("Failed to save products to localStorage", error);
+            console.error("Failed to save to localStorage", error);
         }
     }
-  }, [products, isHydrated]);
-
-  useEffect(() => {
-    if (isHydrated) {
-      localStorage.setItem('shopswift-cart', JSON.stringify(cart));
-    }
-  }, [cart, isHydrated]);
-
-  useEffect(() => {
-    if (isHydrated) {
-      localStorage.setItem('shopswift-wishlist', JSON.stringify(wishlist));
-    }
-  }, [wishlist, isHydrated]);
+  }, [products, cart, wishlist, heroSlides, isHydrated]);
 
 
   const login = async (password: string): Promise<boolean> => {
-    // In a real application, this would be a secure API call.
-    // For this prototype, we use a hardcoded password.
     if (password === 'password123') {
       setIsAuthenticated(true);
       sessionStorage.setItem('isAuthenticated', 'true');
@@ -116,6 +111,24 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const deleteProduct = (productId: string) => {
     setProducts(prev => prev.filter(p => p.id !== productId));
+  }
+
+  const addHeroSlide = (slideData: Omit<HeroSlide, 'id'>) => {
+    const newSlide: HeroSlide = {
+      ...slideData,
+      id: new Date().getTime().toString(),
+    };
+    setHeroSlides(prev => [newSlide, ...prev]);
+  };
+
+  const updateHeroSlide = (updatedSlide: HeroSlide) => {
+    setHeroSlides(prev => 
+      prev.map(s => s.id === updatedSlide.id ? updatedSlide : s)
+    );
+  };
+
+  const deleteHeroSlide = (slideId: string) => {
+    setHeroSlides(prev => prev.filter(s => s.id !== slideId));
   }
 
   const addToCart = (product: Product, quantity = 1) => {
@@ -185,6 +198,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         products,
         cart,
         wishlist,
+        heroSlides,
         addToCart,
         removeFromCart,
         updateQuantity,
@@ -195,6 +209,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         toggleWishlist,
         removeFromWishlist,
         isInWishlist,
+        addHeroSlide,
+        updateHeroSlide,
+        deleteHeroSlide,
         cartTotal,
         cartCount,
         wishlistCount,
