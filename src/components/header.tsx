@@ -33,10 +33,8 @@ export function Header() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       if (currentScrollY > lastScrollY && currentScrollY > 200) {
-        // Scrolling down
         setIsVisible(false);
       } else {
-        // Scrolling up
         setIsVisible(true);
       }
       setLastScrollY(currentScrollY);
@@ -49,12 +47,11 @@ export function Header() {
     };
   }, [lastScrollY]);
 
-
   return (
-    <header className="bg-background shadow-sm">
+    <header className="bg-background">
       {/* Top Bar - This will be sticky */}
       <div className={cn(
-        "sticky top-0 z-50 transition-transform duration-300 bg-background",
+        "sticky top-0 z-50 transition-transform duration-300 bg-background shadow-sm",
         !isVisible && "-translate-y-full"
       )}>
         <div className="border-b">
@@ -163,7 +160,7 @@ export function Header() {
             </div>
         </div>
          {/* Mobile Search */}
-        <div className="lg:hidden container mx-auto px-4 sm:px-6 lg:px-8 py-2 border-t">
+        <div className="lg:hidden container mx-auto px-4 sm:px-6 py-2 border-t">
           <div className="flex w-full items-center rounded-md border border-input">
               <Input 
                   type="search" 
