@@ -20,6 +20,7 @@ import AboutPageForm from '@/components/admin/about-page-form';
 import BlogPostsForm from '@/components/admin/blog-posts-form';
 import { Button } from '@/components/ui/button';
 import BlogPostList from '@/components/admin/blog-post-list';
+import ContactPageForm from '@/components/admin/contact-page-form';
 
 const adminViews = [
   { id: 'products', label: 'Manage Products' },
@@ -30,6 +31,7 @@ const adminViews = [
   { id: 'homepage', label: 'Homepage Sections' },
   { id: 'about', label: 'Manage About Page' },
   { id: 'blog', label: 'Manage Blog Posts' },
+  { id: 'contact', label: 'Manage Contact Page' },
   { id: 'google-form', label: 'Google Form' },
 ];
 
@@ -285,6 +287,24 @@ export default function AdminPage() {
                        <BlogPostList onEditPost={handleEditPost} />
                     </CardContent>
                 </Card>
+                </div>
+            </div>
+        )}
+
+        {activeView === 'contact' && (
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+                <div className="lg:col-span-1">
+                  <Card>
+                      <CardHeader>
+                      <CardTitle className="text-2xl">Manage Contact Page</CardTitle>
+                      <CardDescription>
+                          Update the information displayed on the "Contact Us" page.
+                      </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <ContactPageForm />
+                      </CardContent>
+                  </Card>
                 </div>
             </div>
         )}

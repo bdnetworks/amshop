@@ -12,7 +12,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Loader2, Mail, MapPin, Phone } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import Image from 'next/image';
+import { useAppContext } from '@/providers/app-provider';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name is required'),
@@ -24,13 +25,22 @@ type ContactFormValues = z.infer<typeof contactSchema>;
 
 export default function ContactPage() {
   const { toast } = useToast();
+  const { contactPageContent } = useAppContext();
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
     defaultValues: { name: '', email: '', message: '' },
   });
 
   const onSubmit: SubmitHandler<ContactFormValues> = (data) => {
-    const phoneNumber = '+96574923477'; // Replace with your WhatsApp number
+    if (!contactPageContent?.whatsappNumber) {
+      toast({
+        variant: 'destructive',
+        title: 'Configuration Error',
+        description: 'WhatsApp number is not configured in the admin panel.',
+      });
+      return;
+    }
+    const phoneNumber = contactPageContent.whatsappNumber.replace(/\D/g, ''); // Remove non-numeric characters
     const messageText = `Hello! My name is ${data.name}. My email is ${data.email}.%0A%0AMessage: ${data.message}`;
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${messageText}`;
     
@@ -43,13 +53,33 @@ export default function ContactPage() {
     form.reset();
   };
 
+  if (!contactPageContent) {
+    return (
+      <div className="container mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="space-y-4 text-center">
+            <Skeleton className="h-12 w-1/2 mx-auto" />
+            <Skeleton className="h-8 w-3/4 mx-auto mt-4" />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-12">
+            <div className="lg:col-span-2 space-y-4">
+                <Skeleton className="h-96 w-full" />
+            </div>
+            <div className="space-y-8">
+                <Skeleton className="h-48 w-full" />
+                <Skeleton className="h-72 w-full" />
+            </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
         <div className="relative bg-primary/10 text-primary py-20 mb-12">
             <div className="container mx-auto px-4 text-center">
-                <h1 className="text-5xl font-bold tracking-tight text-foreground">Contact Us</h1>
+                <h1 className="text-5xl font-bold tracking-tight text-foreground">{contactPageContent.title}</h1>
                 <p className="mt-4 text-xl text-foreground/80 max-w-2xl mx-auto">
-                    We'd love to hear from you! Whether you have a question about our products, pricing, or anything else, our team is ready to answer all your questions.
+                    {contactPageContent.description}
                 </p>
             </div>
         </div>
@@ -127,21 +157,21 @@ export default function ContactPage() {
                             <MapPin className="h-6 w-6 text-primary mt-1" />
                             <div>
                                 <h4 className="font-semibold">Our Address</h4>
-                                <p className="text-muted-foreground">123 Main St, Anytown, USA</p>
+                                <p className="text-muted-foreground">{contactPageContent.address}</p>
                             </div>
                         </div>
                          <div className="flex items-start gap-4">
                             <Mail className="h-6 w-6 text-primary mt-1" />
                             <div>
                                 <h4 className="font-semibold">Email Us</h4>
-                                <p className="text-muted-foreground">support@shopswift.com</p>
+                                <p className="text-muted-foreground">{contactPageContent.email}</p>
                             </div>
                         </div>
                          <div className="flex items-start gap-4">
                             <Phone className="h-6 w-6 text-primary mt-1" />
                             <div>
                                 <h4 className="font-semibold">Call Us</h4>
-                                <p className="text-muted-foreground">(+965) 7492-3477</p>
+                                <p className="text-muted-foreground">{contactPageContent.phone}</p>
                             </div>
                         </div>
                     </CardContent>
@@ -152,7 +182,7 @@ export default function ContactPage() {
                     </CardHeader>
                     <CardContent className="p-0">
                          <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3172.332539539423!2d-122.0842496846959!3d37.422065979825!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fba024255f5f5%3A0x1634b3e4f71ce5f0!2sGoogleplex!5e0!3m2!1sen!2sus!4v1687882209489!5m2!1sen!2sus"
+                            src={contactPageContent.mapUrl}
                             width="100%"
                             height="300"
                             style={{ border: 0 }}

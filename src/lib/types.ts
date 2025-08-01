@@ -89,3 +89,13 @@ export type BlogPost = {
   imageHint: string;
   date: string;
 };
+
+export type ContactPageContent = {
+  title: string;
+  description: string;
+  address: string;
+  email: string;
+  phone: string;
+  whatsappNumber: string;
+  mapUrl: string;
+};

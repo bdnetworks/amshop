@@ -2,8 +2,8 @@
 'use client';
 
 import { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
-import type { Product, CartItem, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost } from '@/lib/types';
-import { initialProducts, initialHeroSlides, initialSideBanners, initialGoogleFormSettings, initialHomepageSections, initialCategories, initialAdBanners, initialAboutPageContent, initialBlogPosts } from '@/lib/data';
+import type { Product, CartItem, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost, ContactPageContent } from '@/lib/types';
+import { initialProducts, initialHeroSlides, initialSideBanners, initialGoogleFormSettings, initialHomepageSections, initialCategories, initialAdBanners, initialAboutPageContent, initialBlogPosts, initialContactPageContent } from '@/lib/data';
 
 interface AppContextType {
   products: Product[];
@@ -17,6 +17,7 @@ interface AppContextType {
   adBanners: AdBannerData;
   aboutPageContent: AboutPageContent;
   blogPosts: BlogPost[];
+  contactPageContent: ContactPageContent;
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -39,6 +40,7 @@ interface AppContextType {
   addBlogPost: (postData: Omit<BlogPost, 'id' | 'date'>) => void;
   updateBlogPost: (post: BlogPost) => void;
   deleteBlogPost: (postId: string) => void;
+  updateContactPageContent: (content: ContactPageContent) => void;
   cartTotal: number;
   cartCount: number;
   wishlistCount: number;
@@ -61,6 +63,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [adBanners, setAdBanners] = useState<AdBannerData | null>(null);
   const [aboutPageContent, setAboutPageContent] = useState<AboutPageContent | null>(null);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [contactPageContent, setContactPageContent] = useState<ContactPageContent | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -77,6 +80,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const storedAdBanners = localStorage.getItem('shopswift-ad-banners');
       const storedAboutContent = localStorage.getItem('shopswift-about-content');
       const storedBlogPosts = localStorage.getItem('shopswift-blog-posts');
+      const storedContactContent = localStorage.getItem('shopswift-contact-content');
       
       setProducts(storedProducts ? JSON.parse(storedProducts) : initialProducts);
       setHeroSlides(storedHeroSlides ? JSON.parse(storedHeroSlides) : initialHeroSlides);
@@ -87,6 +91,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setAdBanners(storedAdBanners ? JSON.parse(storedAdBanners) : initialAdBanners);
       setAboutPageContent(storedAboutContent ? JSON.parse(storedAboutContent) : initialAboutPageContent);
       setBlogPosts(storedBlogPosts ? JSON.parse(storedBlogPosts) : initialBlogPosts);
+      setContactPageContent(storedContactContent ? JSON.parse(storedContactContent) : initialContactPageContent);
 
       if (storedCart) setCart(JSON.parse(storedCart));
       if (storedWishlist) setWishlist(JSON.parse(storedWishlist));
@@ -102,6 +107,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setAdBanners(initialAdBanners);
       setAboutPageContent(initialAboutPageContent);
       setBlogPosts(initialBlogPosts);
+      setContactPageContent(initialContactPageContent);
     }
     
     const authStatus = sessionStorage.getItem('isAuthenticated');
@@ -125,11 +131,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             if (adBanners) localStorage.setItem('shopswift-ad-banners', JSON.stringify(adBanners));
             if (aboutPageContent) localStorage.setItem('shopswift-about-content', JSON.stringify(aboutPageContent));
             localStorage.setItem('shopswift-blog-posts', JSON.stringify(blogPosts));
+            if (contactPageContent) localStorage.setItem('shopswift-contact-content', JSON.stringify(contactPageContent));
         } catch (error) {
             console.error("Failed to save to localStorage", error);
         }
     }
-  }, [products, cart, wishlist, heroSlides, sideBanners, googleFormSettings, homepageSections, categories, adBanners, aboutPageContent, blogPosts, isHydrated]);
+  }, [products, cart, wishlist, heroSlides, sideBanners, googleFormSettings, homepageSections, categories, adBanners, aboutPageContent, blogPosts, contactPageContent, isHydrated]);
 
 
   const login = async (password: string): Promise<boolean> => {
@@ -231,6 +238,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setBlogPosts(prev => prev.filter(p => p.id !== postId));
   }
 
+  const updateContactPageContent = (content: ContactPageContent) => {
+    setContactPageContent(content);
+  }
+
   const addToCart = (product: Product, quantity = 1) => {
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.product.id === product.id);
@@ -306,6 +317,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         adBanners: adBanners!,
         aboutPageContent: aboutPageContent!,
         blogPosts,
+        contactPageContent: contactPageContent!,
         addToCart,
         removeFromCart,
         updateQuantity,
@@ -328,6 +340,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         addBlogPost,
         updateBlogPost,
         deleteBlogPost,
+        updateContactPageContent,
         cartTotal,
         cartCount,
         wishlistCount,

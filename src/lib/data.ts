@@ -1,5 +1,5 @@
 
-import type { Product, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost } from './types';
+import type { Product, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost, ContactPageContent } from './types';
 
 export const initialProducts: Product[] = [
   {
@@ -221,3 +221,13 @@ export const initialBlogPosts: BlogPost[] = [
     date: 'October 18, 2023',
   },
 ];
+
+export const initialContactPageContent: ContactPageContent = {
+  title: 'Contact Us',
+  description: 'We\'d love to hear from you! Whether you have a question about our products, pricing, or anything else, our team is ready to answer all your questions.',
+  address: '123 Main St, Anytown, USA',
+  email: 'support@shopswift.com',
+  phone: '(+965) 7492-3477',
+  whatsappNumber: '+96574923477',
+  mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3172.332539539423!2d-122.0842496846959!3d37.422065979825!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fba024255f5f5%3A0x1634b3e4f71ce5f0!2sGoogleplex!5e0!3m2!1sen!2sus!4v1687882209489!5m2!1sen!2sus',
+};
