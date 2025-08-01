@@ -56,7 +56,7 @@ export function Header() {
       <div className={cn(
         "sticky top-0 z-50 transition-transform duration-300 bg-background",
         !isVisible && "-translate-y-full"
-    )}>
+      )}>
         <div className="border-b">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="relative flex items-center justify-between h-24">
