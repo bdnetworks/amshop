@@ -1,3 +1,4 @@
+
 export type Product = {
   id: string;
   name: string;
@@ -80,8 +81,10 @@ export type AboutPageContent = {
 
 export type BlogPost = {
   id: string;
+  slug: string;
   title: string;
   excerpt: string;
+  content: string;
   imageUrl: string;
   imageHint: string;
   date: string;

@@ -58,8 +58,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [googleFormSettings, setGoogleFormSettings] = useState<GoogleFormSettings>(initialGoogleFormSettings);
   const [homepageSections, setHomepageSections] = useState<HomepageSection[]>([]);
   const [categories, setCategories] = useState<CategoryItem[]>([]);
-  const [adBanners, setAdBanners] = useState<AdBannerData>(initialAdBanners);
-  const [aboutPageContent, setAboutPageContent] = useState<AboutPageContent>(initialAboutPageContent);
+  const [adBanners, setAdBanners] = useState<AdBannerData | null>(null);
+  const [aboutPageContent, setAboutPageContent] = useState<AboutPageContent | null>(null);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
@@ -122,8 +122,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             localStorage.setItem('shopswift-form-settings', JSON.stringify(googleFormSettings));
             localStorage.setItem('shopswift-homepage-sections', JSON.stringify(homepageSections));
             localStorage.setItem('shopswift-categories', JSON.stringify(categories));
-            localStorage.setItem('shopswift-ad-banners', JSON.stringify(adBanners));
-            localStorage.setItem('shopswift-about-content', JSON.stringify(aboutPageContent));
+            if (adBanners) localStorage.setItem('shopswift-ad-banners', JSON.stringify(adBanners));
+            if (aboutPageContent) localStorage.setItem('shopswift-about-content', JSON.stringify(aboutPageContent));
             localStorage.setItem('shopswift-blog-posts', JSON.stringify(blogPosts));
         } catch (error) {
             console.error("Failed to save to localStorage", error);
@@ -303,8 +303,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         googleFormSettings,
         homepageSections,
         categories,
-        adBanners,
-        aboutPageContent,
+        adBanners: adBanners!,
+        aboutPageContent: aboutPageContent!,
         blogPosts,
         addToCart,
         removeFromCart,

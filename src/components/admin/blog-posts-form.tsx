@@ -22,7 +22,9 @@ import type { BlogPost } from '@/lib/types';
 
 const postSchema = z.object({
   title: z.string().min(3, 'Title is required'),
+  slug: z.string().min(3, 'Slug is required').regex(/^[a-z0-9-]+$/, 'Slug can only contain lowercase letters, numbers, and hyphens'),
   excerpt: z.string().min(10, 'Excerpt must be at least 10 characters'),
+  content: z.string().min(50, 'Full content must be at least 50 characters'),
   imageUrl: z.string().url('A valid image URL is required'),
   imageHint: z.string().min(1, 'Image hint is required'),
 });
@@ -42,7 +44,9 @@ export default function BlogPostsForm({ editingPost, onFinishEditing }: BlogPost
     resolver: zodResolver(postSchema),
     defaultValues: {
       title: '',
+      slug: '',
       excerpt: '',
+      content: '',
       imageUrl: 'https://placehold.co/600x400.png',
       imageHint: '',
     },
@@ -54,12 +58,33 @@ export default function BlogPostsForm({ editingPost, onFinishEditing }: BlogPost
     } else {
       form.reset({
         title: '',
+        slug: '',
         excerpt: '',
+        content: '',
         imageUrl: 'https://placehold.co/600x400.png',
         imageHint: '',
       });
     }
   }, [editingPost, form]);
+  
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '') // remove special chars
+      .trim()
+      .replace(/\s+/g, '-') // replace spaces with hyphens
+      .slice(0, 50); // limit length
+  };
+  
+  // Watch title field to auto-generate slug
+  const titleValue = form.watch("title");
+  useEffect(() => {
+    if (titleValue && !form.getValues("slug")) { // Only if slug is empty
+      const slug = generateSlug(titleValue);
+      form.setValue("slug", slug);
+    }
+  }, [titleValue, form]);
+
 
   const onSubmit = (data: PostFormValues) => {
     if (editingPost) {
@@ -100,14 +125,40 @@ export default function BlogPostsForm({ editingPost, onFinishEditing }: BlogPost
             </FormItem>
           )}
         />
+         <FormField
+          control={form.control}
+          name="slug"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Slug</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g., the-future-of-ecommerce" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="excerpt"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Excerpt</FormLabel>
+              <FormLabel>Excerpt (Short Summary)</FormLabel>
               <FormControl>
-                <Textarea rows={4} placeholder="A short summary of the post..." {...field} />
+                <Textarea rows={3} placeholder="A short summary of the post..." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+         <FormField
+          control={form.control}
+          name="content"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Full Content</FormLabel>
+              <FormControl>
+                <Textarea rows={8} placeholder="The full content of the blog post..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

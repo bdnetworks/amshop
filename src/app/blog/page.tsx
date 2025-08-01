@@ -59,8 +59,7 @@ export default function BlogPage() {
                         </CardContent>
                         <div className="p-6 pt-0">
                            <Button asChild>
-                             {/* Note: This link is a placeholder, as individual blog post pages aren't implemented yet */}
-                             <Link href="#">Read More</Link>
+                             <Link href={`/blog/${post.slug}`}>Read More</Link>
                            </Button>
                         </div>
                     </Card>

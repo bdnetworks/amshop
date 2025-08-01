@@ -1,3 +1,4 @@
+
 import type { Product, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost } from './types';
 
 export const initialProducts: Product[] = [
@@ -184,27 +185,37 @@ export const initialAboutPageContent: AboutPageContent = {
   imageHint: 'modern office',
 };
 
+const blogContent1 = `The world of e-commerce is in a constant state of flux, driven by technological advancements and shifting consumer behaviors. Staying ahead of the curve is crucial for any online business. Here are some of the key trends to watch: **1. AI-Powered Personalization:** Artificial intelligence is no longer a buzzword; it's a critical tool for creating tailored shopping experiences. From personalized product recommendations to dynamic pricing, AI helps businesses connect with customers on a deeper level. **2. The Rise of Social Commerce:** Social media platforms are transforming into powerful sales channels. Features like in-app checkout and shoppable posts make it easier than ever for consumers to discover and purchase products directly from their feeds. **3. Sustainability and Ethical Practices:** Modern consumers are increasingly conscious of their environmental and social impact. Brands that prioritize sustainability, ethical sourcing, and transparent practices are gaining a significant competitive edge. **4. Augmented Reality (AR) Try-Ons:** AR technology is bridging the gap between online and in-store shopping. It allows customers to visualize products in their own space or even "try on" clothes and accessories virtually, leading to higher conversion rates and fewer returns. **5. Voice Commerce:** The growing popularity of smart speakers is paving the way for voice-activated shopping. Optimizing your store for voice search and creating a seamless voice-based purchasing process will be key for future success. Embracing these trends will not only enhance the customer experience but also drive growth and ensure your business remains relevant in the ever-evolving digital marketplace.`;
+const blogContent2 = `Navigating the sea of modern gadgets can be a daunting task. With new devices launching constantly, how do you choose the one that's right for you? This guide will help you make an informed decision. **1. Identify Your Primary Need:** Before you get dazzled by features, ask yourself: what is the main problem this gadget will solve? Are you looking for a device for productivity, entertainment, fitness, or something else? A clear purpose will narrow down your options significantly. **2. Set a Realistic Budget:** Gadgets come in all price ranges. Determine how much you're willing to spend and stick to it. Remember to account for potential accessories like cases, chargers, or software subscriptions. **3. Research and Read Reviews:** Don't just rely on the manufacturer's description. Look for in-depth reviews from reputable tech websites and real users. Pay attention to both the pros and cons to get a balanced view. Consider aspects like performance, battery life, build quality, and ease of use. **4. Consider the Ecosystem:** If you're already invested in a particular ecosystem (like Apple, Google, or Samsung), a new gadget that integrates seamlessly with your existing devices can offer a much smoother experience. **5. Future-Proofing:** While you don't need the absolute latest model, consider a device that will remain relevant and supported with updates for a reasonable amount of time. Look at the processor, RAM, and software update policy. By following these steps, you can cut through the marketing hype and find a gadget that truly enhances your life.`;
+const blogContent3 = `As remote work becomes a permanent fixture for many, creating a home office that is both functional and inspiring is essential for productivity and well-being. Here's how to design a space you'll love to work in. **1. Location, Location, Location:** If possible, choose a dedicated room with a door to minimize distractions. If space is limited, find a quiet corner in a low-traffic area. Good natural light is a huge plus, so setting up near a window is ideal. **2. Invest in Ergonomics:** Your health comes first. An ergonomic chair that provides proper lumbar support is a non-negotiable investment. Position your monitor at eye level to avoid neck strain, and ensure your keyboard and mouse allow for a neutral wrist posture. An adjustable standing desk can also be a great addition. **3. Keep it Organized and Clutter-Free:** A tidy workspace promotes a tidy mind. Use shelves, drawers, and cable organizers to keep clutter at bay. A "one-touch" rule can be effective: deal with papers and items immediately instead of letting them pile up. **4. Personalize Your Space:** While it should be professional, your home office should also reflect your personality. Add plants, artwork, or photos that make you feel happy and motivated. Choose a color scheme that you find calming or energizing. **5. Define Your Boundaries:** When your office is at home, it's easy for work to bleed into your personal life. Establish clear working hours and "close the door" at the end of the day. This mental separation is crucial for maintaining a healthy work-life balance. A well-designed home office is more than just a place to work; it's a sanctuary that can boost your creativity, focus, and overall job satisfaction.`;
+
 export const initialBlogPosts: BlogPost[] = [
   {
     id: '1',
+    slug: 'the-future-of-ecommerce',
     title: 'The Future of E-commerce: Trends to Watch',
     excerpt: 'E-commerce is constantly evolving. In this post, we explore the key trends that are shaping the future of online shopping, from AI-powered personalization to sustainable practices.',
+    content: blogContent1,
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'ecommerce chart',
     date: 'October 26, 2023',
   },
   {
     id: '2',
+    slug: 'a-guide-to-choosing-the-perfect-gadget',
     title: 'A Guide to Choosing the Perfect Gadget',
     excerpt: 'Feeling overwhelmed by the choices? Our comprehensive guide will walk you through the essential factors to consider when picking your next gadget, ensuring you find the perfect fit for your needs.',
+    content: blogContent2,
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'gadgets on desk',
     date: 'October 22, 2023',
   },
   {
     id: '3',
+    slug: 'how-to-create-a-stylish-and-functional-home-office',
     title: 'How to Create a Stylish and Functional Home Office',
     excerpt: 'With remote work on the rise, a well-designed home office is more important than ever. Discover our top tips for creating a space that is both productive and inspiring.',
+    content: blogContent3,
     imageUrl: 'https://placehold.co/600x400.png',
     imageHint: 'home office design',
     date: 'October 18, 2023',
