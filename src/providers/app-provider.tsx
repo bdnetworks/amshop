@@ -1,8 +1,8 @@
 'use client';
 
 import { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
-import type { Product, CartItem, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData } from '@/lib/types';
-import { initialProducts, initialHeroSlides, initialSideBanners, initialGoogleFormSettings, initialHomepageSections, initialCategories, initialAdBanners } from '@/lib/data';
+import type { Product, CartItem, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost } from '@/lib/types';
+import { initialProducts, initialHeroSlides, initialSideBanners, initialGoogleFormSettings, initialHomepageSections, initialCategories, initialAdBanners, initialAboutPageContent, initialBlogPosts } from '@/lib/data';
 
 interface AppContextType {
   products: Product[];
@@ -14,6 +14,8 @@ interface AppContextType {
   homepageSections: HomepageSection[];
   categories: CategoryItem[];
   adBanners: AdBannerData;
+  aboutPageContent: AboutPageContent;
+  blogPosts: BlogPost[];
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -32,6 +34,10 @@ interface AppContextType {
   updateHomepageSections: (sections: HomepageSection[]) => void;
   updateCategories: (categories: CategoryItem[]) => void;
   updateAdBanners: (banners: AdBannerData) => void;
+  updateAboutPageContent: (content: AboutPageContent) => void;
+  addBlogPost: (postData: Omit<BlogPost, 'id' | 'date'>) => void;
+  updateBlogPost: (post: BlogPost) => void;
+  deleteBlogPost: (postId: string) => void;
   cartTotal: number;
   cartCount: number;
   wishlistCount: number;
@@ -52,6 +58,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [homepageSections, setHomepageSections] = useState<HomepageSection[]>([]);
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [adBanners, setAdBanners] = useState<AdBannerData>(initialAdBanners);
+  const [aboutPageContent, setAboutPageContent] = useState<AboutPageContent>(initialAboutPageContent);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -66,6 +74,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const storedHomepageSections = localStorage.getItem('shopswift-homepage-sections');
       const storedCategories = localStorage.getItem('shopswift-categories');
       const storedAdBanners = localStorage.getItem('shopswift-ad-banners');
+      const storedAboutContent = localStorage.getItem('shopswift-about-content');
+      const storedBlogPosts = localStorage.getItem('shopswift-blog-posts');
       
       setProducts(storedProducts ? JSON.parse(storedProducts) : initialProducts);
       setHeroSlides(storedHeroSlides ? JSON.parse(storedHeroSlides) : initialHeroSlides);
@@ -74,6 +84,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setHomepageSections(storedHomepageSections ? JSON.parse(storedHomepageSections) : initialHomepageSections);
       setCategories(storedCategories ? JSON.parse(storedCategories) : initialCategories);
       setAdBanners(storedAdBanners ? JSON.parse(storedAdBanners) : initialAdBanners);
+      setAboutPageContent(storedAboutContent ? JSON.parse(storedAboutContent) : initialAboutPageContent);
+      setBlogPosts(storedBlogPosts ? JSON.parse(storedBlogPosts) : initialBlogPosts);
 
       if (storedCart) setCart(JSON.parse(storedCart));
       if (storedWishlist) setWishlist(JSON.parse(storedWishlist));
@@ -87,6 +99,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setHomepageSections(initialHomepageSections);
       setCategories(initialCategories);
       setAdBanners(initialAdBanners);
+      setAboutPageContent(initialAboutPageContent);
+      setBlogPosts(initialBlogPosts);
     }
     
     const authStatus = sessionStorage.getItem('isAuthenticated');
@@ -108,11 +122,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             localStorage.setItem('shopswift-homepage-sections', JSON.stringify(homepageSections));
             localStorage.setItem('shopswift-categories', JSON.stringify(categories));
             localStorage.setItem('shopswift-ad-banners', JSON.stringify(adBanners));
+            localStorage.setItem('shopswift-about-content', JSON.stringify(aboutPageContent));
+            localStorage.setItem('shopswift-blog-posts', JSON.stringify(blogPosts));
         } catch (error) {
             console.error("Failed to save to localStorage", error);
         }
     }
-  }, [products, cart, wishlist, heroSlides, sideBanners, googleFormSettings, homepageSections, categories, adBanners, isHydrated]);
+  }, [products, cart, wishlist, heroSlides, sideBanners, googleFormSettings, homepageSections, categories, adBanners, aboutPageContent, blogPosts, isHydrated]);
 
 
   const login = async (password: string): Promise<boolean> => {
@@ -187,6 +203,33 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setAdBanners(banners);
   };
 
+  const updateAboutPageContent = (content: AboutPageContent) => {
+    setAboutPageContent(content);
+  };
+
+  const addBlogPost = (postData: Omit<BlogPost, 'id' | 'date'>) => {
+    const newPost: BlogPost = {
+      ...postData,
+      id: new Date().getTime().toString(),
+      date: new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+    };
+    setBlogPosts(prev => [newPost, ...prev]);
+  };
+
+  const updateBlogPost = (updatedPost: BlogPost) => {
+    setBlogPosts(prev => 
+      prev.map(p => p.id === updatedPost.id ? updatedPost : p)
+    );
+  };
+
+  const deleteBlogPost = (postId: string) => {
+    setBlogPosts(prev => prev.filter(p => p.id !== postId));
+  }
+
   const addToCart = (product: Product, quantity = 1) => {
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.product.id === product.id);
@@ -260,6 +303,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         homepageSections,
         categories,
         adBanners,
+        aboutPageContent,
+        blogPosts,
         addToCart,
         removeFromCart,
         updateQuantity,
@@ -278,6 +323,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         updateHomepageSections,
         updateCategories,
         updateAdBanners,
+        updateAboutPageContent,
+        addBlogPost,
+        updateBlogPost,
+        deleteBlogPost,
         cartTotal,
         cartCount,
         wishlistCount,

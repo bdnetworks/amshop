@@ -11,18 +11,21 @@ import HeroSlideList from '@/components/admin/hero-slide-list';
 import SideBannerForm from '@/components/admin/side-banner-form';
 import GoogleFormSettingsForm from '@/components/admin/google-form-settings-form';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import type { Product, type HeroSlide } from '@/lib/types';
+import type { Product, type HeroSlide, BlogPost } from '@/lib/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import GoogleFormInstructions from '@/components/admin/google-form-instructions';
 import HomepageSectionsForm from '@/components/admin/homepage-sections-form';
 import CategoryForm from '@/components/admin/category-form';
 import AdBannerForm from '@/components/admin/ad-banner-form';
+import AboutPageForm from '@/components/admin/about-page-form';
+import BlogPostsForm from '@/components/admin/blog-posts-form';
 
 export default function AdminPage() {
   const { isAuthenticated } = useAppContext();
   const router = useRouter();
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [editingSlide, setEditingSlide] = useState<HeroSlide | null>(null);
+  const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -56,16 +59,27 @@ export default function AdminPage() {
     setEditingSlide(null);
   }
 
+  const handleEditPost = (post: BlogPost) => {
+    setEditingPost(post);
+    window.scrollTo(0, 0);
+  };
+
+  const handleFinishEditingPost = () => {
+    setEditingPost(null);
+  }
+
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
       <Tabs defaultValue="products" className="w-full">
-        <TabsList className="grid w-full grid-cols-7">
+        <TabsList className="grid w-full grid-cols-9">
             <TabsTrigger value="products">Manage Products</TabsTrigger>
             <TabsTrigger value="slides">Manage Hero Slides</TabsTrigger>
             <TabsTrigger value="banners">Manage Side Banners</TabsTrigger>
             <TabsTrigger value="categories">Manage Categories</TabsTrigger>
             <TabsTrigger value="ad-banners">Manage Ad Banners</TabsTrigger>
             <TabsTrigger value="homepage">Homepage Sections</TabsTrigger>
+            <TabsTrigger value="about">Manage About Page</TabsTrigger>
+            <TabsTrigger value="blog">Manage Blog Posts</TabsTrigger>
             <TabsTrigger value="google-form">Google Form</TabsTrigger>
         </TabsList>
         <TabsContent value="products">
@@ -199,6 +213,56 @@ export default function AdminPage() {
                         <HomepageSectionsForm />
                       </CardContent>
                   </Card>
+                </div>
+            </div>
+        </TabsContent>
+        <TabsContent value="about">
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+                <div className="lg:col-span-1">
+                  <Card>
+                      <CardHeader>
+                      <CardTitle className="text-2xl">Manage About Page</CardTitle>
+                      <CardDescription>
+                          Update the content and image for the "About Us" page.
+                      </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <AboutPageForm />
+                      </CardContent>
+                  </Card>
+                </div>
+            </div>
+        </TabsContent>
+        <TabsContent value="blog">
+             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
+                <div className="lg:col-span-1">
+                <Card className="sticky top-24">
+                    <CardHeader>
+                    <CardTitle className="text-2xl">{editingPost ? 'Edit Post' : 'Add New Post'}</CardTitle>
+                    <CardDescription>
+                        {editingPost ? 'Update the details for this blog post.' : 'Fill out the form to add a new post.'}
+                    </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                    <BlogPostsForm 
+                        editingPost={editingPost}
+                        onFinishEditing={handleFinishEditingPost}
+                    />
+                    </CardContent>
+                </Card>
+                </div>
+                <div className="lg:col-span-2">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Blog Post List</CardTitle>
+                        <CardDescription>
+                            Edit or delete existing blog posts.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                       {/* Blog Post List Component will go here */}
+                    </CardContent>
+                </Card>
                 </div>
             </div>
         </TabsContent>

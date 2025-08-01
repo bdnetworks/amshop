@@ -1,4 +1,4 @@
-import type { Product, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData } from './types';
+import type { Product, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost } from './types';
 
 export const initialProducts: Product[] = [
   {
@@ -176,3 +176,37 @@ export const initialAdBanners: AdBannerData = {
     }
   ]
 };
+
+export const initialAboutPageContent: AboutPageContent = {
+  title: 'About ShopSwift',
+  description: 'Welcome to ShopSwift, your one-stop shop for the latest and greatest products. We are passionate about providing high-quality items and an exceptional shopping experience. Our mission is to bring you a curated selection of goods that combine style, functionality, and value. We believe in the power of great products to enhance your life, and we work tirelessly to source items that we know you\'ll love. Thank you for choosing ShopSwift. We\'re excited to be a part of your journey.',
+  imageUrl: 'https://placehold.co/1200x600.png',
+  imageHint: 'modern office',
+};
+
+export const initialBlogPosts: BlogPost[] = [
+  {
+    id: '1',
+    title: 'The Future of E-commerce: Trends to Watch',
+    excerpt: 'E-commerce is constantly evolving. In this post, we explore the key trends that are shaping the future of online shopping, from AI-powered personalization to sustainable practices.',
+    imageUrl: 'https://placehold.co/600x400.png',
+    imageHint: 'ecommerce chart',
+    date: 'October 26, 2023',
+  },
+  {
+    id: '2',
+    title: 'A Guide to Choosing the Perfect Gadget',
+    excerpt: 'Feeling overwhelmed by the choices? Our comprehensive guide will walk you through the essential factors to consider when picking your next gadget, ensuring you find the perfect fit for your needs.',
+    imageUrl: 'https://placehold.co/600x400.png',
+    imageHint: 'gadgets on desk',
+    date: 'October 22, 2023',
+  },
+  {
+    id: '3',
+    title: 'How to Create a Stylish and Functional Home Office',
+    excerpt: 'With remote work on the rise, a well-designed home office is more important than ever. Discover our top tips for creating a space that is both productive and inspiring.',
+    imageUrl: 'https://placehold.co/600x400.png',
+    imageHint: 'home office design',
+    date: 'October 18, 2023',
+  },
+];

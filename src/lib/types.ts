@@ -70,3 +70,19 @@ export type AdBannerData = {
   largeBanner: AdBannerContent;
   smallBanners: [AdBannerContent, AdBannerContent];
 };
+
+export type AboutPageContent = {
+  title: string;
+  description: string;
+  imageUrl: string;
+  imageHint: string;
+};
+
+export type BlogPost = {
+  id: string;
+  title: string;
+  excerpt: string;
+  imageUrl: string;
+  imageHint: string;
+  date: string;
+};
