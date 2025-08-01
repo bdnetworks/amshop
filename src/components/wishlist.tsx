@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -8,12 +9,11 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import { useAppContext } from '@/providers/app-provider';
 import Image from 'next/image';
 import { Trash2, Heart, ShoppingCart } from 'lucide-react';
-import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
+import type { Product } from '@/lib/types';
 
 export function Wishlist({ children }: { children: React.ReactNode }) {
   const { wishlist, removeFromWishlist, wishlistCount, addToCart } = useAppContext();

@@ -88,7 +88,7 @@ export default function AdminPage() {
                         <CardTitle>Product List</CardTitle>
                         <CardDescription>
                             Edit or delete existing products from your store.
-                        </CardDescription>
+                        </Description>
                     </CardHeader>
                     <CardContent>
                         <ProductListAdmin onEditProduct={handleEditProduct} />
@@ -121,7 +121,7 @@ export default function AdminPage() {
                         <CardTitle>Hero Slide List</CardTitle>
                         <CardDescription>
                             Edit or delete existing hero slides from your homepage.
-                        </CardDescription>
+                        </Description>
                     </CardHeader>
                     <CardContent>
                         <HeroSlideList onEditSlide={handleEditSlide} />
