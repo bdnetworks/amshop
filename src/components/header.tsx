@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Package, ShoppingCart, Search, Heart, Phone, ChevronDown, LogIn, LogOut, Menu } from 'lucide-react';
+import { Package, ShoppingCart, Search, Heart, Phone, ChevronDown, LogIn, LogOut, Menu, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Cart } from '@/components/cart';
 import { useAppContext } from '@/providers/app-provider';
@@ -22,6 +22,25 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-background shadow-sm">
+      {/* Top Bar */}
+      <div className="bg-secondary/30 text-xs text-secondary-foreground py-2 border-b">
+         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div>
+              <p>The most powerful and creative eCommerce HTML template.</p>
+            </div>
+            <div className="flex items-center gap-6">
+               <div className="flex items-center gap-2">
+                  <Mail size={14} />
+                  <span>support@shopswift.com</span>
+               </div>
+               <div className="hidden md:flex items-center gap-2">
+                  <Phone size={14} />
+                  <span>(+965) 7492-3477</span>
+               </div>
+            </div>
+         </div>
+      </div>
+
       {/* Main Header */}
       <div className="border-b py-4">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,13 +58,13 @@ export function Header() {
                         <SheetTitle>Menu</SheetTitle>
                       </SheetHeader>
                        <nav className="flex flex-col gap-4 p-4">
-                          {['Popular', 'Shop', 'Contact'].map((item) => (
+                          {[ 'Shop', 'Contact'].map((item) => (
                               <Link
                               key={item}
-                              href={item === 'Popular' ? '/' : `/${item.toLowerCase()}`}
+                              href={`/${item.toLowerCase()}`}
                               className={cn(
                                   "font-semibold transition-colors hover:text-primary",
-                                  pathname === (item === 'Popular' ? '/' : `/${item.toLowerCase()}`) ? "text-primary" : "text-foreground"
+                                  pathname === `/${item.toLowerCase()}` ? "text-primary" : "text-foreground"
                               )}
                               onClick={() => setIsMobileMenuOpen(false)}
                               >
@@ -97,13 +116,16 @@ export function Header() {
                 </div>
 
                 <div className="col-span-2 lg:col-span-4 flex items-center justify-end gap-4">
-                     <div className="hidden lg:flex items-center gap-2">
-                        <Phone size={24} className="text-primary" />
-                        <div>
-                            <p className="text-xs text-muted-foreground">24/7 SUPPORT</p>
-                            <p className="text-sm font-semibold">(+965) 7492-3477</p>
+                     <Wishlist>
+                        <div className="relative cursor-pointer hidden lg:block">
+                            <Heart className="h-7 w-7 text-muted-foreground" />
+                            {wishlistCount > 0 && (
+                                <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+                                {wishlistCount}
+                                </span>
+                            )}
                         </div>
-                     </div>
+                      </Wishlist>
                      <Cart>
                         <div className="flex items-center gap-2 cursor-pointer">
                             <div className="relative">
@@ -129,29 +151,32 @@ export function Header() {
        <div className="w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 hidden lg:block">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <nav className="flex items-center gap-6">
-              {['Popular', 'Shop', 'Contact'].map((item) => (
-                  <Link
-                  key={item}
-                  href={item === 'Popular' ? '/' : `/${item.toLowerCase()}`}
+              <Link
+                  href="/"
                   className={cn(
                       "text-sm font-semibold transition-colors hover:text-primary py-4",
-                      pathname === (item === 'Popular' ? '/' : `/${item.toLowerCase()}`) ? "text-primary" : "text-foreground"
+                      pathname === "/" ? "text-primary" : "text-foreground"
                   )}
                   >
-                  {item}
-                  </Link>
-              ))}
+                  Home
+               </Link>
               <Link
-                  href="#"
-                  className="flex items-center gap-1 text-sm font-semibold transition-colors hover:text-primary py-4"
+                  href="/shop"
+                  className={cn(
+                      "text-sm font-semibold transition-colors hover:text-primary py-4",
+                      pathname === "/shop" ? "text-primary" : "text-foreground"
+                  )}
                   >
-                  Pages <ChevronDown size={16} />
+                  Shop
               </Link>
               <Link
-                  href="#"
-                  className="flex items-center gap-1 text-sm font-semibold transition-colors hover:text-primary py-4"
+                  href="/contact"
+                  className={cn(
+                      "text-sm font-semibold transition-colors hover:text-primary py-4",
+                      pathname === "/contact" ? "text-primary" : "text-foreground"
+                  )}
                   >
-                  Blogs <ChevronDown size={16} />
+                  Contact
               </Link>
               <Link
                   href="/admin"
@@ -164,19 +189,6 @@ export function Header() {
                   </Link>
             </nav>
             <div className="flex items-center gap-6">
-              <Link href="#" className="flex items-center gap-2 text-sm font-semibold hover:text-primary">
-                <Search size={16} /> Recently Viewed
-              </Link>
-              <Wishlist>
-                <div className="flex items-center gap-2 text-sm font-semibold hover:text-primary relative cursor-pointer">
-                  <Heart size={16} /> Wishlist
-                  {wishlistCount > 0 && (
-                      <span className="absolute -top-2 -right-3 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-                      {wishlistCount}
-                      </span>
-                  )}
-                </div>
-              </Wishlist>
               {isAuthenticated ? (
                 <Button variant="ghost" size="sm" onClick={logout} className="flex items-center gap-2 text-sm font-semibold hover:text-primary">
                   <LogOut size={16} /> Logout
