@@ -57,7 +57,7 @@ export default function Home() {
       
       {homepageSections.filter(s => s.enabled).map((section, index) => (
         <div key={section.id}>
-            <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+            <div className="container mx-auto px-4 py-4 sm:px-6 lg:px-8">
                 <h1 className="section-title">{section.title}</h1>
                 <DynamicProductList category={section.category} limit={section.limit} />
             </div>

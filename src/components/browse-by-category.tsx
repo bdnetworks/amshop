@@ -22,7 +22,7 @@ export default function BrowseByCategory() {
 
   if (!categories || categories.length === 0) {
     return (
-        <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
             <h2 className="section-title">Browse by Category</h2>
              <div className="flex gap-4">
                 {Array.from({ length: 6 }).map((_, i) => (
@@ -34,7 +34,7 @@ export default function BrowseByCategory() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
+    <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <h2 className="section-title">Browse by Category</h2>
         <Carousel
           plugins={[plugin.current]}
