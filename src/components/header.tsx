@@ -48,7 +48,7 @@ export function Header() {
   }, [lastScrollY]);
 
   return (
-    <header>
+    <header className="bg-background">
       {/* Top Bar - This will be sticky */}
       <div className={cn(
         "sticky top-0 z-50 transition-transform duration-300 bg-background shadow-sm",
