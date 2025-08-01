@@ -1,7 +1,8 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
@@ -25,7 +26,7 @@ import {
 } from '@/components/ui/select';
 import { useAppContext } from '@/providers/app-provider';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Sparkles } from 'lucide-react';
+import { Loader2, Sparkles, Trash2 } from 'lucide-react';
 import { enhanceDescriptionAction } from '@/app/actions';
 import type { Product } from '@/lib/types';
 
@@ -34,7 +35,7 @@ const categories = ['Clothes', 'Watches', 'Toys', 'Kitchen', 'Headsets', 'Gadget
 const productSchema = z.object({
   name: z.string().min(3, 'Product name must be at least 3 characters'),
   price: z.coerce.number().positive('Price must be a positive number'),
-  images: z.string().min(1, 'At least one image URL is required'),
+  images: z.array(z.object({ url: z.string().url('Please enter a valid URL.') })).min(1, 'At least one image is required.'),
   description: z.string().min(10, 'Description must be at least 10 characters'),
   category: z.string().min(1, 'Category is required'),
 });
@@ -56,23 +57,28 @@ export default function ProductForm({ editingProduct, onFinishEditing }: Product
     defaultValues: {
       name: '',
       price: 0,
-      images: '',
+      images: [{ url: 'https://placehold.co/600x400.png' }],
       description: '',
       category: '',
     },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "images",
   });
 
   useEffect(() => {
     if (editingProduct) {
       form.reset({
         ...editingProduct,
-        images: editingProduct.images ? editingProduct.images.join('\\n') : '',
+        images: editingProduct.images.map(img => ({ url: img })),
       });
     } else {
       form.reset({
         name: '',
         price: 0,
-        images: 'https://placehold.co/600x400.png',
+        images: [{ url: 'https://placehold.co/600x400.png' }],
         description: '',
         category: '',
       });
@@ -80,12 +86,7 @@ export default function ProductForm({ editingProduct, onFinishEditing }: Product
   }, [editingProduct, form]);
 
   const onSubmit = (data: ProductFormValues) => {
-    const imagesArray = data.images.split('\\n').map(url => url.trim()).filter(url => url.length > 0);
-    
-    if (imagesArray.length === 0) {
-        form.setError('images', { type: 'manual', message: 'Please provide at least one image URL.' });
-        return;
-    }
+    const imagesArray = data.images.map(img => img.url);
 
     if (editingProduct) {
       const productData = {
@@ -203,22 +204,45 @@ export default function ProductForm({ editingProduct, onFinishEditing }: Product
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="images"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Image URLs</FormLabel>
-              <FormControl>
-                <Textarea placeholder="Enter one image URL per line" rows={4} {...field} />
-              </FormControl>
-              <FormDescription>
-                The first URL will be used as the main thumbnail.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        
+        <div>
+          <FormLabel>Image URLs</FormLabel>
+          <FormDescription>The first URL will be the main thumbnail.</FormDescription>
+          <div className="space-y-2 mt-2">
+            {fields.map((field, index) => (
+              <FormField
+                key={field.id}
+                control={form.control}
+                name={`images.${index}.url`}
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center gap-2">
+                      <FormControl>
+                        <Input placeholder="https://example.com/image.png" {...field} />
+                      </FormControl>
+                      {fields.length > 1 && (
+                        <Button type="button" variant="destructive" size="icon" onClick={() => remove(index)}>
+                          <Trash2 />
+                        </Button>
+                      )}
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ))}
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="mt-2"
+            onClick={() => append({ url: '' })}
+          >
+            Add Image
+          </Button>
+        </div>
+
         <FormField
           control={form.control}
           name="description"
