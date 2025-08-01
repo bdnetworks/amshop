@@ -78,7 +78,7 @@ export default function ProductDetailPage() {
         </CardContent>
       </Card>
       
-      <div className="mt-8">
+      <div className="mt-4">
         <h2 className="section-title">Related Products</h2>
         <ProductList products={products} />
       </div>

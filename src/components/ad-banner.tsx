@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -11,7 +12,7 @@ export default function AdBanner() {
 
   if (!adBanners) {
     return (
-       <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+       <div className="container mx-auto px-4 py-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
           <Skeleton className="h-64 w-full" />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
              <Skeleton className="h-64 w-full" />
@@ -24,7 +25,7 @@ export default function AdBanner() {
   const { largeBanner, smallBanners } = adBanners;
 
   return (
-    <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="container mx-auto px-4 py-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
       <div className="relative rounded-lg overflow-hidden h-64 bg-slate-100 p-8 flex items-center">
           <div className="z-10">
             {largeBanner.supertitle && <h3 className='text-muted-foreground font-semibold'>{largeBanner.supertitle}</h3>}
