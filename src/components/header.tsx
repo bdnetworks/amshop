@@ -1,9 +1,9 @@
 
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { Package, ShoppingCart, User, Search, Heart, Phone, ChevronDown, LogIn, LogOut, Menu } from 'lucide-react';
+import { Package, ShoppingCart, Search, Heart, Phone, ChevronDown, LogIn, LogOut, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Cart } from '@/components/cart';
 import { useAppContext } from '@/providers/app-provider';
@@ -18,36 +18,10 @@ import { Separator } from './ui/separator';
 export function Header() {
   const { cartCount, cartTotal, wishlistCount, isAuthenticated, logout } = useAppContext();
   const pathname = usePathname();
-  const [isHidden, setIsHidden] = useState(false);
-  const [isMenuBarVisible, setIsMenuBarVisible] = useState(true);
-  const lastScrollY = useRef(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY > lastScrollY.current && currentScrollY > 200) {
-        setIsHidden(true);
-      } else {
-        setIsHidden(false);
-      }
-      
-      if (currentScrollY > 150) {
-        setIsMenuBarVisible(false);
-      } else {
-        setIsMenuBarVisible(true);
-      }
-
-      lastScrollY.current = currentScrollY;
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
-    <header className={cn("sticky top-0 z-50 transition-transform duration-300 bg-background", isHidden && '-translate-y-full')}>
+    <header className="sticky top-0 z-50 bg-background shadow-sm">
       {/* Main Header */}
       <div className="border-b py-4">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -152,7 +126,7 @@ export function Header() {
       </div>
       
       {/* Bottom Navigation - Hidden on mobile */}
-       <div className={cn("w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300 hidden lg:block", !isMenuBarVisible && "lg:hidden")}>
+       <div className="w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 hidden lg:block">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <nav className="flex items-center gap-6">
               {['Popular', 'Shop', 'Contact'].map((item) => (
