@@ -12,24 +12,44 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react";
 
 export default function GoogleFormInstructions() {
-  const codeSnippet = `
-// This function will run automatically whenever a new order is submitted.
+  const codeSnippet = `// This function will run automatically whenever a new order is submitted.
 function onFormSubmit(e) {
   const adminEmail = "your-email@example.com"; 
   
   const values = e.namedValues;
   const customerName = values['Full Name'] ? values['Full Name'][0] : 'N/A';
   const customerEmail = values['Email'] ? values['Email'][0] : 'N/A';
-  // ... (add other fields here) ...
+  const mobile = values['Mobile'] ? values['Mobile'][0] : 'N/A';
+  const address = values['Address'] ? values['Address'][0] : 'N/A';
+  const district = values['District'] ? values['District'][0] : 'N/A';
+  const totalAmount = values['Total Amount'] ? values['Total Amount'][0] : 'N/A';
+  const cartItemsRaw = values['Cart Items'] ? values['Cart Items'][0] : '';
 
-  const subject = \`New Order Received from \${customerName}\`;
+  const cartItemsHtml = cartItemsRaw.split(';')
+                                    .map(item => \`<li>\${item.trim()}</li>\`)
+                                    .join('');
+
+  const subject = \`🛍️ New Order Received from \${customerName}\`;
   const body = \`
     <html>
-      <body>
-        <h2>New Order Details</h2>
-        <p><strong>Name:</strong> \${customerName}</p>
-        <p><strong>Email:</strong> \${customerEmail}</p>
-        // ... (format other fields) ...
+      <body style="font-family: Arial, sans-serif; line-height: 1.6;">
+        <h2 style="color: #4A90E2;">New Order Details</h2>
+        <p>You have received a new order from your ShopSwift store.</p>
+        <hr>
+        <h3>Customer Information:</h3>
+        <ul>
+          <li><strong>Name:</strong> \${customerName}</li>
+          <li><strong>Email:</strong> \${customerEmail}</li>
+          <li><strong>Mobile:</strong> \${mobile}</li>
+          <li><strong>Address:</strong> \${address}</li>
+          <li><strong>District:</strong> \${district}</li>
+        </ul>
+        <h3>Order Summary:</h3>
+        <ul>
+          \${cartItemsHtml}
+        </ul>
+        <hr>
+        <h3 style="color: #D0021B;">Total Amount: \${totalAmount}</h3>
       </body>
     </html>
   \`;
@@ -38,10 +58,10 @@ function onFormSubmit(e) {
     to: adminEmail,
     subject: subject,
     htmlBody: body,
-    name: 'ShopSwift Store'
+    name: 'ShopSwift Store' // This will be the sender's name
   });
 }
-  `.trim();
+`;
 
   return (
     <Card>
@@ -101,11 +121,22 @@ function onFormSubmit(e) {
                  <AccordionItem value="step-3">
                     <AccordionTrigger>Step 3 (Optional): Get Email Notifications</AccordionTrigger>
                     <AccordionContent>
-                        <ol className="list-decimal list-inside space-y-2">
+                        <ol className="list-decimal list-inside space-y-3">
                             <li>Open the **Google Sheet** connected to your form.</li>
                             <li>Go to **`Extensions > Apps Script`**.</li>
-                            <li>In the script editor, replace any existing code with a script to email you on submit. Remember to change `"your-email@example.com"` to your actual email.</li>
-                            <li>In the left sidebar, click on **Triggers (⏰)**, click **`+ Add Trigger`**, and configure it to run your function `On form submit`.</li>
+                            <li>In the script editor, replace any existing code with the following script. **Important:** Change `"your-email@example.com"` to your actual email.
+                                <Alert variant="default" className="mt-2">
+                                  <Terminal className="h-4 w-4" />
+                                  <AlertTitle>Apps Script Code</AlertTitle>
+                                  <AlertDescription>
+                                    <pre className="text-xs whitespace-pre-wrap font-mono bg-muted/50 p-3 rounded-md mt-1">
+                                      {codeSnippet}
+                                    </pre>
+                                  </AlertDescription>
+                                </Alert>
+                            </li>
+                            <li>Save the script (💾 icon).</li>
+                            <li>In the left sidebar, click on **Triggers (⏰)**, click **`+ Add Trigger`**, and configure it to run `onFormSubmit` with the event type `On form submit`.</li>
                              <li>Save and authorize the script. Now you'll get an email for every new order.</li>
                         </ol>
                     </AccordionContent>
