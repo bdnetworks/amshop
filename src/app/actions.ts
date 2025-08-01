@@ -32,11 +32,21 @@ export async function submitOrderAction(data: {
   }
 
   try {
+    // Format each cart item to include name, quantity, and price.
     const cartItemsString = data.cart
-      .map(item => `${item.product.name} (x${item.quantity})`)
-      .join(', ');
+      .map(
+        (item) =>
+          `${item.product.name} (x${item.quantity}) - $${(
+            item.product.price * item.quantity
+          ).toFixed(2)}`
+      )
+      .join('; ');
+
     const shippingCost = 150.00;
     const grandTotal = data.total + shippingCost;
+    const totalAmountString = `$${grandTotal.toFixed(
+      2
+    )} (includes $${shippingCost.toFixed(2)} shipping)`;
 
     const formData = new FormData();
     formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_NAME || 'entry.name', data.customer.name);
@@ -44,7 +54,7 @@ export async function submitOrderAction(data: {
     formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_MOBILE || 'entry.mobile', data.customer.mobile);
     formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_ADDRESS || 'entry.address', data.customer.address);
     formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_DISTRICT || 'entry.district', data.customer.district);
-    formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_TOTAL || 'entry.total', grandTotal.toFixed(2));
+    formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_TOTAL || 'entry.total', totalAmountString);
     formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_CART || 'entry.cart', cartItemsString);
 
     await fetch(formUrl, {
