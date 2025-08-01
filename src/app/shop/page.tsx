@@ -15,11 +15,12 @@ import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
 import Image from 'next/image';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const categories = ['Clothes', 'Watches', 'Toys', 'Kitchen', 'Headsets', 'Gadgets', 'Gaming', 'Computer', 'Furniture', 'Baby'];
 
 export default function ShopPage() {
-  const { products } = useAppContext();
+  const { products, pageBannerSettings } = useAppContext();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
   const [selectedRating, setSelectedRating] = useState<number>(0);
@@ -43,21 +44,35 @@ export default function ShopPage() {
       return categoryMatch && priceMatch && ratingMatch;
     });
   }, [products, selectedCategories, priceRange, selectedRating]);
+  
+  if (!pageBannerSettings) {
+    return (
+        <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+            <Skeleton className="h-48 w-full mb-12" />
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <Skeleton className="h-96 w-full" />
+                <div className="lg:col-span-3 grid grid-cols-2 md:grid-cols-3 gap-6">
+                    {Array.from({length: 6}).map((_, i) => <Skeleton key={i} className="h-64 w-full" />)}
+                </div>
+            </div>
+        </div>
+    )
+  }
 
   return (
     <div>
       <div className="relative bg-gray-900/40 text-white py-20 mb-12">
         <Image
-            src="https://placehold.co/1600x400.png"
-            alt="Products on display"
+            src={pageBannerSettings.shop.imageUrl}
+            alt={pageBannerSettings.shop.title}
             fill
             className="object-cover -z-10"
-            data-ai-hint="shopping retail"
+            data-ai-hint={pageBannerSettings.shop.imageHint}
         />
         <div className="container mx-auto px-4 text-center">
-            <h1 className="text-5xl font-bold tracking-tight">Shop</h1>
+            <h1 className="text-5xl font-bold tracking-tight">{pageBannerSettings.shop.title}</h1>
             <p className="mt-4 text-xl text-white/90">
-                Explore our collection of high-quality products.
+                {pageBannerSettings.shop.description}
             </p>
         </div>
       </div>

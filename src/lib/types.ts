@@ -141,3 +141,14 @@ export type FooterData = {
   copyright: string;
   paymentImageUrl: string;
 }
+
+export type PageBanner = {
+  title: string;
+  description: string;
+  imageUrl: string;
+  imageHint: string;
+};
+
+export type PageBannerSettings = {
+  shop: PageBanner;
+};

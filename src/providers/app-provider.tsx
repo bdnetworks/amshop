@@ -2,8 +2,8 @@
 'use client';
 
 import { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
-import type { Product, CartItem, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost, ContactPageContent, HeaderMenu, FooterData } from '@/lib/types';
-import { initialProducts, initialHeroSlides, initialSideBanners, initialGoogleFormSettings, initialHomepageSections, initialCategories, initialAdBanners, initialAboutPageContent, initialBlogPosts, initialContactPageContent, initialHeaderMenu, initialFooterData } from '@/lib/data';
+import type { Product, CartItem, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost, ContactPageContent, HeaderMenu, FooterData, PageBannerSettings } from '@/lib/types';
+import { initialProducts, initialHeroSlides, initialSideBanners, initialGoogleFormSettings, initialHomepageSections, initialCategories, initialAdBanners, initialAboutPageContent, initialBlogPosts, initialContactPageContent, initialHeaderMenu, initialFooterData, initialPageBannerSettings } from '@/lib/data';
 
 interface AppContextType {
   products: Product[];
@@ -20,6 +20,7 @@ interface AppContextType {
   contactPageContent: ContactPageContent;
   headerMenu: HeaderMenu;
   footerData: FooterData;
+  pageBannerSettings: PageBannerSettings;
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -45,6 +46,7 @@ interface AppContextType {
   updateContactPageContent: (content: ContactPageContent) => void;
   updateHeaderMenu: (menu: HeaderMenu) => void;
   updateFooterData: (data: FooterData) => void;
+  updatePageBannerSettings: (settings: PageBannerSettings) => void;
   cartTotal: number;
   cartCount: number;
   wishlistCount: number;
@@ -70,6 +72,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [contactPageContent, setContactPageContent] = useState<ContactPageContent | null>(null);
   const [headerMenu, setHeaderMenu] = useState<HeaderMenu | null>(null);
   const [footerData, setFooterData] = useState<FooterData | null>(null);
+  const [pageBannerSettings, setPageBannerSettings] = useState<PageBannerSettings | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -89,6 +92,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const storedContactContent = localStorage.getItem('shopswift-contact-content');
       const storedHeaderMenu = localStorage.getItem('shopswift-header-menu');
       const storedFooterData = localStorage.getItem('shopswift-footer-data');
+      const storedPageBanners = localStorage.getItem('shopswift-page-banners');
       
       setProducts(storedProducts ? JSON.parse(storedProducts) : initialProducts);
       setHeroSlides(storedHeroSlides ? JSON.parse(storedHeroSlides) : initialHeroSlides);
@@ -102,6 +106,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setContactPageContent(storedContactContent ? JSON.parse(storedContactContent) : initialContactPageContent);
       setHeaderMenu(storedHeaderMenu ? JSON.parse(storedHeaderMenu) : initialHeaderMenu);
       setFooterData(storedFooterData ? JSON.parse(storedFooterData) : initialFooterData);
+      setPageBannerSettings(storedPageBanners ? JSON.parse(storedPageBanners) : initialPageBannerSettings);
 
       if (storedCart) setCart(JSON.parse(storedCart));
       if (storedWishlist) setWishlist(JSON.parse(storedWishlist));
@@ -120,6 +125,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setContactPageContent(initialContactPageContent);
       setHeaderMenu(initialHeaderMenu);
       setFooterData(initialFooterData);
+      setPageBannerSettings(initialPageBannerSettings);
     }
     
     const authStatus = sessionStorage.getItem('isAuthenticated');
@@ -146,11 +152,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             if (contactPageContent) localStorage.setItem('shopswift-contact-content', JSON.stringify(contactPageContent));
             if (headerMenu) localStorage.setItem('shopswift-header-menu', JSON.stringify(headerMenu));
             if (footerData) localStorage.setItem('shopswift-footer-data', JSON.stringify(footerData));
+            if (pageBannerSettings) localStorage.setItem('shopswift-page-banners', JSON.stringify(pageBannerSettings));
         } catch (error) {
             console.error("Failed to save to localStorage", error);
         }
     }
-  }, [products, cart, wishlist, heroSlides, sideBanners, googleFormSettings, homepageSections, categories, adBanners, aboutPageContent, blogPosts, contactPageContent, headerMenu, footerData, isHydrated]);
+  }, [products, cart, wishlist, heroSlides, sideBanners, googleFormSettings, homepageSections, categories, adBanners, aboutPageContent, blogPosts, contactPageContent, headerMenu, footerData, pageBannerSettings, isHydrated]);
 
 
   const login = async (password: string): Promise<boolean> => {
@@ -264,6 +271,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setFooterData(data);
   }
 
+  const updatePageBannerSettings = (settings: PageBannerSettings) => {
+    setPageBannerSettings(settings);
+  };
+
   const addToCart = (product: Product, quantity = 1) => {
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.product.id === product.id);
@@ -342,6 +353,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         contactPageContent: contactPageContent!,
         headerMenu: headerMenu!,
         footerData: footerData!,
+        pageBannerSettings: pageBannerSettings!,
         addToCart,
         removeFromCart,
         updateQuantity,
@@ -367,6 +379,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         updateContactPageContent,
         updateHeaderMenu,
         updateFooterData,
+        updatePageBannerSettings,
         cartTotal,
         cartCount,
         wishlistCount,

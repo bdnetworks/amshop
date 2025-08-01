@@ -1,5 +1,5 @@
 
-import type { Product, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost, ContactPageContent, HeaderMenu, FooterData, MenuItem, LinkSection, SocialLink } from './types';
+import type { Product, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost, ContactPageContent, HeaderMenu, FooterData, MenuItem, LinkSection, SocialLink, PageBannerSettings } from './types';
 
 export const initialProducts: Product[] = [
   {
@@ -284,4 +284,13 @@ export const initialFooterData: FooterData = {
   },
   copyright: `© ${new Date().getFullYear()} ShopSwift. All Rights Reserved.`,
   paymentImageUrl: 'https://nextjs-two-navy-66.vercel.app/_next/image?url=%2Fpayment.png&w=256&q=75',
+};
+
+export const initialPageBannerSettings: PageBannerSettings = {
+  shop: {
+    title: 'Shop',
+    description: 'Explore our collection of high-quality products.',
+    imageUrl: 'https://placehold.co/1600x400.png',
+    imageHint: 'shopping retail'
+  }
 };

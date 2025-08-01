@@ -23,6 +23,7 @@ import BlogPostList from '@/components/admin/blog-post-list';
 import ContactPageForm from '@/components/admin/contact-page-form';
 import HeaderMenuForm from '@/components/admin/header-menu-form';
 import FooterForm from '@/components/admin/footer-form';
+import PageBannerForm from '@/components/admin/page-banner-form';
 
 const adminViews = [
   { id: 'products', label: 'Manage Products' },
@@ -30,6 +31,7 @@ const adminViews = [
   { id: 'banners', label: 'Manage Side Banners' },
   { id: 'categories', label: 'Manage Categories' },
   { id: 'ad-banners', label: 'Manage Ad Banners' },
+  { id: 'page-banners', label: 'Manage Page Banners' },
   { id: 'homepage', label: 'Homepage Sections' },
   { id: 'header', label: 'Manage Header Menu' },
   { id: 'footer', label: 'Manage Footer' },
@@ -219,6 +221,24 @@ export default function AdminPage() {
                       </CardHeader>
                       <CardContent>
                         <AdBannerForm />
+                      </CardContent>
+                  </Card>
+                </div>
+            </div>
+        )}
+
+        {activeView === 'page-banners' && (
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+                <div className="lg:col-span-1">
+                  <Card>
+                      <CardHeader>
+                      <CardTitle className="text-2xl">Manage Page Banners</CardTitle>
+                      <CardDescription>
+                          Update the headers for main pages like the Shop page.
+                      </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <PageBannerForm />
                       </CardContent>
                   </Card>
                 </div>
