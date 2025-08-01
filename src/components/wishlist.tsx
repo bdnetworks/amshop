@@ -43,7 +43,7 @@ export function Wishlist({ children }: { children: React.ReactNode }) {
                   <div key={product.id} className="flex items-start gap-4">
                     <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-md border">
                       <Image
-                        src={product.image}
+                        src={product.images[0]}
                         alt={product.name}
                         fill
                         sizes="80px"

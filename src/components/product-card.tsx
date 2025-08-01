@@ -54,7 +54,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <Card className="group relative overflow-hidden rounded-lg border shadow-sm transition-all duration-300 hover:shadow-lg h-full flex flex-col">
           <div className="relative aspect-square bg-muted/30">
             <Image
-              src={product.image}
+              src={product.images[0]}
               alt={product.name}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

@@ -62,7 +62,7 @@ export default function ProductListAdmin({ onEditProduct }: ProductListAdminProp
                 <TableCell>
                 <div className="relative h-12 w-12">
                     <Image
-                    src={product.image}
+                    src={product.images[0]}
                     alt={product.name}
                     fill
                     sizes="50px"

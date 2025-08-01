@@ -17,7 +17,7 @@ export default function OrderSummary() {
           <div key={item.product.id} className="flex items-center gap-4">
             <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border">
               <Image
-                src={item.product.image}
+                src={item.product.images[0]}
                 alt={item.product.name}
                 fill
                 sizes="64px"

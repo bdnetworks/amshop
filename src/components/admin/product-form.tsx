@@ -12,6 +12,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -33,7 +34,7 @@ const categories = ['Clothes', 'Watches', 'Toys', 'Kitchen', 'Headsets', 'Gadget
 const productSchema = z.object({
   name: z.string().min(3, 'Product name must be at least 3 characters'),
   price: z.coerce.number().positive('Price must be a positive number'),
-  image: z.string().url('Must be a valid URL'),
+  images: z.string().min(1, 'At least one image URL is required'),
   description: z.string().min(10, 'Description must be at least 10 characters'),
   category: z.string().min(1, 'Category is required'),
 });
@@ -55,7 +56,7 @@ export default function ProductForm({ editingProduct, onFinishEditing }: Product
     defaultValues: {
       name: '',
       price: 0,
-      image: 'https://placehold.co/600x400.png',
+      images: '',
       description: '',
       category: '',
     },
@@ -63,12 +64,15 @@ export default function ProductForm({ editingProduct, onFinishEditing }: Product
 
   useEffect(() => {
     if (editingProduct) {
-      form.reset(editingProduct);
+      form.reset({
+        ...editingProduct,
+        images: editingProduct.images.join('\n'),
+      });
     } else {
       form.reset({
         name: '',
         price: 0,
-        image: 'https://placehold.co/600x400.png',
+        images: 'https://placehold.co/600x400.png',
         description: '',
         category: '',
       });
@@ -76,14 +80,26 @@ export default function ProductForm({ editingProduct, onFinishEditing }: Product
   }, [editingProduct, form]);
 
   const onSubmit = (data: ProductFormValues) => {
+    const imagesArray = data.images.split('\n').map(url => url.trim()).filter(url => url.length > 0);
+    
+    if (imagesArray.length === 0) {
+        form.setError('images', { type: 'manual', message: 'Please provide at least one image URL.' });
+        return;
+    }
+
+    const productData = {
+        ...data,
+        images: imagesArray,
+    };
+
     if (editingProduct) {
-      updateProduct({ ...editingProduct, ...data });
+      updateProduct({ ...editingProduct, ...productData });
        toast({
         title: 'Product Updated!',
         description: `${data.name} has been successfully updated.`,
       });
     } else {
-        addProduct(data);
+        addProduct(productData);
         toast({
         title: 'Product Added!',
         description: `${data.name} has been successfully added to the store.`,
@@ -185,13 +201,16 @@ export default function ProductForm({ editingProduct, onFinishEditing }: Product
         />
         <FormField
           control={form.control}
-          name="image"
+          name="images"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Image URL</FormLabel>
+              <FormLabel>Image URLs</FormLabel>
               <FormControl>
-                <Input placeholder="https://example.com/image.png" {...field} />
+                <Textarea placeholder="Enter one image URL per line" rows={4} {...field} />
               </FormControl>
+              <FormDescription>
+                The first URL will be used as the main thumbnail.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

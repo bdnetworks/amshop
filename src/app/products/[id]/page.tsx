@@ -9,6 +9,14 @@ import { useToast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
 import ProductList from '@/components/product-list';
 import { Card, CardContent } from '@/components/ui/card';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
+import FacebookComments from '@/components/facebook-comments';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -41,14 +49,26 @@ export default function ProductDetailPage() {
       <Card>
         <CardContent className="p-6">
           <div className="grid md:grid-cols-2 gap-12">
-            <div className="relative aspect-square bg-muted rounded-lg">
-              <Image
-                src={product.image}
-                alt={product.name}
-                fill
-                className="object-contain"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
+            <div>
+              <Carousel className="w-full">
+                <CarouselContent>
+                  {product.images.map((image, index) => (
+                    <CarouselItem key={index}>
+                      <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
+                        <Image
+                          src={image}
+                          alt={`${product.name} - image ${index + 1}`}
+                          fill
+                          className="object-contain"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                        />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 transform bg-white/80 hover:bg-white shadow-md" />
+                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 transform bg-white/80 hover:bg-white shadow-md" />
+              </Carousel>
             </div>
             <div className="flex flex-col justify-center">
               <h1 className="text-3xl md:text-4xl font-bold">{product.name}</h1>
@@ -81,6 +101,10 @@ export default function ProductDetailPage() {
       <div className="mt-4">
         <h2 className="section-title">Related Products</h2>
         <ProductList products={products} />
+      </div>
+
+      <div className="mt-8">
+        <FacebookComments productId={product.id} />
       </div>
     </div>
   );
