@@ -25,7 +25,7 @@ export async function submitOrderAction(data: {
     district: string;
   };
 }) {
-  const formUrl = process.env.GOOGLE_FORM_ACTION_URL;
+  const formUrl = process.env.NEXT_PUBLIC_GOOGLE_FORM_ACTION_URL;
   if (!formUrl) {
     console.error('Google Form action URL is not defined in environment variables.');
     return { success: false, error: 'Server configuration error.' };
@@ -39,13 +39,13 @@ export async function submitOrderAction(data: {
     const grandTotal = data.total + shippingCost;
 
     const formData = new FormData();
-    formData.append(process.env.GOOGLE_FORM_ENTRY_NAME || 'entry.name', data.customer.name);
-    formData.append(process.env.GOOGLE_FORM_ENTRY_EMAIL || 'entry.email', data.customer.email);
-    formData.append(process.env.GOOGLE_FORM_ENTRY_MOBILE || 'entry.mobile', data.customer.mobile);
-    formData.append(process.env.GOOGLE_FORM_ENTRY_ADDRESS || 'entry.address', data.customer.address);
-    formData.append(process.env.GOOGLE_FORM_ENTRY_DISTRICT || 'entry.district', data.customer.district);
-    formData.append(process.env.GOOGLE_FORM_ENTRY_TOTAL || 'entry.total', grandTotal.toFixed(2));
-    formData.append(process.env.GOOGLE_FORM_ENTRY_CART || 'entry.cart', cartItemsString);
+    formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_NAME || 'entry.name', data.customer.name);
+    formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_EMAIL || 'entry.email', data.customer.email);
+    formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_MOBILE || 'entry.mobile', data.customer.mobile);
+    formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_ADDRESS || 'entry.address', data.customer.address);
+    formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_DISTRICT || 'entry.district', data.customer.district);
+    formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_TOTAL || 'entry.total', grandTotal.toFixed(2));
+    formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_CART || 'entry.cart', cartItemsString);
 
     await fetch(formUrl, {
       method: 'POST',
