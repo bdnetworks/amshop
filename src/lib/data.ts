@@ -121,7 +121,7 @@ export const initialGoogleFormSettings: GoogleFormSettings = {
   entryAddress: 'entry.212628672',
   entryDistrict: 'entry.1897428057',
   entryTotal: 'entry.1219446309',
-  entryCart: 'entry.1200052568',
+  entryCart: 'entry.1289558549',
 };
 
 export const initialHomepageSections: HomepageSection[] = [
