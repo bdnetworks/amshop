@@ -12,17 +12,30 @@ import SideBannerForm from '@/components/admin/side-banner-form';
 import GoogleFormSettingsForm from '@/components/admin/google-form-settings-form';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import type { Product, type HeroSlide, BlogPost } from '@/lib/types';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import GoogleFormInstructions from '@/components/admin/google-form-instructions';
 import HomepageSectionsForm from '@/components/admin/homepage-sections-form';
 import CategoryForm from '@/components/admin/category-form';
 import AdBannerForm from '@/components/admin/ad-banner-form';
 import AboutPageForm from '@/components/admin/about-page-form';
 import BlogPostsForm from '@/components/admin/blog-posts-form';
+import { Button } from '@/components/ui/button';
+
+const adminViews = [
+  { id: 'products', label: 'Manage Products' },
+  { id: 'slides', label: 'Manage Hero Slides' },
+  { id: 'banners', label: 'Manage Side Banners' },
+  { id: 'categories', label: 'Manage Categories' },
+  { id: 'ad-banners', label: 'Manage Ad Banners' },
+  { id: 'homepage', label: 'Homepage Sections' },
+  { id: 'about', label: 'Manage About Page' },
+  { id: 'blog', label: 'Manage Blog Posts' },
+  { id: 'google-form', label: 'Google Form' },
+];
 
 export default function AdminPage() {
   const { isAuthenticated } = useAppContext();
   const router = useRouter();
+  const [activeView, setActiveView] = useState('products');
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [editingSlide, setEditingSlide] = useState<HeroSlide | null>(null);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
@@ -70,19 +83,20 @@ export default function AdminPage() {
 
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
-      <Tabs defaultValue="products" className="w-full">
-        <TabsList className="grid w-full grid-cols-9">
-            <TabsTrigger value="products">Manage Products</TabsTrigger>
-            <TabsTrigger value="slides">Manage Hero Slides</TabsTrigger>
-            <TabsTrigger value="banners">Manage Side Banners</TabsTrigger>
-            <TabsTrigger value="categories">Manage Categories</TabsTrigger>
-            <TabsTrigger value="ad-banners">Manage Ad Banners</TabsTrigger>
-            <TabsTrigger value="homepage">Homepage Sections</TabsTrigger>
-            <TabsTrigger value="about">Manage About Page</TabsTrigger>
-            <TabsTrigger value="blog">Manage Blog Posts</TabsTrigger>
-            <TabsTrigger value="google-form">Google Form</TabsTrigger>
-        </TabsList>
-        <TabsContent value="products">
+      <div className="flex flex-wrap gap-2 mb-8">
+        {adminViews.map(view => (
+            <Button
+                key={view.id}
+                variant={activeView === view.id ? 'default' : 'outline'}
+                onClick={() => setActiveView(view.id)}
+            >
+                {view.label}
+            </Button>
+        ))}
+      </div>
+
+      <div>
+        {activeView === 'products' && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
                 <div className="lg:col-span-1">
                 <Card className="sticky top-24">
@@ -114,8 +128,9 @@ export default function AdminPage() {
                 </Card>
                 </div>
             </div>
-        </TabsContent>
-        <TabsContent value="slides">
+        )}
+
+        {activeView === 'slides' && (
            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
                 <div className="lg:col-span-1">
                 <Card className="sticky top-24">
@@ -147,8 +162,9 @@ export default function AdminPage() {
                 </Card>
                 </div>
             </div>
-        </TabsContent>
-        <TabsContent value="banners">
+        )}
+        
+        {activeView === 'banners' && (
            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
                 <div className="lg:col-span-1">
                   <Card>
@@ -164,8 +180,9 @@ export default function AdminPage() {
                   </Card>
                 </div>
             </div>
-        </TabsContent>
-        <TabsContent value="categories">
+        )}
+        
+        {activeView === 'categories' && (
            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
                 <div className="lg:col-span-1">
                   <Card>
@@ -181,8 +198,9 @@ export default function AdminPage() {
                   </Card>
                 </div>
             </div>
-        </TabsContent>
-        <TabsContent value="ad-banners">
+        )}
+
+        {activeView === 'ad-banners' && (
            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
                 <div className="lg:col-span-1">
                   <Card>
@@ -198,8 +216,9 @@ export default function AdminPage() {
                   </Card>
                 </div>
             </div>
-        </TabsContent>
-        <TabsContent value="homepage">
+        )}
+
+        {activeView === 'homepage' && (
            <div className="grid grid-cols-1 gap-8 mt-6">
                 <div className="col-span-1">
                   <Card>
@@ -215,8 +234,9 @@ export default function AdminPage() {
                   </Card>
                 </div>
             </div>
-        </TabsContent>
-        <TabsContent value="about">
+        )}
+
+        {activeView === 'about' && (
            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
                 <div className="lg:col-span-1">
                   <Card>
@@ -232,8 +252,9 @@ export default function AdminPage() {
                   </Card>
                 </div>
             </div>
-        </TabsContent>
-        <TabsContent value="blog">
+        )}
+
+        {activeView === 'blog' && (
              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
                 <div className="lg:col-span-1">
                 <Card className="sticky top-24">
@@ -265,8 +286,9 @@ export default function AdminPage() {
                 </Card>
                 </div>
             </div>
-        </TabsContent>
-         <TabsContent value="google-form">
+        )}
+
+        {activeView === 'google-form' && (
            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
                 <div className="lg:col-span-1">
                   <Card>
@@ -285,8 +307,8 @@ export default function AdminPage() {
                     <GoogleFormInstructions />
                  </div>
             </div>
-        </TabsContent>
-      </Tabs>
+        )}
+      </div>
     </div>
   );
 }
