@@ -79,21 +79,21 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     try {
-      const storedCart = localStorage.getItem('shopswift-cart');
-      const storedWishlist = localStorage.getItem('shopswift-wishlist');
-      const storedProducts = localStorage.getItem('shopswift-products');
-      const storedHeroSlides = localStorage.getItem('shopswift-hero-slides');
-      const storedSideBanners = localStorage.getItem('shopswift-side-banners');
-      const storedFormSettings = localStorage.getItem('shopswift-form-settings');
-      const storedHomepageSections = localStorage.getItem('shopswift-homepage-sections');
-      const storedCategories = localStorage.getItem('shopswift-categories');
-      const storedAdBanners = localStorage.getItem('shopswift-ad-banners');
-      const storedAboutContent = localStorage.getItem('shopswift-about-content');
-      const storedBlogPosts = localStorage.getItem('shopswift-blog-posts');
-      const storedContactContent = localStorage.getItem('shopswift-contact-content');
-      const storedHeaderMenu = localStorage.getItem('shopswift-header-menu');
-      const storedFooterData = localStorage.getItem('shopswift-footer-data');
-      const storedPageBanners = localStorage.getItem('shopswift-page-banners');
+      const storedCart = localStorage.getItem('auto-management-shop-cart');
+      const storedWishlist = localStorage.getItem('auto-management-shop-wishlist');
+      const storedProducts = localStorage.getItem('auto-management-shop-products');
+      const storedHeroSlides = localStorage.getItem('auto-management-shop-hero-slides');
+      const storedSideBanners = localStorage.getItem('auto-management-shop-side-banners');
+      const storedFormSettings = localStorage.getItem('auto-management-shop-form-settings');
+      const storedHomepageSections = localStorage.getItem('auto-management-shop-homepage-sections');
+      const storedCategories = localStorage.getItem('auto-management-shop-categories');
+      const storedAdBanners = localStorage.getItem('auto-management-shop-ad-banners');
+      const storedAboutContent = localStorage.getItem('auto-management-shop-about-content');
+      const storedBlogPosts = localStorage.getItem('auto-management-shop-blog-posts');
+      const storedContactContent = localStorage.getItem('auto-management-shop-contact-content');
+      const storedHeaderMenu = localStorage.getItem('auto-management-shop-header-menu');
+      const storedFooterData = localStorage.getItem('auto-management-shop-footer-data');
+      const storedPageBanners = localStorage.getItem('auto-management-shop-page-banners');
       
       setProducts(storedProducts ? JSON.parse(storedProducts) : initialProducts);
       setHeroSlides(storedHeroSlides ? JSON.parse(storedHeroSlides) : initialHeroSlides);
@@ -139,21 +139,21 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (isHydrated) {
         try {
-            localStorage.setItem('shopswift-products', JSON.stringify(products));
-            localStorage.setItem('shopswift-cart', JSON.stringify(cart));
-            localStorage.setItem('shopswift-wishlist', JSON.stringify(wishlist));
-            localStorage.setItem('shopswift-hero-slides', JSON.stringify(heroSlides));
-            localStorage.setItem('shopswift-side-banners', JSON.stringify(sideBanners));
-            localStorage.setItem('shopswift-form-settings', JSON.stringify(googleFormSettings));
-            localStorage.setItem('shopswift-homepage-sections', JSON.stringify(homepageSections));
-            localStorage.setItem('shopswift-categories', JSON.stringify(categories));
-            if (adBanners) localStorage.setItem('shopswift-ad-banners', JSON.stringify(adBanners));
-            if (aboutPageContent) localStorage.setItem('shopswift-about-content', JSON.stringify(aboutPageContent));
-            localStorage.setItem('shopswift-blog-posts', JSON.stringify(blogPosts));
-            if (contactPageContent) localStorage.setItem('shopswift-contact-content', JSON.stringify(contactPageContent));
-            if (headerMenu) localStorage.setItem('shopswift-header-menu', JSON.stringify(headerMenu));
-            if (footerData) localStorage.setItem('shopswift-footer-data', JSON.stringify(footerData));
-            if (pageBannerSettings) localStorage.setItem('shopswift-page-banners', JSON.stringify(pageBannerSettings));
+            localStorage.setItem('auto-management-shop-products', JSON.stringify(products));
+            localStorage.setItem('auto-management-shop-cart', JSON.stringify(cart));
+            localStorage.setItem('auto-management-shop-wishlist', JSON.stringify(wishlist));
+            localStorage.setItem('auto-management-shop-hero-slides', JSON.stringify(heroSlides));
+            localStorage.setItem('auto-management-shop-side-banners', JSON.stringify(sideBanners));
+            localStorage.setItem('auto-management-shop-form-settings', JSON.stringify(googleFormSettings));
+            localStorage.setItem('auto-management-shop-homepage-sections', JSON.stringify(homepageSections));
+            localStorage.setItem('auto-management-shop-categories', JSON.stringify(categories));
+            if (adBanners) localStorage.setItem('auto-management-shop-ad-banners', JSON.stringify(adBanners));
+            if (aboutPageContent) localStorage.setItem('auto-management-shop-about-content', JSON.stringify(aboutPageContent));
+            localStorage.setItem('auto-management-shop-blog-posts', JSON.stringify(blogPosts));
+            if (contactPageContent) localStorage.setItem('auto-management-shop-contact-content', JSON.stringify(contactPageContent));
+            if (headerMenu) localStorage.setItem('auto-management-shop-header-menu', JSON.stringify(headerMenu));
+            if (footerData) localStorage.setItem('auto-management-shop-footer-data', JSON.stringify(footerData));
+            if (pageBannerSettings) localStorage.setItem('auto-management-shop-page-banners', JSON.stringify(pageBannerSettings));
         } catch (error) {
             console.error("Failed to save to localStorage", error);
         }

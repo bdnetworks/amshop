@@ -192,8 +192,8 @@ export const initialAdBanners: AdBannerData = {
 };
 
 export const initialAboutPageContent: AboutPageContent = {
-  title: 'About ShopSwift',
-  description: 'Welcome to ShopSwift, your one-stop shop for the latest and greatest products. We are passionate about providing high-quality items and an exceptional shopping experience. Our mission is to bring you a curated selection of goods that combine style, functionality, and value. We believe in the power of great products to enhance your life, and we work tirelessly to source items that we know you\'ll love. Thank you for choosing ShopSwift. We\'re excited to be a part of your journey.',
+  title: 'About Auto Management Shop',
+  description: 'Welcome to Auto Management Shop, your one-stop shop for the latest and greatest products. We are passionate about providing high-quality items and an exceptional shopping experience. Our mission is to bring you a curated selection of goods that combine style, functionality, and value. We believe in the power of great products to enhance your life, and we work tirelessly to source items that we know you\'ll love. Thank you for choosing Auto Management Shop. We\'re excited to be a part of your journey.',
   imageUrl: 'https://placehold.co/1200x600.png',
   imageHint: 'modern office',
 };
@@ -295,7 +295,7 @@ export const initialFooterData: FooterData = {
     placeholder: 'Enter your email',
     buttonText: 'Subscribe',
   },
-  copyright: `© ${new Date().getFullYear()} ShopSwift. All Rights Reserved.`,
+  copyright: `© ${new Date().getFullYear()} Auto Management Shop. All Rights Reserved.`,
   paymentImageUrl: 'https://nextjs-two-navy-66.vercel.app/_next/image?url=%2Fpayment.png&w=256&q=75',
 };
 

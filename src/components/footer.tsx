@@ -120,7 +120,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center text-sm">
-            <p>{copyright.replace('ShopSwift', 'Auto Management Shop')}</p>
+            <p>{copyright.replace('{new Date().getFullYear()}', new Date().getFullYear().toString())}</p>
             <div className="mt-4 md:mt-0">
                 <Image 
                     src={paymentImageUrl}
