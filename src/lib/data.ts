@@ -1,4 +1,4 @@
-import type { Product, HeroSlide, SideBanner, GoogleFormSettings } from './types';
+import type { Product, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection } from './types';
 
 export const initialProducts: Product[] = [
   {
@@ -109,3 +109,27 @@ export const initialGoogleFormSettings: GoogleFormSettings = {
   entryTotal: 'entry.1219446309',
   entryCart: 'entry.1200052568',
 };
+
+export const initialHomepageSections: HomepageSection[] = [
+  {
+    id: '1',
+    title: 'Best Sellers',
+    category: 'all',
+    limit: 5,
+    enabled: true,
+  },
+  {
+    id: '2',
+    title: 'Featured Gadgets',
+    category: 'Gadgets',
+    limit: 5,
+    enabled: true,
+  },
+    {
+    id: '3',
+    title: 'Latest in Fashion',
+    category: 'Clothes',
+    limit: 5,
+    enabled: true,
+  },
+];

@@ -1,13 +1,15 @@
 
 'use client';
 
-import { useAppContext } from '@/providers/app-provider';
 import ProductCard from '@/components/product-card';
 import { Skeleton } from './ui/skeleton';
+import type { Product } from '@/lib/types';
 
-export default function ProductList() {
-  const { products } = useAppContext();
+interface ProductListProps {
+    products: Product[] | null;
+}
 
+export default function ProductList({ products }: ProductListProps) {
   if (!products) {
     return (
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-8">

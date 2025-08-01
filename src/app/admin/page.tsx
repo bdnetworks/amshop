@@ -14,6 +14,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { type Product, type HeroSlide } from '@/lib/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import GoogleFormInstructions from '@/components/admin/google-form-instructions';
+import HomepageSectionsForm from '@/components/admin/homepage-sections-form';
 
 export default function AdminPage() {
   const { isAuthenticated } = useAppContext();
@@ -56,10 +57,11 @@ export default function AdminPage() {
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
       <Tabs defaultValue="products" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="products">Manage Products</TabsTrigger>
             <TabsTrigger value="slides">Manage Hero Slides</TabsTrigger>
             <TabsTrigger value="banners">Manage Side Banners</TabsTrigger>
+            <TabsTrigger value="homepage">Homepage Sections</TabsTrigger>
             <TabsTrigger value="google-form">Google Form</TabsTrigger>
         </TabsList>
         <TabsContent value="products">
@@ -140,6 +142,23 @@ export default function AdminPage() {
                       </CardHeader>
                       <CardContent>
                         <SideBannerForm />
+                      </CardContent>
+                  </Card>
+                </div>
+            </div>
+        </TabsContent>
+        <TabsContent value="homepage">
+           <div className="grid grid-cols-1 gap-8 mt-6">
+                <div className="col-span-1">
+                  <Card>
+                      <CardHeader>
+                      <CardTitle className="text-2xl">Manage Homepage Sections</CardTitle>
+                      <CardDescription>
+                          Control which product sections appear on the homepage.
+                      </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <HomepageSectionsForm />
                       </CardContent>
                   </Card>
                 </div>

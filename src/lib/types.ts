@@ -41,3 +41,11 @@ export type GoogleFormSettings = {
   entryTotal: string;
   entryCart: string;
 };
+
+export type HomepageSection = {
+  id: string;
+  title: string;
+  category: string; // 'all' or a specific category name
+  limit: number;
+  enabled: boolean;
+};

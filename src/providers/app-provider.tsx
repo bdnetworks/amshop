@@ -1,8 +1,8 @@
 'use client';
 
 import { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
-import type { Product, CartItem, HeroSlide, SideBanner, GoogleFormSettings } from '@/lib/types';
-import { initialProducts, initialHeroSlides, initialSideBanners, initialGoogleFormSettings } from '@/lib/data';
+import type { Product, CartItem, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection } from '@/lib/types';
+import { initialProducts, initialHeroSlides, initialSideBanners, initialGoogleFormSettings, initialHomepageSections } from '@/lib/data';
 
 interface AppContextType {
   products: Product[];
@@ -11,6 +11,7 @@ interface AppContextType {
   heroSlides: HeroSlide[];
   sideBanners: SideBanner[];
   googleFormSettings: GoogleFormSettings;
+  homepageSections: HomepageSection[];
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -26,6 +27,7 @@ interface AppContextType {
   deleteHeroSlide: (slideId: string) => void;
   updateSideBanner: (banner: SideBanner) => void;
   updateGoogleFormSettings: (settings: GoogleFormSettings) => void;
+  updateHomepageSections: (sections: HomepageSection[]) => void;
   cartTotal: number;
   cartCount: number;
   wishlistCount: number;
@@ -43,6 +45,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [heroSlides, setHeroSlides] = useState<HeroSlide[]>([]);
   const [sideBanners, setSideBanners] = useState<SideBanner[]>([]);
   const [googleFormSettings, setGoogleFormSettings] = useState<GoogleFormSettings>(initialGoogleFormSettings);
+  const [homepageSections, setHomepageSections] = useState<HomepageSection[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -54,11 +57,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const storedHeroSlides = localStorage.getItem('shopswift-hero-slides');
       const storedSideBanners = localStorage.getItem('shopswift-side-banners');
       const storedFormSettings = localStorage.getItem('shopswift-form-settings');
+      const storedHomepageSections = localStorage.getItem('shopswift-homepage-sections');
       
       setProducts(storedProducts ? JSON.parse(storedProducts) : initialProducts);
       setHeroSlides(storedHeroSlides ? JSON.parse(storedHeroSlides) : initialHeroSlides);
       setSideBanners(storedSideBanners ? JSON.parse(storedSideBanners) : initialSideBanners);
       setGoogleFormSettings(storedFormSettings ? JSON.parse(storedFormSettings) : initialGoogleFormSettings);
+      setHomepageSections(storedHomepageSections ? JSON.parse(storedHomepageSections) : initialHomepageSections);
 
       if (storedCart) setCart(JSON.parse(storedCart));
       if (storedWishlist) setWishlist(JSON.parse(storedWishlist));
@@ -69,6 +74,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setHeroSlides(initialHeroSlides);
       setSideBanners(initialSideBanners);
       setGoogleFormSettings(initialGoogleFormSettings);
+      setHomepageSections(initialHomepageSections);
     }
     
     const authStatus = sessionStorage.getItem('isAuthenticated');
@@ -87,11 +93,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             localStorage.setItem('shopswift-hero-slides', JSON.stringify(heroSlides));
             localStorage.setItem('shopswift-side-banners', JSON.stringify(sideBanners));
             localStorage.setItem('shopswift-form-settings', JSON.stringify(googleFormSettings));
+            localStorage.setItem('shopswift-homepage-sections', JSON.stringify(homepageSections));
         } catch (error) {
             console.error("Failed to save to localStorage", error);
         }
     }
-  }, [products, cart, wishlist, heroSlides, sideBanners, googleFormSettings, isHydrated]);
+  }, [products, cart, wishlist, heroSlides, sideBanners, googleFormSettings, homepageSections, isHydrated]);
 
 
   const login = async (password: string): Promise<boolean> => {
@@ -152,6 +159,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const updateGoogleFormSettings = (settings: GoogleFormSettings) => {
     setGoogleFormSettings(settings);
+  };
+
+  const updateHomepageSections = (sections: HomepageSection[]) => {
+    setHomepageSections(sections);
   };
 
   const addToCart = (product: Product, quantity = 1) => {
@@ -224,6 +235,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         heroSlides,
         sideBanners,
         googleFormSettings,
+        homepageSections,
         addToCart,
         removeFromCart,
         updateQuantity,
@@ -239,6 +251,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         deleteHeroSlide,
         updateSideBanner,
         updateGoogleFormSettings,
+        updateHomepageSections,
         cartTotal,
         cartCount,
         wishlistCount,
