@@ -33,7 +33,8 @@ export function Header() {
     const controlNavbar = () => {
       if (typeof window !== 'undefined') {
         const currentScrollY = window.scrollY;
-        const atBottom = window.innerHeight + currentScrollY >= document.body.offsetHeight - 5; // 5px buffer
+        // Check if the user is at the bottom of the page
+        const atBottom = window.innerHeight + currentScrollY >= document.body.offsetHeight - 5; // 5px buffer for reliability
 
         if (atBottom) {
           setIsVisible(true);
@@ -61,7 +62,7 @@ export function Header() {
       {/* Top Bar - This will be sticky */}
       <div className={cn(
         "sticky top-0 z-50 transition-transform duration-300 bg-background",
-        !isVisible && "-translate-y-full"
+        isVisible ? "translate-y-0" : "-translate-y-full"
       )}>
         <div className="border-b shadow-sm">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -82,7 +83,7 @@ export function Header() {
                             </Link>
                         </SheetHeader>
                         <nav className="flex flex-col gap-4 p-4">
-                            {['Home', 'Shop', 'Contact', 'Admin'].map((item) => (
+                            {['Home', 'Shop', 'About', 'Blog', 'Contact'].map((item) => (
                                 <Link
                                 key={item}
                                 href={`/${item.toLowerCase() === 'home' ? '' : item.toLowerCase()}`}
@@ -95,6 +96,18 @@ export function Header() {
                                 {item}
                                 </Link>
                             ))}
+                             {isAuthenticated && (
+                                <Link
+                                    href="/admin"
+                                    className={cn(
+                                        "font-semibold transition-colors hover:text-primary",
+                                        pathname === '/admin' ? "text-primary" : "text-foreground"
+                                    )}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                    Admin
+                                </Link>
+                             )}
                             <Separator />
                             {isAuthenticated ? (
                                 <Button variant="ghost" onClick={() => {logout(); setIsMobileMenuOpen(false);}} className="justify-start gap-2"><LogOut size={16} /> Logout</Button>
@@ -167,19 +180,19 @@ export function Header() {
                     </div>
                 </div>
             </div>
-        </div>
-        {/* Mobile Search */}
-        <div className="lg:hidden container mx-auto px-4 sm:px-6 py-2 border-t bg-background">
-          <div className="flex w-full items-center rounded-md border border-input">
-              <Input 
-                  type="search" 
-                  placeholder="I am shopping for..." 
-                  className="flex-1 border-0 rounded-r-none focus-visible:ring-0"
-              />
-              <Button type="submit" size="icon" className="rounded-l-none">
-                  <Search className="h-5 w-5" />
-              </Button>
-          </div>
+            {/* Mobile Search */}
+            <div className="lg:hidden container mx-auto px-4 sm:px-6 py-2 border-t bg-background">
+              <div className="flex w-full items-center rounded-md border border-input">
+                  <Input 
+                      type="search" 
+                      placeholder="I am shopping for..." 
+                      className="flex-1 border-0 rounded-r-none focus-visible:ring-0"
+                  />
+                  <Button type="submit" size="icon" className="rounded-l-none">
+                      <Search className="h-5 w-5" />
+                  </Button>
+              </div>
+            </div>
         </div>
       </div>
       
@@ -206,8 +219,12 @@ export function Header() {
 
                     <Link href="/" className={cn("hover:text-primary", pathname === '/' && 'text-primary')}>Home</Link>
                     <Link href="/shop" className={cn("hover:text-primary", pathname === '/shop' && 'text-primary')}>Shop</Link>
+                    <Link href="/about" className={cn("hover:text-primary", pathname === '/about' && 'text-primary')}>About</Link>
+                    <Link href="/blog" className={cn("hover:text-primary", pathname === '/blog' && 'text-primary')}>Blog</Link>
                     <Link href="/contact" className={cn("hover:text-primary", pathname === '/contact' && 'text-primary')}>Contact</Link>
-                    <Link href="/admin" className={cn("hover:text-primary", pathname === '/admin' && 'text-primary')}>Admin</Link>
+                    {isAuthenticated && (
+                        <Link href="/admin" className={cn("hover:text-primary", pathname === '/admin' && 'text-primary')}>Admin</Link>
+                    )}
                 </nav>
                  <div className="flex items-center gap-4">
                     <Wishlist>

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useMemo } from 'react';
@@ -60,7 +61,7 @@ export default function Home() {
                 <h1 className="section-title">{section.title}</h1>
                 <DynamicProductList category={section.category} limit={section.limit} />
             </div>
-            {index < homepageSections.filter(s => s.enabled).length - 1 && <Separator className="my-8" />}
+            {index < homepageSections.filter(s => s.enabled).length - 1 && <Separator className="my-4" />}
         </div>
       ))}
     </>
