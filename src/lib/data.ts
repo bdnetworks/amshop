@@ -1,4 +1,4 @@
-import type { Product, HeroSlide } from './types';
+import type { Product, HeroSlide, SideBanner } from './types';
 
 export const initialProducts: Product[] = [
   {
@@ -77,3 +77,24 @@ export const initialHeroSlides: HeroSlide[] = [
     href: '/shop',
   },
 ];
+
+export const initialSideBanners: SideBanner[] = [
+    {
+      id: '1',
+      title: 'iPhone 14 Pro Max',
+      price: 999,
+      originalPrice: 1200,
+      image: 'https://placehold.co/150x150.png',
+      imageHint: 'purple iphone',
+      href: '/shop',
+    },
+    {
+      id: '2',
+      title: 'Wireless Headphone',
+      price: 599,
+      originalPrice: 799,
+      image: 'https://placehold.co/150x150.png',
+      imageHint: 'blue headphones',
+      href: '/shop',
+    }
+]

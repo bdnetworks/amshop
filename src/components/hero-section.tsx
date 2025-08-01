@@ -17,12 +17,12 @@ import { useAppContext } from '@/providers/app-provider';
 import { Skeleton } from './ui/skeleton';
 
 const HeroSection = () => {
-    const { heroSlides } = useAppContext();
+    const { heroSlides, sideBanners } = useAppContext();
     const plugin = React.useRef(
         Autoplay({ delay: 3000, stopOnInteraction: true })
     );
 
-    if (!heroSlides || heroSlides.length === 0) {
+    if (!heroSlides || heroSlides.length === 0 || !sideBanners || sideBanners.length === 0) {
         return (
             <div className="bg-secondary">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -80,58 +80,34 @@ const HeroSection = () => {
           </div>
           {/* Side Banners */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
-            <div className="relative rounded-lg overflow-hidden h-[188px] bg-white flex items-center justify-between p-6">
-              <div>
-                <h3 className="font-bold text-lg text-foreground">
-                  iPhone 14 Pro Max
-                </h3>
-                <div className="my-2">
-                  <span className="font-bold text-primary text-xl">$999</span>
-                  <span className="text-muted-foreground line-through ml-2">
-                    $1200
-                  </span>
+            {sideBanners.map((banner) => (
+              <div key={banner.id} className="relative rounded-lg overflow-hidden h-[188px] bg-white flex items-center justify-between p-6">
+                <div>
+                  <h3 className="font-bold text-lg text-foreground">
+                    {banner.title}
+                  </h3>
+                  <div className="my-2">
+                    <span className="font-bold text-primary text-xl">${banner.price}</span>
+                    <span className="text-muted-foreground line-through ml-2">
+                      ${banner.originalPrice}
+                    </span>
+                  </div>
+                  <Button asChild variant="link" className="p-0">
+                    <Link href={banner.href}>Shop Now</Link>
+                  </Button>
                 </div>
-                <Button asChild variant="link" className="p-0">
-                  <Link href="/shop">Shop Now</Link>
-                </Button>
-              </div>
-              <div className="relative w-24 h-full">
-                <Image
-                  src="https://placehold.co/150x150.png"
-                  alt="iPhone 14 Pro Max"
-                  fill
-                  sizes="150px"
-                  className="object-contain"
-                  data-ai-hint="purple iphone"
-                />
-              </div>
-            </div>
-            <div className="relative rounded-lg overflow-hidden h-[188px] bg-white flex items-center justify-between p-6">
-              <div>
-                <h3 className="font-bold text-lg text-foreground">
-                  Wireless Headphone
-                </h3>
-                <div className="my-2">
-                  <span className="font-bold text-primary text-xl">$599</span>
-                  <span className="text-muted-foreground line-through ml-2">
-                    $799
-                  </span>
+                <div className="relative w-24 h-full">
+                  <Image
+                    src={banner.image}
+                    alt={banner.title}
+                    fill
+                    sizes="150px"
+                    className="object-contain"
+                    data-ai-hint={banner.imageHint}
+                  />
                 </div>
-                <Button asChild variant="link" className="p-0">
-                  <Link href="/shop">Shop Now</Link>
-                </Button>
               </div>
-              <div className="relative w-24 h-full">
-                <Image
-                  src="https://placehold.co/150x150.png"
-                  alt="Wireless Headphone"
-                  fill
-                  sizes="150px"
-                  className="object-contain"
-                  data-ai-hint="blue headphones"
-                />
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

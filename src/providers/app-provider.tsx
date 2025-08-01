@@ -2,14 +2,15 @@
 'use client';
 
 import { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
-import type { Product, CartItem, HeroSlide } from '@/lib/types';
-import { initialProducts, initialHeroSlides } from '@/lib/data';
+import type { Product, CartItem, HeroSlide, SideBanner } from '@/lib/types';
+import { initialProducts, initialHeroSlides, initialSideBanners } from '@/lib/data';
 
 interface AppContextType {
   products: Product[];
   cart: CartItem[];
   wishlist: Product[];
   heroSlides: HeroSlide[];
+  sideBanners: SideBanner[];
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -23,6 +24,7 @@ interface AppContextType {
   addHeroSlide: (slideData: Omit<HeroSlide, 'id'>) => void;
   updateHeroSlide: (slide: HeroSlide) => void;
   deleteHeroSlide: (slideId: string) => void;
+  updateSideBanner: (banner: SideBanner) => void;
   cartTotal: number;
   cartCount: number;
   wishlistCount: number;
@@ -38,6 +40,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<Product[]>([]);
   const [heroSlides, setHeroSlides] = useState<HeroSlide[]>([]);
+  const [sideBanners, setSideBanners] = useState<SideBanner[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -47,9 +50,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const storedWishlist = localStorage.getItem('shopswift-wishlist');
       const storedProducts = localStorage.getItem('shopswift-products');
       const storedHeroSlides = localStorage.getItem('shopswift-hero-slides');
+      const storedSideBanners = localStorage.getItem('shopswift-side-banners');
       
       setProducts(storedProducts ? JSON.parse(storedProducts) : initialProducts);
       setHeroSlides(storedHeroSlides ? JSON.parse(storedHeroSlides) : initialHeroSlides);
+      setSideBanners(storedSideBanners ? JSON.parse(storedSideBanners) : initialSideBanners);
 
       if (storedCart) setCart(JSON.parse(storedCart));
       if (storedWishlist) setWishlist(JSON.parse(storedWishlist));
@@ -58,6 +63,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       console.error("Failed to parse from localStorage", error);
       setProducts(initialProducts);
       setHeroSlides(initialHeroSlides);
+      setSideBanners(initialSideBanners);
     }
     
     const authStatus = sessionStorage.getItem('isAuthenticated');
@@ -74,11 +80,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             localStorage.setItem('shopswift-cart', JSON.stringify(cart));
             localStorage.setItem('shopswift-wishlist', JSON.stringify(wishlist));
             localStorage.setItem('shopswift-hero-slides', JSON.stringify(heroSlides));
+            localStorage.setItem('shopswift-side-banners', JSON.stringify(sideBanners));
         } catch (error) {
             console.error("Failed to save to localStorage", error);
         }
     }
-  }, [products, cart, wishlist, heroSlides, isHydrated]);
+  }, [products, cart, wishlist, heroSlides, sideBanners, isHydrated]);
 
 
   const login = async (password: string): Promise<boolean> => {
@@ -130,6 +137,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const deleteHeroSlide = (slideId: string) => {
     setHeroSlides(prev => prev.filter(s => s.id !== slideId));
   }
+
+  const updateSideBanner = (updatedBanner: SideBanner) => {
+    setSideBanners(prev =>
+      prev.map(b => b.id === updatedBanner.id ? updatedBanner : b)
+    );
+  };
 
   const addToCart = (product: Product, quantity = 1) => {
     setCart(prevCart => {
@@ -199,6 +212,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         cart,
         wishlist,
         heroSlides,
+        sideBanners,
         addToCart,
         removeFromCart,
         updateQuantity,
@@ -212,6 +226,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         addHeroSlide,
         updateHeroSlide,
         deleteHeroSlide,
+        updateSideBanner,
         cartTotal,
         cartCount,
         wishlistCount,

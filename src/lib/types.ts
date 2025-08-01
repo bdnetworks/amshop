@@ -20,3 +20,13 @@ export type HeroSlide = {
   imageHint: string;
   href: string;
 };
+
+export type SideBanner = {
+  id: string;
+  title: string;
+  price: number;
+  originalPrice: number;
+  image: string;
+  imageHint: string;
+  href: string;
+};
