@@ -1,5 +1,5 @@
 
-import type { Product, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost, ContactPageContent } from './types';
+import type { Product, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost, ContactPageContent, HeaderMenu, FooterData, MenuItem, LinkSection, SocialLink } from './types';
 
 export const initialProducts: Product[] = [
   {
@@ -185,9 +185,9 @@ export const initialAboutPageContent: AboutPageContent = {
   imageHint: 'modern office',
 };
 
-const blogContent1 = `The world of e-commerce is in a constant state of flux, driven by technological advancements and shifting consumer behaviors. Staying ahead of the curve is crucial for any online business. Here are some of the key trends to watch: **1. AI-Powered Personalization:** Artificial intelligence is no longer a buzzword; it's a critical tool for creating tailored shopping experiences. From personalized product recommendations to dynamic pricing, AI helps businesses connect with customers on a deeper level. **2. The Rise of Social Commerce:** Social media platforms are transforming into powerful sales channels. Features like in-app checkout and shoppable posts make it easier than ever for consumers to discover and purchase products directly from their feeds. **3. Sustainability and Ethical Practices:** Modern consumers are increasingly conscious of their environmental and social impact. Brands that prioritize sustainability, ethical sourcing, and transparent practices are gaining a significant competitive edge. **4. Augmented Reality (AR) Try-Ons:** AR technology is bridging the gap between online and in-store shopping. It allows customers to visualize products in their own space or even "try on" clothes and accessories virtually, leading to higher conversion rates and fewer returns. **5. Voice Commerce:** The growing popularity of smart speakers is paving the way for voice-activated shopping. Optimizing your store for voice search and creating a seamless voice-based purchasing process will be key for future success. Embracing these trends will not only enhance the customer experience but also drive growth and ensure your business remains relevant in the ever-evolving digital marketplace.`;
-const blogContent2 = `Navigating the sea of modern gadgets can be a daunting task. With new devices launching constantly, how do you choose the one that's right for you? This guide will help you make an informed decision. **1. Identify Your Primary Need:** Before you get dazzled by features, ask yourself: what is the main problem this gadget will solve? Are you looking for a device for productivity, entertainment, fitness, or something else? A clear purpose will narrow down your options significantly. **2. Set a Realistic Budget:** Gadgets come in all price ranges. Determine how much you're willing to spend and stick to it. Remember to account for potential accessories like cases, chargers, or software subscriptions. **3. Research and Read Reviews:** Don't just rely on the manufacturer's description. Look for in-depth reviews from reputable tech websites and real users. Pay attention to both the pros and cons to get a balanced view. Consider aspects like performance, battery life, build quality, and ease of use. **4. Consider the Ecosystem:** If you're already invested in a particular ecosystem (like Apple, Google, or Samsung), a new gadget that integrates seamlessly with your existing devices can offer a much smoother experience. **5. Future-Proofing:** While you don't need the absolute latest model, consider a device that will remain relevant and supported with updates for a reasonable amount of time. Look at the processor, RAM, and software update policy. By following these steps, you can cut through the marketing hype and find a gadget that truly enhances your life.`;
-const blogContent3 = `As remote work becomes a permanent fixture for many, creating a home office that is both functional and inspiring is essential for productivity and well-being. Here's how to design a space you'll love to work in. **1. Location, Location, Location:** If possible, choose a dedicated room with a door to minimize distractions. If space is limited, find a quiet corner in a low-traffic area. Good natural light is a huge plus, so setting up near a window is ideal. **2. Invest in Ergonomics:** Your health comes first. An ergonomic chair that provides proper lumbar support is a non-negotiable investment. Position your monitor at eye level to avoid neck strain, and ensure your keyboard and mouse allow for a neutral wrist posture. An adjustable standing desk can also be a great addition. **3. Keep it Organized and Clutter-Free:** A tidy workspace promotes a tidy mind. Use shelves, drawers, and cable organizers to keep clutter at bay. A "one-touch" rule can be effective: deal with papers and items immediately instead of letting them pile up. **4. Personalize Your Space:** While it should be professional, your home office should also reflect your personality. Add plants, artwork, or photos that make you feel happy and motivated. Choose a color scheme that you find calming or energizing. **5. Define Your Boundaries:** When your office is at home, it's easy for work to bleed into your personal life. Establish clear working hours and "close the door" at the end of the day. This mental separation is crucial for maintaining a healthy work-life balance. A well-designed home office is more than just a place to work; it's a sanctuary that can boost your creativity, focus, and overall job satisfaction.`;
+const blogContent1 = `The world of e-commerce is in a constant state of flux, driven by technological advancements and shifting consumer behaviors. Staying ahead of the curve is crucial for any online business. Here are some of the key trends to watch: **1. AI-Powered Personalization:** Artificial intelligence is no longer a buzzword; it\'s a critical tool for creating tailored shopping experiences. From personalized product recommendations to dynamic pricing, AI helps businesses connect with customers on a deeper level. **2. The Rise of Social Commerce:** Social media platforms are transforming into powerful sales channels. Features like in-app checkout and shoppable posts make it easier than ever for consumers to discover and purchase products directly from their feeds. **3. Sustainability and Ethical Practices:** Modern consumers are increasingly conscious of their environmental and social impact. Brands that prioritize sustainability, ethical sourcing, and transparent practices are gaining a significant competitive edge. **4. Augmented Reality (AR) Try-Ons:** AR technology is bridging the gap between online and in-store shopping. It allows customers to visualize products in their own space or even "try on" clothes and accessories virtually, leading to higher conversion rates and fewer returns. **5. Voice Commerce:** The growing popularity of smart speakers is paving the way for voice-activated shopping. Optimizing your store for voice search and creating a seamless voice-based purchasing process will be key for future success. Embracing these trends will not only enhance the customer experience but also drive growth and ensure your business remains relevant in the ever-evolving digital marketplace.`;
+const blogContent2 = `Navigating the sea of modern gadgets can be a daunting task. With new devices launching constantly, how do you choose the one that\'s right for you? This guide will help you make an informed decision. **1. Identify Your Primary Need:** Before you get dazzled by features, ask yourself: what is the main problem this gadget will solve? Are you looking for a device for productivity, entertainment, fitness, or something else? A clear purpose will narrow down your options significantly. **2. Set a Realistic Budget:** Gadgets come in all price ranges. Determine how much you\'re willing to spend and stick to it. Remember to account for potential accessories like cases, chargers, or software subscriptions. **3. Research and Read Reviews:** Don\'t just rely on the manufacturer\'s description. Look for in-depth reviews from reputable tech websites and real users. Pay attention to both the pros and cons to get a balanced view. Consider aspects like performance, battery life, build quality, and ease of use. **4. Consider the Ecosystem:** If you\'re already invested in a particular ecosystem (like Apple, Google, or Samsung), a new gadget that integrates seamlessly with your existing devices can offer a much smoother experience. **5. Future-Proofing:** While you don\'t need the absolute latest model, consider a device that will remain relevant and supported with updates for a reasonable amount of time. Look at the processor, RAM, and software update policy. By following these steps, you can cut through the marketing hype and find a gadget that truly enhances your life.`;
+const blogContent3 = `As remote work becomes a permanent fixture for many, creating a home office that is both functional and inspiring is essential for productivity and well-being. Here\'s how to design a space you\'ll love to work in. **1. Location, Location, Location:** If possible, choose a dedicated room with a door to minimize distractions. If space is limited, find a quiet corner in a low-traffic area. Good natural light is a huge plus, so setting up near a window is ideal. **2. Invest in Ergonomics:** Your health comes first. An ergonomic chair that provides proper lumbar support is a non-negotiable investment. Position your monitor at eye level to avoid neck strain, and ensure your keyboard and mouse allow for a neutral wrist posture. An adjustable standing desk can also be a great addition. **3. Keep it Organized and Clutter-Free:** A tidy workspace promotes a tidy mind. Use shelves, drawers, and cable organizers to keep clutter at bay. A "one-touch" rule can be effective: deal with papers and items immediately instead of letting them pile up. **4. Personalize Your Space:** While it should be professional, your home office should also reflect your personality. Add plants, artwork, or photos that make you feel happy and motivated. Choose a color scheme that you find calming or energizing. **5. Define Your Boundaries:** When your office is at home, it\'s easy for work to bleed into your personal life. Establish clear working hours and "close the door" at the end of the day. This mental separation is crucial for maintaining a healthy work-life balance. A well-designed home office is more than just a place to work; it\'s a sanctuary that can boost your creativity, focus, and overall job satisfaction.`;
 
 export const initialBlogPosts: BlogPost[] = [
   {
@@ -230,4 +230,58 @@ export const initialContactPageContent: ContactPageContent = {
   phone: '(+965) 7492-3477',
   whatsappNumber: '+96574923477',
   mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3172.332539539423!2d-122.0842496846959!3d37.422065979825!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fba024255f5f5%3A0x1634b3e4f71ce5f0!2sGoogleplex!5e0!3m2!1sen!2sus!4v1687882209489!5m2!1sen!2sus',
+};
+
+export const initialHeaderMenu: HeaderMenu = {
+  links: [
+    { id: 'h-1', label: 'Home', href: '/' },
+    { id: 'h-2', label: 'Shop', href: '/shop' },
+    { id: 'h-3', label: 'About', href: '/about' },
+    { id: 'h-4', label: 'Blog', href: '/blog' },
+    { id: 'h-5', label: 'Contact', href: '/contact' },
+  ],
+};
+
+export const initialFooterData: FooterData = {
+  about: {
+    description: 'The most powerful and creative eCommerce HTML template.',
+    address: '123 Main St, Anytown, USA',
+    phone: '(123) 456-7890',
+    email: 'support@shopswift.com',
+  },
+  companyLinks: {
+    title: 'Company',
+    links: [
+      { id: 'fc-1', label: 'About Us', href: '/about' },
+      { id: 'fc-2', label: 'Delivery Information', href: '#' },
+      { id: 'fc-3', label: 'Privacy Policy', href: '#' },
+      { id: 'fc-4', label: 'Terms & Conditions', href: '#' },
+      { id: 'fc-5', label: 'Contact Us', href: '/contact' },
+      { id: 'fc-6', label: 'Support Center', href: '#' },
+    ]
+  },
+  infoLinks: {
+    title: 'Information',
+    links: [
+      { id: 'fi-1', label: 'Search', href: '#' },
+      { id: 'fi-2', label: 'Help', href: '#' },
+      { id: 'fi-3', label: 'Information', href: '#' },
+      { id: 'fi-4', label: 'Shipping Details', href: '#' },
+    ]
+  },
+  socialLinks: [
+    { id: 's-1', name: 'Facebook', href: '#' },
+    { id: 's-2', name: 'Twitter', href: '#' },
+    { id: 's-3', name: 'Instagram', href: '#' },
+    { id: 's-4', name: 'Linkedin', href: '#' },
+    { id: 's-5', name: 'Youtube', href: '#' },
+  ],
+  newsletter: {
+    title: 'Sign Up For Our Newsletter',
+    description: 'Get email updates about our latest shop and special offers.',
+    placeholder: 'Enter your email',
+    buttonText: 'Subscribe',
+  },
+  copyright: `© ${new Date().getFullYear()} ShopSwift. All Rights Reserved.`,
+  paymentImageUrl: 'https://nextjs-two-navy-66.vercel.app/_next/image?url=%2Fpayment.png&w=256&q=75',
 };

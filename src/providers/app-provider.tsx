@@ -2,8 +2,8 @@
 'use client';
 
 import { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
-import type { Product, CartItem, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost, ContactPageContent } from '@/lib/types';
-import { initialProducts, initialHeroSlides, initialSideBanners, initialGoogleFormSettings, initialHomepageSections, initialCategories, initialAdBanners, initialAboutPageContent, initialBlogPosts, initialContactPageContent } from '@/lib/data';
+import type { Product, CartItem, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost, ContactPageContent, HeaderMenu, FooterData } from '@/lib/types';
+import { initialProducts, initialHeroSlides, initialSideBanners, initialGoogleFormSettings, initialHomepageSections, initialCategories, initialAdBanners, initialAboutPageContent, initialBlogPosts, initialContactPageContent, initialHeaderMenu, initialFooterData } from '@/lib/data';
 
 interface AppContextType {
   products: Product[];
@@ -18,6 +18,8 @@ interface AppContextType {
   aboutPageContent: AboutPageContent;
   blogPosts: BlogPost[];
   contactPageContent: ContactPageContent;
+  headerMenu: HeaderMenu;
+  footerData: FooterData;
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -41,6 +43,8 @@ interface AppContextType {
   updateBlogPost: (post: BlogPost) => void;
   deleteBlogPost: (postId: string) => void;
   updateContactPageContent: (content: ContactPageContent) => void;
+  updateHeaderMenu: (menu: HeaderMenu) => void;
+  updateFooterData: (data: FooterData) => void;
   cartTotal: number;
   cartCount: number;
   wishlistCount: number;
@@ -64,6 +68,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [aboutPageContent, setAboutPageContent] = useState<AboutPageContent | null>(null);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [contactPageContent, setContactPageContent] = useState<ContactPageContent | null>(null);
+  const [headerMenu, setHeaderMenu] = useState<HeaderMenu | null>(null);
+  const [footerData, setFooterData] = useState<FooterData | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -81,6 +87,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const storedAboutContent = localStorage.getItem('shopswift-about-content');
       const storedBlogPosts = localStorage.getItem('shopswift-blog-posts');
       const storedContactContent = localStorage.getItem('shopswift-contact-content');
+      const storedHeaderMenu = localStorage.getItem('shopswift-header-menu');
+      const storedFooterData = localStorage.getItem('shopswift-footer-data');
       
       setProducts(storedProducts ? JSON.parse(storedProducts) : initialProducts);
       setHeroSlides(storedHeroSlides ? JSON.parse(storedHeroSlides) : initialHeroSlides);
@@ -92,6 +100,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setAboutPageContent(storedAboutContent ? JSON.parse(storedAboutContent) : initialAboutPageContent);
       setBlogPosts(storedBlogPosts ? JSON.parse(storedBlogPosts) : initialBlogPosts);
       setContactPageContent(storedContactContent ? JSON.parse(storedContactContent) : initialContactPageContent);
+      setHeaderMenu(storedHeaderMenu ? JSON.parse(storedHeaderMenu) : initialHeaderMenu);
+      setFooterData(storedFooterData ? JSON.parse(storedFooterData) : initialFooterData);
 
       if (storedCart) setCart(JSON.parse(storedCart));
       if (storedWishlist) setWishlist(JSON.parse(storedWishlist));
@@ -108,6 +118,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setAboutPageContent(initialAboutPageContent);
       setBlogPosts(initialBlogPosts);
       setContactPageContent(initialContactPageContent);
+      setHeaderMenu(initialHeaderMenu);
+      setFooterData(initialFooterData);
     }
     
     const authStatus = sessionStorage.getItem('isAuthenticated');
@@ -132,11 +144,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             if (aboutPageContent) localStorage.setItem('shopswift-about-content', JSON.stringify(aboutPageContent));
             localStorage.setItem('shopswift-blog-posts', JSON.stringify(blogPosts));
             if (contactPageContent) localStorage.setItem('shopswift-contact-content', JSON.stringify(contactPageContent));
+            if (headerMenu) localStorage.setItem('shopswift-header-menu', JSON.stringify(headerMenu));
+            if (footerData) localStorage.setItem('shopswift-footer-data', JSON.stringify(footerData));
         } catch (error) {
             console.error("Failed to save to localStorage", error);
         }
     }
-  }, [products, cart, wishlist, heroSlides, sideBanners, googleFormSettings, homepageSections, categories, adBanners, aboutPageContent, blogPosts, contactPageContent, isHydrated]);
+  }, [products, cart, wishlist, heroSlides, sideBanners, googleFormSettings, homepageSections, categories, adBanners, aboutPageContent, blogPosts, contactPageContent, headerMenu, footerData, isHydrated]);
 
 
   const login = async (password: string): Promise<boolean> => {
@@ -242,6 +256,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setContactPageContent(content);
   }
 
+  const updateHeaderMenu = (menu: HeaderMenu) => {
+    setHeaderMenu(menu);
+  }
+
+  const updateFooterData = (data: FooterData) => {
+    setFooterData(data);
+  }
+
   const addToCart = (product: Product, quantity = 1) => {
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.product.id === product.id);
@@ -318,6 +340,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         aboutPageContent: aboutPageContent!,
         blogPosts,
         contactPageContent: contactPageContent!,
+        headerMenu: headerMenu!,
+        footerData: footerData!,
         addToCart,
         removeFromCart,
         updateQuantity,
@@ -341,6 +365,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         updateBlogPost,
         deleteBlogPost,
         updateContactPageContent,
+        updateHeaderMenu,
+        updateFooterData,
         cartTotal,
         cartCount,
         wishlistCount,

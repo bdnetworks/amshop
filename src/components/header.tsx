@@ -23,7 +23,7 @@ import { Separator } from './ui/separator';
 const categories = ['Clothes', 'Watches', 'Toys', 'Kitchen', 'Headsets', 'Gadgets', 'Gaming', 'Computer', 'Furniture', 'Baby'];
 
 export function Header() {
-  const { cartCount, cartTotal, wishlistCount, isAuthenticated, logout } = useAppContext();
+  const { cartCount, cartTotal, wishlistCount, isAuthenticated, logout, headerMenu } = useAppContext();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -83,17 +83,17 @@ export function Header() {
                             </Link>
                         </SheetHeader>
                         <nav className="flex flex-col gap-4 p-4">
-                            {['Home', 'Shop', 'About', 'Blog', 'Contact'].map((item) => (
+                            {headerMenu?.links.map((item) => (
                                 <Link
-                                key={item}
-                                href={`/${item.toLowerCase() === 'home' ? '' : item.toLowerCase()}`}
+                                key={item.id}
+                                href={item.href}
                                 className={cn(
                                     "font-semibold transition-colors hover:text-primary",
-                                    pathname === `/${item.toLowerCase() === 'home' ? '' : item.toLowerCase()}` ? "text-primary" : "text-foreground"
+                                    pathname === item.href ? "text-primary" : "text-foreground"
                                 )}
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 >
-                                {item}
+                                {item.label}
                                 </Link>
                             ))}
                              {isAuthenticated && (
@@ -217,11 +217,9 @@ export function Header() {
                       </DropdownMenuContent>
                     </DropdownMenu>
 
-                    <Link href="/" className={cn("hover:text-primary", pathname === '/' && 'text-primary')}>Home</Link>
-                    <Link href="/shop" className={cn("hover:text-primary", pathname === '/shop' && 'text-primary')}>Shop</Link>
-                    <Link href="/about" className={cn("hover:text-primary", pathname === '/about' && 'text-primary')}>About</Link>
-                    <Link href="/blog" className={cn("hover:text-primary", pathname === '/blog' && 'text-primary')}>Blog</Link>
-                    <Link href="/contact" className={cn("hover:text-primary", pathname === '/contact' && 'text-primary')}>Contact</Link>
+                    {headerMenu?.links.map(link => (
+                        <Link key={link.id} href={link.href} className={cn("hover:text-primary", pathname === link.href && 'text-primary')}>{link.label}</Link>
+                    ))}
                     {isAuthenticated && (
                         <Link href="/admin" className={cn("hover:text-primary", pathname === '/admin' && 'text-primary')}>Admin</Link>
                     )}

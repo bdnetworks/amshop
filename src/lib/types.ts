@@ -1,4 +1,5 @@
 
+
 export type Product = {
   id: string;
   name: string;
@@ -99,3 +100,44 @@ export type ContactPageContent = {
   whatsappNumber: string;
   mapUrl: string;
 };
+
+export type MenuItem = {
+  id: string;
+  label: string;
+  href: string;
+};
+
+export type HeaderMenu = {
+  links: MenuItem[];
+};
+
+export type LinkSection = {
+  title: string;
+  links: MenuItem[];
+};
+
+export type SocialLink = {
+  id: string;
+  name: 'Facebook' | 'Twitter' | 'Instagram' | 'Linkedin' | 'Youtube';
+  href: string;
+}
+
+export type FooterData = {
+  about: {
+    description: string;
+    address: string;
+    phone: string;
+    email: string;
+  };
+  companyLinks: LinkSection;
+  infoLinks: LinkSection;
+  socialLinks: SocialLink[];
+  newsletter: {
+    title: string;
+    description: string;
+    placeholder: string;
+    buttonText: string;
+  };
+  copyright: string;
+  paymentImageUrl: string;
+}

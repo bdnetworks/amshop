@@ -21,6 +21,8 @@ import BlogPostsForm from '@/components/admin/blog-posts-form';
 import { Button } from '@/components/ui/button';
 import BlogPostList from '@/components/admin/blog-post-list';
 import ContactPageForm from '@/components/admin/contact-page-form';
+import HeaderMenuForm from '@/components/admin/header-menu-form';
+import FooterForm from '@/components/admin/footer-form';
 
 const adminViews = [
   { id: 'products', label: 'Manage Products' },
@@ -29,6 +31,8 @@ const adminViews = [
   { id: 'categories', label: 'Manage Categories' },
   { id: 'ad-banners', label: 'Manage Ad Banners' },
   { id: 'homepage', label: 'Homepage Sections' },
+  { id: 'header', label: 'Manage Header Menu' },
+  { id: 'footer', label: 'Manage Footer' },
   { id: 'about', label: 'Manage About Page' },
   { id: 'blog', label: 'Manage Blog Posts' },
   { id: 'contact', label: 'Manage Contact Page' },
@@ -239,6 +243,42 @@ export default function AdminPage() {
             </div>
         )}
 
+        {activeView === 'header' && (
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+                <div className="lg:col-span-1">
+                  <Card>
+                      <CardHeader>
+                      <CardTitle className="text-2xl">Manage Header Menu</CardTitle>
+                      <CardDescription>
+                          Update the navigation links in the main header.
+                      </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <HeaderMenuForm />
+                      </CardContent>
+                  </Card>
+                </div>
+            </div>
+        )}
+
+        {activeView === 'footer' && (
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+                <div className="lg:col-span-1">
+                  <Card>
+                      <CardHeader>
+                      <CardTitle className="text-2xl">Manage Footer</CardTitle>
+                      <CardDescription>
+                          Update the content and links in the site footer.
+                      </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <FooterForm />
+                      </CardContent>
+                  </Card>
+                </div>
+            </div>
+        )}
+        
         {activeView === 'about' && (
            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
                 <div className="lg:col-span-1">
