@@ -29,19 +29,19 @@ export function Header() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  const controlNavbar = () => {
-    if (typeof window !== 'undefined') {
-      if (window.scrollY > lastScrollY && window.scrollY > 200) { // if scroll down hide the navbar
-        setIsVisible(false);
-      } else { // if scroll up show the navbar
-        setIsVisible(true);
-      }
-      // remember current page location to use in the next move
-      setLastScrollY(window.scrollY);
-    }
-  };
-
   useEffect(() => {
+    const controlNavbar = () => {
+        if (typeof window !== 'undefined') { 
+          if (window.scrollY > lastScrollY && window.scrollY > 200) { // if scroll down hide the navbar
+            setIsVisible(false);
+          } else { // if scroll up show the navbar
+            setIsVisible(true);
+          }
+          // remember current page location to use in the next move
+          setLastScrollY(window.scrollY);
+        }
+      };
+
     if (typeof window !== 'undefined') {
       window.addEventListener('scroll', controlNavbar);
 
@@ -165,7 +165,7 @@ export function Header() {
             </div>
         </div>
         {/* Mobile Search */}
-        <div className="lg:hidden container mx-auto px-4 sm:px-6 py-2 border-t">
+        <div className="lg:hidden container mx-auto px-4 sm:px-6 py-2 border-t bg-background">
           <div className="flex w-full items-center rounded-md border border-input">
               <Input 
                   type="search" 
