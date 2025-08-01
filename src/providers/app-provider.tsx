@@ -1,8 +1,8 @@
 'use client';
 
 import { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
-import type { Product, CartItem, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection } from '@/lib/types';
-import { initialProducts, initialHeroSlides, initialSideBanners, initialGoogleFormSettings, initialHomepageSections } from '@/lib/data';
+import type { Product, CartItem, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData } from '@/lib/types';
+import { initialProducts, initialHeroSlides, initialSideBanners, initialGoogleFormSettings, initialHomepageSections, initialCategories, initialAdBanners } from '@/lib/data';
 
 interface AppContextType {
   products: Product[];
@@ -12,6 +12,8 @@ interface AppContextType {
   sideBanners: SideBanner[];
   googleFormSettings: GoogleFormSettings;
   homepageSections: HomepageSection[];
+  categories: CategoryItem[];
+  adBanners: AdBannerData;
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -28,6 +30,8 @@ interface AppContextType {
   updateSideBanner: (banner: SideBanner) => void;
   updateGoogleFormSettings: (settings: GoogleFormSettings) => void;
   updateHomepageSections: (sections: HomepageSection[]) => void;
+  updateCategories: (categories: CategoryItem[]) => void;
+  updateAdBanners: (banners: AdBannerData) => void;
   cartTotal: number;
   cartCount: number;
   wishlistCount: number;
@@ -46,6 +50,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [sideBanners, setSideBanners] = useState<SideBanner[]>([]);
   const [googleFormSettings, setGoogleFormSettings] = useState<GoogleFormSettings>(initialGoogleFormSettings);
   const [homepageSections, setHomepageSections] = useState<HomepageSection[]>([]);
+  const [categories, setCategories] = useState<CategoryItem[]>([]);
+  const [adBanners, setAdBanners] = useState<AdBannerData>(initialAdBanners);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -58,12 +64,16 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const storedSideBanners = localStorage.getItem('shopswift-side-banners');
       const storedFormSettings = localStorage.getItem('shopswift-form-settings');
       const storedHomepageSections = localStorage.getItem('shopswift-homepage-sections');
+      const storedCategories = localStorage.getItem('shopswift-categories');
+      const storedAdBanners = localStorage.getItem('shopswift-ad-banners');
       
       setProducts(storedProducts ? JSON.parse(storedProducts) : initialProducts);
       setHeroSlides(storedHeroSlides ? JSON.parse(storedHeroSlides) : initialHeroSlides);
       setSideBanners(storedSideBanners ? JSON.parse(storedSideBanners) : initialSideBanners);
       setGoogleFormSettings(storedFormSettings ? JSON.parse(storedFormSettings) : initialGoogleFormSettings);
       setHomepageSections(storedHomepageSections ? JSON.parse(storedHomepageSections) : initialHomepageSections);
+      setCategories(storedCategories ? JSON.parse(storedCategories) : initialCategories);
+      setAdBanners(storedAdBanners ? JSON.parse(storedAdBanners) : initialAdBanners);
 
       if (storedCart) setCart(JSON.parse(storedCart));
       if (storedWishlist) setWishlist(JSON.parse(storedWishlist));
@@ -75,6 +85,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setSideBanners(initialSideBanners);
       setGoogleFormSettings(initialGoogleFormSettings);
       setHomepageSections(initialHomepageSections);
+      setCategories(initialCategories);
+      setAdBanners(initialAdBanners);
     }
     
     const authStatus = sessionStorage.getItem('isAuthenticated');
@@ -94,11 +106,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             localStorage.setItem('shopswift-side-banners', JSON.stringify(sideBanners));
             localStorage.setItem('shopswift-form-settings', JSON.stringify(googleFormSettings));
             localStorage.setItem('shopswift-homepage-sections', JSON.stringify(homepageSections));
+            localStorage.setItem('shopswift-categories', JSON.stringify(categories));
+            localStorage.setItem('shopswift-ad-banners', JSON.stringify(adBanners));
         } catch (error) {
             console.error("Failed to save to localStorage", error);
         }
     }
-  }, [products, cart, wishlist, heroSlides, sideBanners, googleFormSettings, homepageSections, isHydrated]);
+  }, [products, cart, wishlist, heroSlides, sideBanners, googleFormSettings, homepageSections, categories, adBanners, isHydrated]);
 
 
   const login = async (password: string): Promise<boolean> => {
@@ -163,6 +177,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const updateHomepageSections = (sections: HomepageSection[]) => {
     setHomepageSections(sections);
+  };
+
+  const updateCategories = (updatedCategories: CategoryItem[]) => {
+    setCategories(updatedCategories);
+  }
+
+  const updateAdBanners = (banners: AdBannerData) => {
+    setAdBanners(banners);
   };
 
   const addToCart = (product: Product, quantity = 1) => {
@@ -236,6 +258,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         sideBanners,
         googleFormSettings,
         homepageSections,
+        categories,
+        adBanners,
         addToCart,
         removeFromCart,
         updateQuantity,
@@ -252,6 +276,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         updateSideBanner,
         updateGoogleFormSettings,
         updateHomepageSections,
+        updateCategories,
+        updateAdBanners,
         cartTotal,
         cartCount,
         wishlistCount,

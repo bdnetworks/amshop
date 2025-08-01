@@ -2,7 +2,6 @@
 'use client';
 
 import * as React from 'react';
-import { Shirt, Watch, ToyBrick, Utensils, Headset, Smartphone, Dices, Computer, Armchair, Baby } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -11,24 +10,28 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
-
-const categories = [
-    { name: 'Clothes', icon: <Shirt className="h-10 w-10 text-primary" /> },
-    { name: 'Watches', icon: <Watch className="h-10 w-10 text-primary" /> },
-    { name: 'Toys', icon: <ToyBrick className="h-10 w-10 text-primary" /> },
-    { name: 'Kitchen', icon: <Utensils className="h-10 w-10 text-primary" /> },
-    { name: 'Headsets', icon: <Headset className="h-10 w-10 text-primary" /> },
-    { name: 'Gadgets', icon: <Smartphone className="h-10 w-10 text-primary" /> },
-    { name: 'Gaming', icon: <Dices className="h-10 w-10 text-primary" /> },
-    { name: 'Computer', icon: <Computer className="h-10 w-10 text-primary" /> },
-    { name: 'Furniture', icon: <Armchair className="h-10 w-10 text-primary" /> },
-    { name: 'Baby', icon: <Baby className="h-10 w-10 text-primary" /> },
-];
+import { useAppContext } from '@/providers/app-provider';
+import LucideIcon from './lucide-icon';
+import { Skeleton } from './ui/skeleton';
 
 export default function BrowseByCategory() {
+  const { categories } = useAppContext();
   const plugin = React.useRef(
     Autoplay({ delay: 3000, stopOnInteraction: true })
   )
+
+  if (!categories || categories.length === 0) {
+    return (
+        <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
+            <h2 className="section-title">Browse by Category</h2>
+             <div className="flex gap-4">
+                {Array.from({ length: 6 }).map((_, i) => (
+                    <Skeleton key={i} className="h-36 w-full rounded-lg" />
+                ))}
+            </div>
+        </div>
+    )
+  }
 
   return (
     <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
@@ -44,10 +47,10 @@ export default function BrowseByCategory() {
           onMouseLeave={plugin.current.reset}
         >
           <CarouselContent>
-            {categories.map((category, index) => (
-              <CarouselItem key={index} className="md:basis-1/4 lg:basis-1/6">
+            {categories.map((category) => (
+              <CarouselItem key={category.id} className="md:basis-1/4 lg:basis-1/6">
                  <div className="category-card cursor-pointer h-full">
-                    {category.icon}
+                    <LucideIcon name={category.icon} className="h-10 w-10 text-primary" />
                     <h3 className="font-semibold text-lg">{category.name}</h3>
                 </div>
               </CarouselItem>

@@ -15,6 +15,8 @@ import type { Product, type HeroSlide } from '@/lib/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import GoogleFormInstructions from '@/components/admin/google-form-instructions';
 import HomepageSectionsForm from '@/components/admin/homepage-sections-form';
+import CategoryForm from '@/components/admin/category-form';
+import AdBannerForm from '@/components/admin/ad-banner-form';
 
 export default function AdminPage() {
   const { isAuthenticated } = useAppContext();
@@ -57,10 +59,12 @@ export default function AdminPage() {
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
       <Tabs defaultValue="products" className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="products">Manage Products</TabsTrigger>
             <TabsTrigger value="slides">Manage Hero Slides</TabsTrigger>
             <TabsTrigger value="banners">Manage Side Banners</TabsTrigger>
+            <TabsTrigger value="categories">Manage Categories</TabsTrigger>
+            <TabsTrigger value="ad-banners">Manage Ad Banners</TabsTrigger>
             <TabsTrigger value="homepage">Homepage Sections</TabsTrigger>
             <TabsTrigger value="google-form">Google Form</TabsTrigger>
         </TabsList>
@@ -142,6 +146,40 @@ export default function AdminPage() {
                       </CardHeader>
                       <CardContent>
                         <SideBannerForm />
+                      </CardContent>
+                  </Card>
+                </div>
+            </div>
+        </TabsContent>
+        <TabsContent value="categories">
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+                <div className="lg:col-span-1">
+                  <Card>
+                      <CardHeader>
+                      <CardTitle className="text-2xl">Manage Categories</CardTitle>
+                      <CardDescription>
+                          Add, edit, or remove categories from the "Browse by Category" section.
+                      </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <CategoryForm />
+                      </CardContent>
+                  </Card>
+                </div>
+            </div>
+        </TabsContent>
+        <TabsContent value="ad-banners">
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+                <div className="lg:col-span-1">
+                  <Card>
+                      <CardHeader>
+                      <CardTitle className="text-2xl">Manage Ad Banners</CardTitle>
+                      <CardDescription>
+                          Update the content and images for the three ad banners on the homepage.
+                      </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <AdBannerForm />
                       </CardContent>
                   </Card>
                 </div>

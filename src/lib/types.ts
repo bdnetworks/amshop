@@ -49,3 +49,24 @@ export type HomepageSection = {
   limit: number;
   enabled: boolean;
 };
+
+export type CategoryItem = {
+  id: string;
+  name: string;
+  icon: string; // Lucide icon name
+};
+
+export type AdBannerContent = {
+  supertitle?: string;
+  title: string;
+  subtitle?: string;
+  buttonText: string;
+  href: string;
+  image: string;
+  imageHint: string;
+}
+
+export type AdBannerData = {
+  largeBanner: AdBannerContent;
+  smallBanners: [AdBannerContent, AdBannerContent];
+};

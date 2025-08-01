@@ -1,4 +1,4 @@
-import type { Product, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection } from './types';
+import type { Product, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData } from './types';
 
 export const initialProducts: Product[] = [
   {
@@ -133,3 +133,46 @@ export const initialHomepageSections: HomepageSection[] = [
     enabled: true,
   },
 ];
+
+export const initialCategories: CategoryItem[] = [
+    { id: '1', name: 'Clothes', icon: 'Shirt' },
+    { id: '2', name: 'Watches', icon: 'Watch' },
+    { id: '3', name: 'Toys', icon: 'ToyBrick' },
+    { id: '4', name: 'Kitchen', icon: 'Utensils' },
+    { id: '5', name: 'Headsets', icon: 'Headset' },
+    { id: '6', name: 'Gadgets', icon: 'Smartphone' },
+    { id: '7', name: 'Gaming', icon: 'Dices' },
+    { id: '8', name: 'Computer', icon: 'Computer' },
+    { id: '9', name: 'Furniture', icon: 'Armchair' },
+    { id: '10', name: 'Baby', icon: 'Baby' },
+];
+
+export const initialAdBanners: AdBannerData = {
+  largeBanner: {
+    supertitle: 'UP TO 30% OFF',
+    title: 'Apple iPhone 14 Pro',
+    subtitle: 'Now available on monthly installments.',
+    buttonText: 'Shop Now',
+    href: '/shop',
+    image: 'https://placehold.co/300x300.png',
+    imageHint: 'iphone hand'
+  },
+  smallBanners: [
+    {
+      title: 'Workout At Home',
+      subtitle: 'Flexible VSSL treadmil',
+      buttonText: 'Shop Now',
+      href: '/shop',
+      image: 'https://placehold.co/150x150.png',
+      imageHint: 'treadmill'
+    },
+    {
+      title: 'Up to 40% off',
+      subtitle: 'Apple Watch Ultra',
+      buttonText: 'Shop Now',
+      href: '/shop',
+      image: 'https://placehold.co/150x150.png',
+      imageHint: 'smart watch'
+    }
+  ]
+};
