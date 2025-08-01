@@ -33,9 +33,9 @@ export function Header() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       if (currentScrollY > lastScrollY && currentScrollY > 200) {
-        setIsVisible(false);
+        setIsVisible(false); // Scrolling down
       } else {
-        setIsVisible(true);
+        setIsVisible(true); // Scrolling up
       }
       setLastScrollY(currentScrollY);
     };
@@ -159,7 +159,7 @@ export function Header() {
                 </div>
             </div>
         </div>
-         {/* Mobile Search */}
+        {/* Mobile Search */}
         <div className="lg:hidden container mx-auto px-4 sm:px-6 py-2 border-t">
           <div className="flex w-full items-center rounded-md border border-input">
               <Input 
