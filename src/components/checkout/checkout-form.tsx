@@ -32,7 +32,7 @@ const checkoutSchema = z.object({
 type CheckoutFormValues = z.infer<typeof checkoutSchema>;
 
 export default function CheckoutForm() {
-  const { cart, cartTotal, clearCart } = useAppContext();
+  const { cart, cartTotal, clearCart, googleFormSettings } = useAppContext();
   const { toast } = useToast();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -50,10 +50,22 @@ export default function CheckoutForm() {
 
   const onSubmit = async (data: CheckoutFormValues) => {
     setIsSubmitting(true);
+    
+    if (!googleFormSettings || !googleFormSettings.formUrl) {
+        toast({
+            variant: 'destructive',
+            title: 'Configuration Error',
+            description: 'Google Form settings are not configured. Please contact support.',
+        });
+        setIsSubmitting(false);
+        return;
+    }
+
     const orderData = {
       cart,
       total: cartTotal,
       customer: data,
+      settings: googleFormSettings,
     };
     
     const result = await submitOrderAction(orderData);
@@ -151,6 +163,4 @@ export default function CheckoutForm() {
           {isSubmitting ? 'Placing Order...' : 'Place Order'}
         </Button>
       </form>
-    </Form>
-  );
-}
+    

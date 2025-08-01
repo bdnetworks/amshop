@@ -1,4 +1,4 @@
-import type { Product, HeroSlide, SideBanner } from './types';
+import type { Product, HeroSlide, SideBanner, GoogleFormSettings } from './types';
 
 export const initialProducts: Product[] = [
   {
@@ -98,3 +98,14 @@ export const initialSideBanners: SideBanner[] = [
       href: '/shop',
     }
 ]
+
+export const initialGoogleFormSettings: GoogleFormSettings = {
+  formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSfHOgLkPp_5MAN9RTqNr5Me540jpNX-Bz5DpUIYnHbUH-MPQw/formResponse',
+  entryName: 'entry.671218297',
+  entryEmail: 'entry.371021705',
+  entryMobile: 'entry.1804864243',
+  entryAddress: 'entry.212628672',
+  entryDistrict: 'entry.1897428057',
+  entryTotal: 'entry.1219446309',
+  entryCart: 'entry.1200052568',
+};

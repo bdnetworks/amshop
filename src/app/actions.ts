@@ -1,8 +1,7 @@
-
 'use server';
 
 import { generateProductDescription } from '@/ai/flows/generate-product-description';
-import type { CartItem } from '@/lib/types';
+import type { CartItem, GoogleFormSettings } from '@/lib/types';
 
 export async function enhanceDescriptionAction(basicDescription: string) {
   try {
@@ -24,11 +23,12 @@ export async function submitOrderAction(data: {
     address: string;
     district: string;
   };
+  settings: GoogleFormSettings;
 }) {
-  const formUrl = process.env.NEXT_PUBLIC_GOOGLE_FORM_ACTION_URL;
+  const formUrl = data.settings.formUrl;
   if (!formUrl) {
-    console.error('Google Form action URL is not defined in environment variables.');
-    return { success: false, error: 'Server configuration error.' };
+    console.error('Google Form action URL is not defined in settings.');
+    return { success: false, error: 'Server configuration error: Form URL is missing.' };
   }
 
   try {
@@ -49,13 +49,13 @@ export async function submitOrderAction(data: {
     )} (includes $${shippingCost.toFixed(2)} shipping)`;
 
     const formData = new FormData();
-    formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_NAME || 'entry.name', data.customer.name);
-    formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_EMAIL || 'entry.email', data.customer.email);
-    formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_MOBILE || 'entry.mobile', data.customer.mobile);
-    formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_ADDRESS || 'entry.address', data.customer.address);
-    formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_DISTRICT || 'entry.district', data.customer.district);
-    formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_TOTAL || 'entry.total', totalAmountString);
-    formData.append(process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_CART || 'entry.cart', cartItemsString);
+    formData.append(data.settings.entryName, data.customer.name);
+    formData.append(data.settings.entryEmail, data.customer.email);
+    formData.append(data.settings.entryMobile, data.customer.mobile);
+    formData.append(data.settings.entryAddress, data.customer.address);
+    formData.append(data.settings.entryDistrict, data.customer.district);
+    formData.append(data.settings.entryTotal, totalAmountString);
+    formData.append(data.settings.entryCart, cartItemsString);
 
     await fetch(formUrl, {
       method: 'POST',

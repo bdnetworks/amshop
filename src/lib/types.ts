@@ -30,3 +30,14 @@ export type SideBanner = {
   imageHint: string;
   href: string;
 };
+
+export type GoogleFormSettings = {
+  formUrl: string;
+  entryName: string;
+  entryEmail: string;
+  entryMobile: string;
+  entryAddress: string;
+  entryDistrict: string;
+  entryTotal: string;
+  entryCart: string;
+};

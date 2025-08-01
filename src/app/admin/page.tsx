@@ -9,6 +9,7 @@ import ProductListAdmin from '@/components/admin/product-list-admin';
 import HeroSlideForm from '@/components/admin/hero-slide-form';
 import HeroSlideList from '@/components/admin/hero-slide-list';
 import SideBannerForm from '@/components/admin/side-banner-form';
+import GoogleFormSettingsForm from '@/components/admin/google-form-settings-form';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { type Product, type HeroSlide } from '@/lib/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -54,10 +55,11 @@ export default function AdminPage() {
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
       <Tabs defaultValue="products" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="products">Manage Products</TabsTrigger>
             <TabsTrigger value="slides">Manage Hero Slides</TabsTrigger>
             <TabsTrigger value="banners">Manage Side Banners</TabsTrigger>
+            <TabsTrigger value="google-form">Google Form</TabsTrigger>
         </TabsList>
         <TabsContent value="products">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
@@ -137,6 +139,23 @@ export default function AdminPage() {
                       </CardHeader>
                       <CardContent>
                         <SideBannerForm />
+                      </CardContent>
+                  </Card>
+                </div>
+            </div>
+        </TabsContent>
+         <TabsContent value="google-form">
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+                <div className="lg:col-span-1">
+                  <Card>
+                      <CardHeader>
+                      <CardTitle className="text-2xl">Google Form Settings</CardTitle>
+                      <CardDescription>
+                          Update the Action URL and field Entry IDs for your checkout form.
+                      </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <GoogleFormSettingsForm />
                       </CardContent>
                   </Card>
                 </div>

@@ -1,9 +1,8 @@
-
 'use client';
 
 import { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
-import type { Product, CartItem, HeroSlide, SideBanner } from '@/lib/types';
-import { initialProducts, initialHeroSlides, initialSideBanners } from '@/lib/data';
+import type { Product, CartItem, HeroSlide, SideBanner, GoogleFormSettings } from '@/lib/types';
+import { initialProducts, initialHeroSlides, initialSideBanners, initialGoogleFormSettings } from '@/lib/data';
 
 interface AppContextType {
   products: Product[];
@@ -11,6 +10,7 @@ interface AppContextType {
   wishlist: Product[];
   heroSlides: HeroSlide[];
   sideBanners: SideBanner[];
+  googleFormSettings: GoogleFormSettings;
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -25,6 +25,7 @@ interface AppContextType {
   updateHeroSlide: (slide: HeroSlide) => void;
   deleteHeroSlide: (slideId: string) => void;
   updateSideBanner: (banner: SideBanner) => void;
+  updateGoogleFormSettings: (settings: GoogleFormSettings) => void;
   cartTotal: number;
   cartCount: number;
   wishlistCount: number;
@@ -41,6 +42,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [wishlist, setWishlist] = useState<Product[]>([]);
   const [heroSlides, setHeroSlides] = useState<HeroSlide[]>([]);
   const [sideBanners, setSideBanners] = useState<SideBanner[]>([]);
+  const [googleFormSettings, setGoogleFormSettings] = useState<GoogleFormSettings>(initialGoogleFormSettings);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -51,10 +53,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       const storedProducts = localStorage.getItem('shopswift-products');
       const storedHeroSlides = localStorage.getItem('shopswift-hero-slides');
       const storedSideBanners = localStorage.getItem('shopswift-side-banners');
+      const storedFormSettings = localStorage.getItem('shopswift-form-settings');
       
       setProducts(storedProducts ? JSON.parse(storedProducts) : initialProducts);
       setHeroSlides(storedHeroSlides ? JSON.parse(storedHeroSlides) : initialHeroSlides);
       setSideBanners(storedSideBanners ? JSON.parse(storedSideBanners) : initialSideBanners);
+      setGoogleFormSettings(storedFormSettings ? JSON.parse(storedFormSettings) : initialGoogleFormSettings);
 
       if (storedCart) setCart(JSON.parse(storedCart));
       if (storedWishlist) setWishlist(JSON.parse(storedWishlist));
@@ -64,6 +68,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setProducts(initialProducts);
       setHeroSlides(initialHeroSlides);
       setSideBanners(initialSideBanners);
+      setGoogleFormSettings(initialGoogleFormSettings);
     }
     
     const authStatus = sessionStorage.getItem('isAuthenticated');
@@ -81,11 +86,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             localStorage.setItem('shopswift-wishlist', JSON.stringify(wishlist));
             localStorage.setItem('shopswift-hero-slides', JSON.stringify(heroSlides));
             localStorage.setItem('shopswift-side-banners', JSON.stringify(sideBanners));
+            localStorage.setItem('shopswift-form-settings', JSON.stringify(googleFormSettings));
         } catch (error) {
             console.error("Failed to save to localStorage", error);
         }
     }
-  }, [products, cart, wishlist, heroSlides, sideBanners, isHydrated]);
+  }, [products, cart, wishlist, heroSlides, sideBanners, googleFormSettings, isHydrated]);
 
 
   const login = async (password: string): Promise<boolean> => {
@@ -142,6 +148,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setSideBanners(prev =>
       prev.map(b => b.id === updatedBanner.id ? updatedBanner : b)
     );
+  };
+
+  const updateGoogleFormSettings = (settings: GoogleFormSettings) => {
+    setGoogleFormSettings(settings);
   };
 
   const addToCart = (product: Product, quantity = 1) => {
@@ -213,6 +223,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         wishlist,
         heroSlides,
         sideBanners,
+        googleFormSettings,
         addToCart,
         removeFromCart,
         updateQuantity,
@@ -227,6 +238,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         updateHeroSlide,
         deleteHeroSlide,
         updateSideBanner,
+        updateGoogleFormSettings,
         cartTotal,
         cartCount,
         wishlistCount,
