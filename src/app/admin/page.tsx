@@ -13,6 +13,7 @@ import GoogleFormSettingsForm from '@/components/admin/google-form-settings-form
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { type Product, type HeroSlide } from '@/lib/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import GoogleFormInstructions from '@/components/admin/google-form-instructions';
 
 export default function AdminPage() {
   const { isAuthenticated } = useAppContext();
@@ -159,6 +160,9 @@ export default function AdminPage() {
                       </CardContent>
                   </Card>
                 </div>
+                 <div className="lg:col-span-1">
+                    <GoogleFormInstructions />
+                 </div>
             </div>
         </TabsContent>
       </Tabs>
