@@ -89,6 +89,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       console.error("Failed to save data to Firestore:", error);
     }
   }, []);
+  
+  const updateAndSave = (updater: (prevData: AllData) => AllData) => {
+    setAppData(prevData => {
+        if (!prevData) return null;
+        const newData = updater(prevData);
+        saveDataToFirestore(newData);
+        return newData;
+    });
+  };
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -144,15 +153,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setIsAuthenticated(false);
     sessionStorage.removeItem('isAuthenticated');
-  };
-
-  const updateAndSave = (updater: (prevData: AllData) => AllData) => {
-    setAppData(prevData => {
-        if (!prevData) return null;
-        const newData = updater(prevData);
-        saveDataToFirestore(newData);
-        return newData;
-    });
   };
 
   const addProduct = (productData: Omit<Product, 'id' | 'rating' | 'timesAddedToCart'>) => {
@@ -376,3 +376,5 @@ export const useAppContext = () => {
   }
   return context;
 };
+
+    
