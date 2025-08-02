@@ -1,5 +1,6 @@
 
 
+
 export type Product = {
   id: string;
   name: string;
@@ -153,4 +154,22 @@ export type PageBanner = {
 
 export type PageBannerSettings = {
   shop: PageBanner;
+};
+
+
+// Represents the structure of the single document in Firestore
+export type AllData = {
+  products: Product[];
+  heroSlides: HeroSlide[];
+  sideBanners: SideBanner[];
+  googleFormSettings: GoogleFormSettings;
+  homepageSections: HomepageSection[];
+  categories: CategoryItem[];
+  adBanners: AdBannerData;
+  aboutPageContent: AboutPageContent;
+  blogPosts: BlogPost[];
+  contactPageContent: ContactPageContent;
+  headerMenu: HeaderMenu;
+  footerData: FooterData;
+  pageBannerSettings: PageBannerSettings;
 };

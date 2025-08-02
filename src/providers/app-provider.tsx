@@ -1,10 +1,10 @@
 
-
 'use client';
 
-import { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
-import type { Product, CartItem, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost, ContactPageContent, HeaderMenu, FooterData, PageBannerSettings } from '@/lib/types';
+import { createContext, useContext, useState, type ReactNode, useEffect, useCallback } from 'react';
+import type { AllData, Product, CartItem, HeroSlide, SideBanner, GoogleFormSettings, HomepageSection, CategoryItem, AdBannerData, AboutPageContent, BlogPost, ContactPageContent, HeaderMenu, FooterData, PageBannerSettings } from '@/lib/types';
 import { initialProducts, initialHeroSlides, initialSideBanners, initialGoogleFormSettings, initialHomepageSections, initialCategories, initialAdBanners, initialAboutPageContent, initialBlogPosts, initialContactPageContent, initialHeaderMenu, initialFooterData, initialPageBannerSettings } from '@/lib/data';
+import { getData, saveData } from '@/services/firestore';
 
 interface AppContextType {
   products: Product[];
@@ -58,107 +58,78 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+const initialData: AllData = {
+    products: initialProducts,
+    heroSlides: initialHeroSlides,
+    sideBanners: initialSideBanners,
+    googleFormSettings: initialGoogleFormSettings,
+    homepageSections: initialHomepageSections,
+    categories: initialCategories,
+    adBanners: initialAdBanners,
+    aboutPageContent: initialAboutPageContent,
+    blogPosts: initialBlogPosts,
+    contactPageContent: initialContactPageContent,
+    headerMenu: initialHeaderMenu,
+    footerData: initialFooterData,
+    pageBannerSettings: initialPageBannerSettings,
+};
+
+
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [appData, setAppData] = useState<AllData | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<Product[]>([]);
-  const [heroSlides, setHeroSlides] = useState<HeroSlide[]>([]);
-  const [sideBanners, setSideBanners] = useState<SideBanner[]>([]);
-  const [googleFormSettings, setGoogleFormSettings] = useState<GoogleFormSettings>(initialGoogleFormSettings);
-  const [homepageSections, setHomepageSections] = useState<HomepageSection[]>([]);
-  const [categories, setCategories] = useState<CategoryItem[]>([]);
-  const [adBanners, setAdBanners] = useState<AdBannerData | null>(null);
-  const [aboutPageContent, setAboutPageContent] = useState<AboutPageContent | null>(null);
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
-  const [contactPageContent, setContactPageContent] = useState<ContactPageContent | null>(null);
-  const [headerMenu, setHeaderMenu] = useState<HeaderMenu | null>(null);
-  const [footerData, setFooterData] = useState<FooterData | null>(null);
-  const [pageBannerSettings, setPageBannerSettings] = useState<PageBannerSettings | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
-  useEffect(() => {
+  const saveDataToFirestore = useCallback(async (data: AllData) => {
     try {
-      const storedCart = localStorage.getItem('auto-management-shop-cart');
-      const storedWishlist = localStorage.getItem('auto-management-shop-wishlist');
-      const storedProducts = localStorage.getItem('auto-management-shop-products');
-      const storedHeroSlides = localStorage.getItem('auto-management-shop-hero-slides');
-      const storedSideBanners = localStorage.getItem('auto-management-shop-side-banners');
-      const storedFormSettings = localStorage.getItem('auto-management-shop-form-settings');
-      const storedHomepageSections = localStorage.getItem('auto-management-shop-homepage-sections');
-      const storedCategories = localStorage.getItem('auto-management-shop-categories');
-      const storedAdBanners = localStorage.getItem('auto-management-shop-ad-banners');
-      const storedAboutContent = localStorage.getItem('auto-management-shop-about-content');
-      const storedBlogPosts = localStorage.getItem('auto-management-shop-blog-posts');
-      const storedContactContent = localStorage.getItem('auto-management-shop-contact-content');
-      const storedHeaderMenu = localStorage.getItem('auto-management-shop-header-menu');
-      const storedFooterData = localStorage.getItem('auto-management-shop-footer-data');
-      const storedPageBanners = localStorage.getItem('auto-management-shop-page-banners');
-      
-      setProducts(storedProducts ? JSON.parse(storedProducts) : initialProducts);
-      setHeroSlides(storedHeroSlides ? JSON.parse(storedHeroSlides) : initialHeroSlides);
-      setSideBanners(storedSideBanners ? JSON.parse(storedSideBanners) : initialSideBanners);
-      setGoogleFormSettings(storedFormSettings ? JSON.parse(storedFormSettings) : initialGoogleFormSettings);
-      setHomepageSections(storedHomepageSections ? JSON.parse(storedHomepageSections) : initialHomepageSections);
-      setCategories(storedCategories ? JSON.parse(storedCategories) : initialCategories);
-      setAdBanners(storedAdBanners ? JSON.parse(storedAdBanners) : initialAdBanners);
-      setAboutPageContent(storedAboutContent ? JSON.parse(storedAboutContent) : initialAboutPageContent);
-      setBlogPosts(storedBlogPosts ? JSON.parse(storedBlogPosts) : initialBlogPosts);
-      setContactPageContent(storedContactContent ? JSON.parse(storedContactContent) : initialContactPageContent);
-      setHeaderMenu(storedHeaderMenu ? JSON.parse(storedHeaderMenu) : initialHeaderMenu);
-      setFooterData(storedFooterData ? JSON.parse(storedFooterData) : initialFooterData);
-      setPageBannerSettings(storedPageBanners ? JSON.parse(storedPageBanners) : initialPageBannerSettings);
-
-      if (storedCart) setCart(JSON.parse(storedCart));
-      if (storedWishlist) setWishlist(JSON.parse(storedWishlist));
-      
+      await saveData(data);
     } catch (error) {
-      console.error("Failed to parse from localStorage", error);
-      setProducts(initialProducts);
-      setHeroSlides(initialHeroSlides);
-      setSideBanners(initialSideBanners);
-      setGoogleFormSettings(initialGoogleFormSettings);
-      setHomepageSections(initialHomepageSections);
-      setCategories(initialCategories);
-      setAdBanners(initialAdBanners);
-      setAboutPageContent(initialAboutPageContent);
-      setBlogPosts(initialBlogPosts);
-      setContactPageContent(initialContactPageContent);
-      setHeaderMenu(initialHeaderMenu);
-      setFooterData(initialFooterData);
-      setPageBannerSettings(initialPageBannerSettings);
+      console.error("Failed to save data to Firestore:", error);
     }
-    
-    const authStatus = sessionStorage.getItem('isAuthenticated');
-    if (authStatus === 'true') {
-      setIsAuthenticated(true);
-    }
-    setIsHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    const initializeApp = async () => {
+        try {
+            let data = await getData();
+            if (!data) {
+                console.log("No data found in Firestore, seeding with initial data.");
+                await saveData(initialData);
+                data = initialData;
+            }
+            setAppData(data);
+
+            const storedCart = localStorage.getItem('auto-management-shop-cart');
+            const storedWishlist = localStorage.getItem('auto-management-shop-wishlist');
+            if (storedCart) setCart(JSON.parse(storedCart));
+            if (storedWishlist) setWishlist(JSON.parse(storedWishlist));
+        } catch (error) {
+            console.error("Error initializing app data:", error);
+            setAppData(initialData); // Fallback to initial data on error
+        }
+
+        const authStatus = sessionStorage.getItem('isAuthenticated');
+        if (authStatus === 'true') {
+            setIsAuthenticated(true);
+        }
+        setIsHydrated(true);
+    };
+
+    initializeApp();
   }, []);
 
   useEffect(() => {
     if (isHydrated) {
         try {
-            localStorage.setItem('auto-management-shop-products', JSON.stringify(products));
             localStorage.setItem('auto-management-shop-cart', JSON.stringify(cart));
             localStorage.setItem('auto-management-shop-wishlist', JSON.stringify(wishlist));
-            localStorage.setItem('auto-management-shop-hero-slides', JSON.stringify(heroSlides));
-            localStorage.setItem('auto-management-shop-side-banners', JSON.stringify(sideBanners));
-            localStorage.setItem('auto-management-shop-form-settings', JSON.stringify(googleFormSettings));
-            localStorage.setItem('auto-management-shop-homepage-sections', JSON.stringify(homepageSections));
-            localStorage.setItem('auto-management-shop-categories', JSON.stringify(categories));
-            if (adBanners) localStorage.setItem('auto-management-shop-ad-banners', JSON.stringify(adBanners));
-            if (aboutPageContent) localStorage.setItem('auto-management-shop-about-content', JSON.stringify(aboutPageContent));
-            localStorage.setItem('auto-management-shop-blog-posts', JSON.stringify(blogPosts));
-            if (contactPageContent) localStorage.setItem('auto-management-shop-contact-content', JSON.stringify(contactPageContent));
-            if (headerMenu) localStorage.setItem('auto-management-shop-header-menu', JSON.stringify(headerMenu));
-            if (footerData) localStorage.setItem('auto-management-shop-footer-data', JSON.stringify(footerData));
-            if (pageBannerSettings) localStorage.setItem('auto-management-shop-page-banners', JSON.stringify(pageBannerSettings));
         } catch (error) {
-            console.error("Failed to save to localStorage", error);
+            console.error("Failed to save cart/wishlist to localStorage", error);
         }
     }
-  }, [products, cart, wishlist, heroSlides, sideBanners, googleFormSettings, homepageSections, categories, adBanners, aboutPageContent, blogPosts, contactPageContent, headerMenu, footerData, pageBannerSettings, isHydrated]);
+  }, [cart, wishlist, isHydrated]);
 
 
   const login = async (password: string): Promise<boolean> => {
@@ -175,6 +146,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     sessionStorage.removeItem('isAuthenticated');
   };
 
+  const updateAndSave = (updater: (prevData: AllData) => AllData) => {
+    setAppData(prevData => {
+        if (!prevData) return null;
+        const newData = updater(prevData);
+        saveDataToFirestore(newData);
+        return newData;
+    });
+  };
+
   const addProduct = (productData: Omit<Product, 'id' | 'rating' | 'timesAddedToCart'>) => {
     const newProduct: Product = {
       ...productData,
@@ -182,17 +162,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       rating: 2,
       timesAddedToCart: 0,
     };
-    setProducts(prevProducts => [newProduct, ...prevProducts]);
+    updateAndSave(prev => ({ ...prev, products: [newProduct, ...prev.products] }));
   };
 
   const updateProduct = (updatedProduct: Product) => {
-    setProducts(prev => 
-      prev.map(p => p.id === updatedProduct.id ? updatedProduct : p)
-    );
+    updateAndSave(prev => ({ ...prev, products: prev.products.map(p => p.id === updatedProduct.id ? updatedProduct : p) }));
   };
 
   const deleteProduct = (productId: string) => {
-    setProducts(prev => prev.filter(p => p.id !== productId));
+    updateAndSave(prev => ({ ...prev, products: prev.products.filter(p => p.id !== productId) }));
   }
 
   const addHeroSlide = (slideData: Omit<HeroSlide, 'id'>) => {
@@ -200,43 +178,39 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       ...slideData,
       id: new Date().getTime().toString(),
     };
-    setHeroSlides(prev => [newSlide, ...prev]);
+    updateAndSave(prev => ({ ...prev, heroSlides: [newSlide, ...prev.heroSlides] }));
   };
 
   const updateHeroSlide = (updatedSlide: HeroSlide) => {
-    setHeroSlides(prev => 
-      prev.map(s => s.id === updatedSlide.id ? updatedSlide : s)
-    );
+    updateAndSave(prev => ({ ...prev, heroSlides: prev.heroSlides.map(s => s.id === updatedSlide.id ? updatedSlide : s) }));
   };
 
   const deleteHeroSlide = (slideId: string) => {
-    setHeroSlides(prev => prev.filter(s => s.id !== slideId));
+    updateAndSave(prev => ({ ...prev, heroSlides: prev.heroSlides.filter(s => s.id !== slideId) }));
   }
 
   const updateSideBanner = (updatedBanner: SideBanner) => {
-    setSideBanners(prev =>
-      prev.map(b => b.id === updatedBanner.id ? updatedBanner : b)
-    );
+    updateAndSave(prev => ({ ...prev, sideBanners: prev.sideBanners.map(b => b.id === updatedBanner.id ? updatedBanner : b) }));
   };
 
   const updateGoogleFormSettings = (settings: GoogleFormSettings) => {
-    setGoogleFormSettings(settings);
+    updateAndSave(prev => ({ ...prev, googleFormSettings: settings }));
   };
 
   const updateHomepageSections = (sections: HomepageSection[]) => {
-    setHomepageSections(sections);
+    updateAndSave(prev => ({ ...prev, homepageSections: sections }));
   };
 
   const updateCategories = (updatedCategories: CategoryItem[]) => {
-    setCategories(updatedCategories);
+    updateAndSave(prev => ({ ...prev, categories: updatedCategories }));
   }
 
   const updateAdBanners = (banners: AdBannerData) => {
-    setAdBanners(banners);
+    updateAndSave(prev => ({ ...prev, adBanners: banners }));
   };
 
   const updateAboutPageContent = (content: AboutPageContent) => {
-    setAboutPageContent(content);
+    updateAndSave(prev => ({ ...prev, aboutPageContent: content }));
   };
 
   const addBlogPost = (postData: Omit<BlogPost, 'id' | 'date'>) => {
@@ -249,37 +223,34 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         day: 'numeric',
       }),
     };
-    setBlogPosts(prev => [newPost, ...prev]);
+    updateAndSave(prev => ({ ...prev, blogPosts: [newPost, ...prev.blogPosts] }));
   };
 
   const updateBlogPost = (updatedPost: BlogPost) => {
-    setBlogPosts(prev => 
-      prev.map(p => p.id === updatedPost.id ? updatedPost : p)
-    );
+    updateAndSave(prev => ({ ...prev, blogPosts: prev.blogPosts.map(p => p.id === updatedPost.id ? updatedPost : p) }));
   };
 
   const deleteBlogPost = (postId: string) => {
-    setBlogPosts(prev => prev.filter(p => p.id !== postId));
+    updateAndSave(prev => ({ ...prev, blogPosts: prev.blogPosts.filter(p => p.id !== postId) }));
   }
 
   const updateContactPageContent = (content: ContactPageContent) => {
-    setContactPageContent(content);
+    updateAndSave(prev => ({ ...prev, contactPageContent: content }));
   }
 
   const updateHeaderMenu = (menu: HeaderMenu) => {
-    setHeaderMenu(menu);
+    updateAndSave(prev => ({ ...prev, headerMenu: menu }));
   }
 
   const updateFooterData = (data: FooterData) => {
-    setFooterData(data);
+    updateAndSave(prev => ({ ...prev, footerData: data }));
   }
 
   const updatePageBannerSettings = (settings: PageBannerSettings) => {
-    setPageBannerSettings(settings);
+    updateAndSave(prev => ({ ...prev, pageBannerSettings: settings }));
   };
 
   const addToCart = (product: Product, quantity = 1) => {
-    // Update cart
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.product.id === product.id);
       if (existingItem) {
@@ -292,22 +263,18 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       return [...prevCart, { product, quantity }];
     });
   
-    // Update product rating
-    setProducts(prevProducts => {
-      return prevProducts.map(p => {
-        if (p.id === product.id) {
-          const newTimesAddedToCart = p.timesAddedToCart + 1;
-          
-          // Rating logic: Start at 2, max out at 5.
-          // Increase by 0.5 for every 10 adds.
-          const ratingIncrease = Math.floor(newTimesAddedToCart / 10) * 0.5;
-          let newRating = 2 + ratingIncrease;
-          newRating = Math.min(newRating, 5); // Cap rating at 5
-          
-          return { ...p, timesAddedToCart: newTimesAddedToCart, rating: newRating };
-        }
-        return p;
-      });
+    updateAndSave(prev => {
+        const newProducts = prev.products.map(p => {
+             if (p.id === product.id) {
+                const newTimesAddedToCart = p.timesAddedToCart + 1;
+                const ratingIncrease = Math.floor(newTimesAddedToCart / 10) * 0.5;
+                let newRating = 2 + ratingIncrease;
+                newRating = Math.min(newRating, 5);
+                return { ...p, timesAddedToCart: newTimesAddedToCart, rating: newRating };
+            }
+            return p;
+        });
+        return { ...prev, products: newProducts };
     });
   };
 
@@ -353,63 +320,50 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const cartCount = cart.reduce((count, item) => count + item.quantity, 0);
   const wishlistCount = wishlist.length;
 
-  if (!isHydrated) {
-    // Render a skeleton or loading state on the server
-    return null;
+  if (!isHydrated || !appData) {
+    return null; // Or a loading spinner
   }
 
+  const contextValue: AppContextType = {
+      ...appData,
+      cart,
+      wishlist,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      addProduct,
+      updateProduct,
+      deleteProduct,
+      toggleWishlist,
+      removeFromWishlist,
+      isInWishlist,
+      addHeroSlide,
+      updateHeroSlide,
+      deleteHeroSlide,
+      updateSideBanner,
+      updateGoogleFormSettings,
+      updateHomepageSections,
+      updateCategories,
+      updateAdBanners,
+      updateAboutPageContent,
+      addBlogPost,
+      updateBlogPost,
+      deleteBlogPost,
+      updateContactPageContent,
+      updateHeaderMenu,
+      updateFooterData,
+      updatePageBannerSettings,
+      cartTotal,
+      cartCount,
+      wishlistCount,
+      isAuthenticated,
+      login,
+      logout,
+  };
+
   return (
-    <AppContext.Provider
-      value={{
-        products,
-        cart,
-        wishlist,
-        heroSlides,
-        sideBanners,
-        googleFormSettings,
-        homepageSections,
-        categories,
-        adBanners: adBanners!,
-        aboutPageContent: aboutPageContent!,
-        blogPosts,
-        contactPageContent: contactPageContent!,
-        headerMenu: headerMenu!,
-        footerData: footerData!,
-        pageBannerSettings: pageBannerSettings!,
-        addToCart,
-        removeFromCart,
-        updateQuantity,
-        clearCart,
-        addProduct,
-        updateProduct,
-        deleteProduct,
-        toggleWishlist,
-        removeFromWishlist,
-        isInWishlist,
-        addHeroSlide,
-        updateHeroSlide,
-        deleteHeroSlide,
-        updateSideBanner,
-        updateGoogleFormSettings,
-        updateHomepageSections,
-        updateCategories,
-        updateAdBanners,
-        updateAboutPageContent,
-        addBlogPost,
-        updateBlogPost,
-        deleteBlogPost,
-        updateContactPageContent,
-        updateHeaderMenu,
-        updateFooterData,
-        updatePageBannerSettings,
-        cartTotal,
-        cartCount,
-        wishlistCount,
-        isAuthenticated,
-        login,
-        logout,
-      }}
-    >
+    <AppContext.Provider value={contextValue}>
       {children}
     </AppContext.Provider>
   );
