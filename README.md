@@ -25,6 +25,45 @@ npm run dev
 
 ---
 
+## Setup for New Users (Using Your Own Database)
+
+If you want to use this project template with your own separate database, follow these steps.
+
+### Step 1: Create a Firebase Project
+
+1.  Go to the [Firebase Console](https://console.firebase.google.com/) and sign in with your Google account.
+2.  Click **"Add project"** and give your project a name.
+3.  Once the project is created, go to the **"Build"** section in the left sidebar and click on **"Firestore Database"**.
+4.  Click **"Create database"** and start in **production mode**. Choose a location and click **"Enable"**.
+
+### Step 2: Get Your Firebase Configuration
+
+1.  In your Firebase project's dashboard, click the **Gear icon (⚙️)** next to "Project Overview" and select **"Project settings"**.
+2.  In the "Your apps" card, click on the **web icon (</>)** to create a new web app.
+3.  Give your app a nickname and click **"Register app"**.
+4.  Firebase will provide you with a `firebaseConfig` object. It looks like this:
+    ```javascript
+    const firebaseConfig = {
+      apiKey: "AIza...",
+      authDomain: "your-project.firebaseapp.com",
+      projectId: "your-project-id",
+      storageBucket: "your-project.appspot.com",
+      messagingSenderId: "12345...",
+      appId: "1:12345..."
+    };
+    ```
+5.  You will need these values for the next step.
+
+### Step 3: Configure Environment Variables
+
+1.  In the project's code, find the `src/.env.example` file.
+2.  Create a copy of this file in the same `src` directory and rename it to `src/.env`.
+3.  Open the new `src/.env` file.
+4.  Copy the values from your `firebaseConfig` object and paste them into the corresponding variables in the `src/.env` file.
+5.  **Important for Deployment:** When you deploy this project to a hosting service like Vercel, you must also add these same key-value pairs to the **Environment Variables** section in your Vercel project settings.
+
+---
+
 ## Google Form Integration for Orders
 
 This application uses a Google Form to handle order submissions. This allows you to easily collect and manage orders in a Google Sheet without a complex backend. Follow these steps to set it up.
